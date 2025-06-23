@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
 import Anushka from "./pages/Anushka";
 import Homepage from "./pages/Start";
+import History from "./pages/History";
+
 
 function App() {
   return (
@@ -25,6 +27,8 @@ const RoutesWeb = () => {
         
         <Route path="/anushka" element={<Anushka/>} />
         <Route path="/homepage" element={<Homepage/>} />
+        <Route path="/history" element={<History/>} />
+
       </Routes>
       
     
