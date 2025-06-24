@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import teamPhoto from "../img/tutor.jpg";
 
 const History = () => {
   const [visibleSections, setVisibleSections] = useState(new Set());
@@ -8,8 +9,7 @@ const History = () => {
   useEffect(() => {
     const handleScroll = () => {
       const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollTop = window.scrollY;
-      const progress = (scrollTop / scrollHeight) * 100;
+      const progress = (window.scrollY / scrollHeight) * 100;
       setScrollProgress(progress);
 
       const newVisibleSections = new Set();
@@ -38,8 +38,7 @@ const History = () => {
       achievements: [
         "H1 2021: The seed of Sangharsh (संघर्ष) were sown with extensive research and community analysis",
         "Founder Soubhik Kundu began conceptualising a comprehensive youth-driven initiative for sustainable social change",
-        "H2 2021: Strategic brainstorming sessions, extensive network-building, and meaningful community conversations established the foundation",
-        "Comprehensive ideation process included immersive visits to underserved communities and educational institutions across multiple regions"
+        "H2 2021: Strategic brainstorming sessions, extensive network-building, and meaningful community conversations established the foundation"
       ],
       icon: "🌱",
       color: "#10B981"
@@ -52,8 +51,7 @@ const History = () => {
       achievements: [
         "H1 2022: Sangharsh Empowerment Foundation informally founded in Hyderabad with a core team of passionate changemakers",
         "Successfully launched pilot volunteering initiatives with the first cohort of dedicated youth volunteers",
-        "H2 2022: Strategically expanded initial projects including systematic meal distribution and comprehensive awareness drives",
-        "Established robust operational frameworks and laid the comprehensive groundwork for formal organizational registration"
+        "H2 2022: Strategically expanded initial projects including systematic meal distribution and comprehensive awareness drives"
       ],
       icon: "🏗️",
       color: "#3B82F6"
@@ -66,8 +64,7 @@ const History = () => {
       achievements: [
         "H1 2023: Officially registered as a not-for-profit public charitable trust with comprehensive legal documentation",
         "Successfully built a robust core team and strategically onboarded the first cohort of committed long-term volunteers",
-        "H2 2023: Established strategic partnerships with 7+ shelter homes across diverse regions of India",
-        "Developed sophisticated operational systems and initiated comprehensive impact tracking and measurement protocols"
+        "H2 2023: Established strategic partnerships with 7+ shelter homes across diverse regions of India"
       ],
       icon: "📋",
       color: "#8B5CF6"
@@ -80,8 +77,7 @@ const History = () => {
       achievements: [
         "H1 2024: Successfully operated in 12+ diverse locations across India with consistent quality standards",
         "Organizational growth: Core team expanded to 30+ dedicated members; volunteer base surpassed 400+ active contributors",
-        "H2 2024: Comprehensive strategic planning initiatives for institutional transition and sustainable growth models",
-        "Identified critical need for enhanced sustainable development frameworks and professional organizational structure"
+        "H2 2024: Comprehensive strategic planning initiatives for institutional transition and sustainable growth models"
       ],
       icon: "📈",
       color: "#F59E0B"
@@ -94,48 +90,22 @@ const History = () => {
       achievements: [
         "H1 2025: Successfully launched SWIS Foundation with enhanced operational capabilities and strategic focus",
         "Completed seamless transition from Sangharsh to SWIS, symbolizing structured growth and professional maturity",
-        "Established ambitious vision to positively impact 2 million+ lives over the next 20 years through innovative programs",
-        "Strategic focus on scalable, data-driven, and expert-led programs with measurable social impact and sustainable outcomes"
+        "Established ambitious vision to positively impact 2 million+ lives over the next 20 years through innovative programs"
       ],
       icon: "🚀",
       color: "#EF4444"
     }
   ];
 
-  const BackgroundPattern = () => (
-    <div className="background-pattern">
-      <div className="pattern-grid">
-        {[...Array(20)].map((_, i) => (
-          <div key={i} className="pattern-dot" style={{
-            left: `${(i % 5) * 25}%`,
-            top: `${Math.floor(i / 5) * 25}%`,
-            animationDelay: `${i * 0.1}s`
-          }}></div>
-        ))}
-      </div>
-      <div className="pattern-lines">
-        {[...Array(6)].map((_, i) => (
-          <div key={i} className="pattern-line" style={{
-            left: `${i * 20}%`,
-            animationDelay: `${i * 0.3}s`
-          }}></div>
-        ))}
-      </div>
-    </div>
-  );
-
   return (
     <div className="history-container">
-      <BackgroundPattern />
-      
-      {/* Progress Indicator */}
+      {/* Progress Bar */}
       <div className="progress-wrapper">
         <div className="progress-bar" style={{ width: `${scrollProgress}%` }}></div>
       </div>
 
-      {/* Hero Section */}
+      {/* Hero Section - IMAGE PLACEHOLDER 1: Hero background image */}
       <section className="hero-section">
-        <div className="hero-blur-bg"></div>
         <div className="hero-content">
           <div className="hero-badge">
             <span>OUR JOURNEY</span>
@@ -146,6 +116,14 @@ const History = () => {
           </h1>
           <div className="hero-description">
             <p>Over 4 years of dedicated service, transformative growth, and unwavering commitment to social change. From humble beginnings to revolutionary impact - this is our story.</p>
+          </div>
+          {/* IMAGE PLACEHOLDER 2: Team photo or collage */}
+          <div className="hero-image-placeholder">
+           <img
+             src={teamPhoto} 
+            alt="Team Photo or Foundation Collage"
+            className="real-image"
+            />
           </div>
           <div className="hero-stats">
             <div className="stat-item">
@@ -187,6 +165,11 @@ const History = () => {
 
                 {/* Content Box */}
                 <div className="content-box">
+                  {/* IMAGE PLACEHOLDER 3: Year-specific images for each timeline section */}
+                  <div className="timeline-image-placeholder">
+                    <div className="image-placeholder">{item.year} Milestone Image</div>
+                  </div>
+                  
                   <div className="content-header">
                     <div className="content-badge" style={{ backgroundColor: item.color }}>
                       {item.subtitle}
@@ -221,7 +204,6 @@ const History = () => {
         ref={el => sectionsRef.current[timelineData.length] = el}
         className={`future-section ${visibleSections.has(timelineData.length) ? 'visible' : ''}`}
       >
-        <div className="future-blur-bg"></div>
         <div className="future-content">
           <div className="future-badge">
             <span>LOOKING AHEAD</span>
@@ -229,7 +211,11 @@ const History = () => {
           <h2 className="future-title">The Journey Continues</h2>
           <div className="future-description">
             <p>From humble beginnings to transformative impact, our journey represents more than growth—it embodies evolution. SWIS Foundation stands as a testament to what's possible when vision meets action, and passion drives purpose.</p>
-            <p>Our story is far from over. With each milestone, we've learned, adapted, and grown stronger. The next chapter promises even greater impact, deeper connections, and revolutionary change.</p>
+          </div>
+          
+          {/* IMAGE PLACEHOLDER 4: Future vision graphic or infographic */}
+          <div className="future-image-placeholder">
+            <div className="image-placeholder">Future Vision Infographic</div>
           </div>
           
           <div className="future-vision-grid">
@@ -262,59 +248,6 @@ const History = () => {
           min-height: 100vh;
         }
 
-        /* Background Pattern */
-        .background-pattern {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          pointer-events: none;
-          opacity: 0.03;
-          z-index: 1;
-        }
-
-        .pattern-grid {
-          position: relative;
-          width: 100%;
-          height: 100%;
-        }
-
-        .pattern-dot {
-          position: absolute;
-          width: 2px;
-          height: 2px;
-          background: #64748b;
-          border-radius: 50%;
-          animation: patternFloat 4s ease-in-out infinite;
-        }
-
-        .pattern-lines {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-        }
-
-        .pattern-line {
-          position: absolute;
-          width: 1px;
-          height: 100%;
-          background: linear-gradient(to bottom, transparent, #64748b, transparent);
-          animation: patternSlide 6s ease-in-out infinite;
-        }
-
-        @keyframes patternFloat {
-          0%, 100% { transform: translateY(0px); opacity: 0.3; }
-          50% { transform: translateY(-10px); opacity: 0.1; }
-        }
-
-        @keyframes patternSlide {
-          0%, 100% { transform: translateX(0px); opacity: 0.2; }
-          50% { transform: translateX(5px); opacity: 0.05; }
-        }
-
         /* Progress Bar */
         .progress-wrapper {
           position: fixed;
@@ -342,25 +275,13 @@ const History = () => {
           justify-content: center;
           padding: 2rem;
           position: relative;
-          z-index: 10;
-        }
-
-        .hero-blur-bg {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
           background: radial-gradient(circle at 30% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
                       radial-gradient(circle at 70% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
-          backdrop-filter: blur(100px);
-          z-index: -1;
         }
 
         .hero-content {
           max-width: 1200px;
           text-align: center;
-          z-index: 2;
         }
 
         .hero-badge {
@@ -371,7 +292,6 @@ const History = () => {
           padding: 0.75rem 2rem;
           margin-bottom: 2rem;
           backdrop-filter: blur(10px);
-          animation: fadeInUp 1s ease-out 0.5s both;
         }
 
         .hero-badge span {
@@ -384,7 +304,6 @@ const History = () => {
 
         .hero-title {
           margin-bottom: 2rem;
-          animation: fadeInUp 1s ease-out 1s both;
         }
 
         .title-main {
@@ -411,8 +330,7 @@ const History = () => {
 
         .hero-description {
           max-width: 800px;
-          margin: 0 auto 3rem;
-          animation: fadeInUp 1s ease-out 1.5s both;
+          margin: 0 auto 2rem;
         }
 
         .hero-description p {
@@ -421,13 +339,50 @@ const History = () => {
           color: #cbd5e1;
         }
 
+        /* Image Placeholders */
+        .hero-image-placeholder,
+        .timeline-image-placeholder,
+        .future-image-placeholder {
+          margin: 2rem 0;
+        }
+
+        .image-placeholder {
+          background: rgba(248, 250, 252, 0.05);
+          border: 2px dashed rgba(248, 250, 252, 0.2);
+          border-radius: 12px;
+          padding: 2rem;
+          text-align: center;
+          color: #64748b;
+          font-style: italic;
+          transition: all 0.3s ease;
+        }
+
+        .image-placeholder:hover {
+          background: rgba(59, 130, 246, 0.1);
+          border-color: rgba(59, 130, 246, 0.3);
+          color: #3b82f6;
+        }
+
+        .timeline-image-placeholder .image-placeholder {
+          height: 200px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .future-image-placeholder .image-placeholder {
+          height: 300px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
         .hero-stats {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
           gap: 2rem;
           max-width: 600px;
           margin: 0 auto;
-          animation: fadeInUp 1s ease-out 2s both;
         }
 
         .stat-item {
@@ -454,7 +409,6 @@ const History = () => {
         .timeline-wrapper {
           position: relative;
           padding: 4rem 0;
-          z-index: 10;
         }
 
         .timeline-line {
@@ -465,15 +419,14 @@ const History = () => {
           width: 2px;
           background: linear-gradient(to bottom, transparent, #334155, transparent);
           transform: translateX(-50%);
-          z-index: 1;
         }
 
         .timeline-section {
           padding: 3rem 2rem;
           position: relative;
           opacity: 0;
-          transform: translateY(100px);
-          transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          transform: translateY(50px);
+          transition: all 0.8s ease;
         }
 
         .timeline-section.visible {
@@ -512,7 +465,6 @@ const History = () => {
           display: flex;
           align-items: center;
           justify-content: center;
-          z-index: 10;
           grid-column: 2;
           justify-self: center;
           box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
@@ -552,29 +504,17 @@ const History = () => {
         /* Content Box */
         .content-box {
           background: rgba(15, 23, 42, 0.6);
-          border-radius: 24px;
-          padding: 2.5rem;
+          border-radius: 20px;
+          padding: 2rem;
           backdrop-filter: blur(20px);
           border: 1px solid rgba(248, 250, 252, 0.1);
-          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+          box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.4);
           transition: all 0.3s ease;
-          position: relative;
-          overflow: hidden;
-        }
-
-        .content-box::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 1px;
-          background: linear-gradient(90deg, transparent, rgba(248, 250, 252, 0.2), transparent);
         }
 
         .content-box:hover {
-          transform: translateY(-8px);
-          box-shadow: 0 35px 70px -12px rgba(0, 0, 0, 0.5);
+          transform: translateY(-5px);
+          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
         .content-header {
@@ -595,68 +535,76 @@ const History = () => {
 
         .content-title {
           font-family: 'Playfair Display', Georgia, serif;
-          font-size: 2.25rem;
+          font-size: 2rem;
           font-weight: 300;
           color: #f8fafc;
           margin-bottom: 0;
-          letter-spacing: -1px;
         }
 
         .content-description {
-          font-size: 1.125rem;
-          line-height: 1.8;
+          font-size: 1.1rem;
+          line-height: 1.7;
           color: #cbd5e1;
-          margin-bottom: 2rem;
+          margin-bottom: 1.5rem;
         }
 
         .achievements-section {
           border-top: 1px solid rgba(248, 250, 252, 0.1);
-          padding-top: 2rem;
+          padding-top: 1.5rem;
         }
 
         .achievements-title {
-          font-family: 'Inter', sans-serif;
-          font-size: 1.125rem;
+          font-size: 1rem;
           font-weight: 600;
           color: #e2e8f0;
-          margin-bottom: 1.5rem;
+          margin-bottom: 1rem;
           text-transform: uppercase;
           letter-spacing: 1px;
         }
 
         .achievements-grid {
           display: grid;
-          gap: 1rem;
+          gap: 0.75rem;
         }
 
         .achievement-item {
           display: flex;
           align-items: flex-start;
           gap: 1rem;
-          padding: 1rem;
+          padding: 0.75rem;
           background: rgba(248, 250, 252, 0.02);
-          border-radius: 12px;
-          border: 1px solid rgba(248, 250, 252, 0.05);
+          border-radius: 8px;
           transition: all 0.3s ease;
         }
 
         .achievement-item:hover {
           background: rgba(248, 250, 252, 0.05);
-          border-color: rgba(248, 250, 252, 0.1);
         }
 
         .achievement-bullet {
-          width: 8px;
-          height: 8px;
+          width: 6px;
+          height: 6px;
           border-radius: 50%;
           margin-top: 0.5rem;
           flex-shrink: 0;
         }
 
         .achievement-text {
-          font-size: 1rem;
-          line-height: 1.6;
+          font-size: 0.95rem;
+          line-height: 1.5;
           color: #94a3b8;
+        }
+
+        .real-image {
+        width: 100%;
+        max-width: 100%;      /* Ensures it doesn't overflow */
+        padding: 2rem;
+        border-radius: 12px;
+        display: block;
+        margin: 0 auto;
+        transition: all 0.3s ease;
+        background: rgba(248, 250, 252, 0.05);
+        object-fit: contain; /* Keeps image proportions */
         }
 
         /* Future Section */
@@ -668,9 +616,10 @@ const History = () => {
           padding: 4rem 2rem;
           position: relative;
           opacity: 0;
-          transform: translateY(100px);
-          transition: all 1s ease;
-          z-index: 10;
+          transform: translateY(50px);
+          transition: all 0.8s ease;
+          background: radial-gradient(circle at 70% 30%, rgba(239, 68, 68, 0.1) 0%, transparent 50%),
+                      radial-gradient(circle at 30% 70%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
         }
 
         .future-section.visible {
@@ -678,22 +627,9 @@ const History = () => {
           transform: translateY(0);
         }
 
-        .future-blur-bg {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: radial-gradient(circle at 70% 30%, rgba(239, 68, 68, 0.1) 0%, transparent 50%),
-                      radial-gradient(circle at 30% 70%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
-          backdrop-filter: blur(100px);
-          z-index: -1;
-        }
-
         .future-content {
           max-width: 1000px;
           text-align: center;
-          z-index: 2;
         }
 
         .future-badge {
@@ -716,38 +652,33 @@ const History = () => {
 
         .future-title {
           font-family: 'Playfair Display', Georgia, serif;
-          font-size: 3.5rem;
+          font-size: 3rem;
           font-weight: 300;
           margin-bottom: 2rem;
           background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
-          letter-spacing: -2px;
         }
 
         .future-description {
-          font-size: 1.25rem;
-          line-height: 1.8;
+          font-size: 1.2rem;
+          line-height: 1.7;
           color: #cbd5e1;
-          margin-bottom: 4rem;
-        }
-
-        .future-description p {
-          margin-bottom: 1.5rem;
+          margin-bottom: 2rem;
         }
 
         .future-vision-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
           gap: 2rem;
-          margin-top: 3rem;
+          margin-top: 2rem;
         }
 
         .vision-item {
           background: rgba(15, 23, 42, 0.6);
-          border-radius: 20px;
-          padding: 2.5rem;
+          border-radius: 16px;
+          padding: 2rem;
           backdrop-filter: blur(20px);
           border: 1px solid rgba(248, 250, 252, 0.1);
           transition: all 0.3s ease;
@@ -755,38 +686,26 @@ const History = () => {
         }
 
         .vision-item:hover {
-          transform: translateY(-8px);
-          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+          transform: translateY(-5px);
+          box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.4);
         }
 
         .vision-icon {
-          font-size: 3rem;
-          margin-bottom: 1.5rem;
+          font-size: 2.5rem;
+          margin-bottom: 1rem;
         }
 
         .vision-item h3 {
-          font-family: 'Inter', sans-serif;
-          font-size: 1.25rem;
+          font-size: 1.2rem;
           font-weight: 600;
           color: #f8fafc;
-          margin-bottom: 1rem;
+          margin-bottom: 0.75rem;
         }
 
         .vision-item p {
           color: #94a3b8;
-          line-height: 1.6;
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(50px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          line-height: 1.5;
+          font-size: 0.95rem;
         }
 
         /* Responsive Design */
@@ -821,33 +740,16 @@ const History = () => {
             font-size: 3rem;
           }
 
-          .title-subtitle {
-            font-size: 1.25rem;
-          }
-
           .hero-stats {
             grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
           }
 
           .content-title {
-            font-size: 1.75rem;
-          }
-
-          .content-description {
-            font-size: 1rem;
-          }
-
-          .content-box {
-            padding: 2rem;
+            font-size: 1.5rem;
           }
 
           .future-title {
             font-size: 2.5rem;
-          }
-
-          .future-description {
-            font-size: 1.125rem;
           }
 
           .future-vision-grid {
@@ -856,16 +758,12 @@ const History = () => {
         }
 
         @media (max-width: 480px) {
-          .hero-stats {
-            grid-template-columns: 1fr;
-          }
-
           .title-main {
             font-size: 2.5rem;
           }
 
-          .content-box {
-            padding: 1.5rem;
+          .hero-stats {
+            grid-template-columns: 1fr;
           }
 
           .timeline-node {
@@ -876,10 +774,6 @@ const History = () => {
           .node-inner {
             width: 45px;
             height: 45px;
-          }
-
-          .node-icon {
-            font-size: 1.25rem;
           }
         }
       `}</style>
