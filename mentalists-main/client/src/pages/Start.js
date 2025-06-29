@@ -1,574 +1,523 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronDown, Users, BookOpen, Briefcase, Heart, Award, Globe, Camera } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronLeft, ChevronRight, Menu, X, ArrowRight } from 'lucide-react';
 
-function Start()  {
-  const [activeTab, setActiveTab] = useState('CSAA');
-  const [activeIntervention, setActiveIntervention] = useState('EDUCATION');
-  const [isVisible, setIsVisible] = useState({});
+const Index = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Sample images for slideshow
+  const slides = [
+    "https://images.unsplash.com/photo-1577896851231-70ef18881754?w=800&h=600&fit=crop",
+    "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=800&h=600&fit=crop",
+    "https://images.unsplash.com/photo-1594736797933-d0d3085cf6dd?w=800&h=600&fit=crop",
+    "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800&h=600&fit=crop"
+  ];
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible(prev => ({ ...prev, [entry.target.id]: true }));
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [slides.length]);
 
-    document.querySelectorAll('[id]').forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
-
-  // CSAA Tab Content
-  const csaaContent = {
-    'CSAA': {
-      title: 'Centre for Social Awareness & Action',
-      description: 'Empowering communities through awareness campaigns and direct action initiatives that create lasting social change.',
-      details: [
-        'Community mobilization and grassroots organizing',
-        'Awareness campaigns on social issues',
-        'Direct action initiatives for policy change',
-        'Capacity building for local leaders',
-        'Social advocacy and rights protection'
-      ]
-    },
-    'CSII': {
-      title: 'Centre for Social Impact & Innovation', 
-      description: 'Driving innovation in social solutions through research, technology, and collaborative partnerships.',
-      details: [
-        'Research and development in social innovation',
-        'Technology solutions for social problems',
-        'Impact measurement and evaluation',
-        'Innovation labs and incubators',
-        'Cross-sector partnerships and collaboration'
-      ]
-    },
-    'CCAE': {
-      title: 'Centre for Civil Administration & Engagement',
-      description: 'Building bridges between citizens and governance through capacity building and civic engagement programs.',
-      details: [
-        'Civic engagement and participation programs',
-        'Government accountability initiatives',
-        'Policy advocacy and reform',
-        'Citizen education and awareness',
-        'Administrative capacity building'
-      ]
-    }
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
   };
 
-  // Intervention Content
-  const interventionContent = {
-    'EDUCATION': {
-      title: 'Education',
-      description: 'Our quest to make India education sufficient led us to become one of the largest education and skill development players in India. Our programs focus on quality education for underprivileged children and communities.',
-      extendedDescription: 'Today, SWIS is among the first organizations globally to adopt an integrated approach to education, combining traditional learning with modern technology and innovative teaching methods.',
-      programs: [
-        'Primary and Secondary Education Programs',
-        'Digital Learning Initiatives',
-        'Teacher Training and Development',
-        'Educational Infrastructure Development',
-        'Scholarship and Financial Aid Programs'
-      ]
-    },
-    'SKILL DEVELOPMENT': {
-      title: 'Skill Development',
-      description: 'Empowering youth and adults with market-relevant skills to enhance their employability and entrepreneurial capabilities.',
-      extendedDescription: 'Our comprehensive skill development programs are designed to bridge the gap between education and employment, focusing on both technical and soft skills.',
-      programs: [
-        'Vocational Training Programs',
-        'Digital Skills and Technology Training',
-        'Entrepreneurship Development',
-        'Industry Partnerships and Placements',
-        'Certification and Recognition Programs'
-      ]
-    },
-    'HEALTHCARE': {
-      title: 'Healthcare',
-      description: 'Providing accessible and quality healthcare services to underserved communities across India.',
-      extendedDescription: 'Our healthcare initiatives focus on preventive care, community health programs, and building sustainable healthcare infrastructure.',
-      programs: [
-        'Mobile Health Clinics',
-        'Community Health Worker Training',
-        'Maternal and Child Health Programs',
-        'Health Awareness Campaigns',
-        'Telemedicine and Digital Health'
-      ]
-    },
-    'NUTRITION': {
-      title: 'Nutrition',
-      description: 'Addressing malnutrition and promoting healthy eating habits through comprehensive nutrition programs.',
-      extendedDescription: 'Our nutrition initiatives combine direct feeding programs with education and community-based interventions to ensure sustainable impact.',
-      programs: [
-        'Mid-Day Meal Programs',
-        'Supplementary Nutrition for Pregnant Women',
-        'Community Kitchen Initiatives',
-        'Nutrition Education and Awareness',
-        'Kitchen Garden Development Programs'
-      ]
-    },
-    'NEW PROGRAMS': {
-      title: 'New Programs',
-      description: 'Innovative initiatives designed to address emerging social challenges and create sustainable impact.',
-      extendedDescription: 'Our new programs focus on cutting-edge solutions and pilot projects that can be scaled for maximum social impact.',
-      programs: [
-        'Climate Change Adaptation Programs',
-        'Digital Inclusion Initiatives',
-        'Mental Health and Wellbeing',
-        'Disaster Relief and Preparedness',
-        'Sustainable Livelihood Programs'
-      ]
-    },
-    'COMMUNITY OUTREACH': {
-      title: 'Community Outreach',
-      description: 'Building strong community connections and fostering local participation in development initiatives.',
-      extendedDescription: 'Our outreach programs ensure that communities are active participants in their own development journey.',
-      programs: [
-        'Community Leadership Development',
-        'Volunteer Engagement Programs',
-        'Local Partnership Building',
-        'Cultural and Social Events',
-        'Feedback and Grievance Mechanisms'
-      ]
-    }
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
-  const ImagePlaceholder = ({ text, className = "" }) => (
-    <div className={`bg-gradient-to-br from-gray-200 to-gray-300 border-4 border-dashed border-blue-500 flex flex-col items-center justify-center text-blue-600 font-bold ${className}`}>
-      <Camera className="w-12 h-12 mb-2" />
-      <span className="text-lg">{text}</span>
-      <span className="text-sm mt-1">IMAGE PLACEHOLDER</span>
-    </div>
-  );
+  const locations = [
+    { state: "West Bengal", cities: ["Kolkata", "Howrah", "Belur", "Bardhaman", "Nadia"] },
+    { state: "Telangana", cities: ["Hyderabad", "Sangareddy", "Mahaboobnagar", "Warangal"] },
+    { state: "Delhi", cities: ["Delhi"] },
+    { state: "Haryana", cities: ["Gurgaon"] },
+    { state: "Maharashtra", cities: ["Mumbai", "Pune", "Nagpur"] },
+    { state: "Uttar Pradesh", cities: ["Lucknow", "Prayagraj", "Noida"] },
+    { state: "Odisha", cities: ["Sambalpur", "Rourkela", "Bhubaneshwar", "Cuttack"] }
+  ];
 
   return (
-    <div className="min-h-screen bg-white font-sans">
-      {/* Hero Section */}
-      <section 
-        id="hero" 
-        className="relative min-h-screen flex items-center overflow-hidden"
-        style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), 
-                           url('data:image/svg+xml,${encodeURIComponent(`
-                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" fill="none">
-                               <defs>
-                                 <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-                                   <stop offset="0%" style="stop-color:#1f2937"/>
-                                   <stop offset="50%" style="stop-color:#374151"/>
-                                   <stop offset="100%" style="stop-color:#4b5563"/>
-                                 </linearGradient>
-                               </defs>
-                               <rect width="1200" height="800" fill="url(#bg)"/>
-                               <g opacity="0.3">
-                                 <circle cx="200" cy="200" r="100" fill="#f97316"/>
-                                 <circle cx="800" cy="300" r="150" fill="#3b82f6"/>
-                                 <circle cx="1000" cy="600" r="80" fill="#10b981"/>
-                                 <path d="M0,400 Q300,300 600,400 T1200,400" stroke="#f97316" stroke-width="2" fill="none"/>
-                               </g>
-                               <text x="600" y="400" text-anchor="middle" fill="#ffffff" font-size="24" opacity="0.1">EMPOWERING COMMUNITIES</text>
-                             </svg>
-                           `)}')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      >
-        {/* Header Navigation */}
-        <div className="absolute top-0 left-0 right-0 z-20">
-          <div className="flex justify-between items-center p-6">
-            <div className="flex items-center group">
-              <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center mr-3 shadow-lg">
-                <span className="text-white font-bold text-xs">SWIS</span>
-              </div>
-              <span className="text-white text-lg font-extralight tracking-wider">Growth is Life</span>
+    <div className="min-h-screen bg-white">
+      {/* Header */}
+      <header className="bg-white shadow-sm sticky top-0 z-50">
+        {/* Top Banner */}
+        <div className="bg-gray-800 text-white py-2 px-4 text-sm">
+          <div className="max-w-7xl mx-auto flex justify-between items-center">
+            <div className="flex space-x-8">
+              <span className="text-red-400">IND Ranks 132 - Education</span>
+              <span className="text-red-400">IND Ranks 111 - Hunger</span>
             </div>
-            <nav className="hidden md:flex space-x-8 text-white">
-              {['About', 'Interventions', 'Sustainability', 'Investors', 'Careers', 'News & Media'].map((item) => (
-                <a 
-                  key={item}
-                  href="#" 
-                  className="relative font-light hover:text-orange-400 transition-all duration-300"
-                >
-                  {item}
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-400 transition-all duration-300 hover:w-full"></span>
-                </a>
-              ))}
-            </nav>
+            <div className="flex space-x-4">
+              <button className="hover:text-blue-400">eB2B</button>
+              <button className="hover:text-blue-400">Fraud Alert</button>
+              <button className="hover:text-blue-400">Contact Us</button>
+            </div>
           </div>
         </div>
 
-        {/* Hero Content */}
-        <div className="container mx-auto px-6 flex flex-col items-center justify-center min-h-screen text-center">
-          <div>
-            <h1 className="text-7xl md:text-9xl font-extralight mb-8 leading-none text-white">
-              Growth
-              <br />
-              is{' '}
-              <span className="bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">
-                Life
-              </span>
+        {/* Main Navigation */}
+        <nav className="bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center h-16">
+              {/* Logo */}
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                  <div className="w-12 h-12 rounded-full" style={{ backgroundColor: '#023080' }}>
+                    <div className="w-full h-full rounded-full flex items-center justify-center text-white font-bold text-xl">
+                      S
+                    </div>
+                  </div>
+                </div>
+                <div className="ml-3">
+                  <div className="text-xl font-bold text-gray-900">SWIS</div>
+                  <div className="text-xs text-gray-600">Turning Compassion into Action</div>
+                </div>
+              </div>
+
+              {/* Desktop Navigation */}
+              <div className="hidden md:block">
+                <div className="ml-10 flex items-baseline space-x-8">
+                  <a href="#" className="text-gray-900 hover:text-blue-600 px-3 py-2 text-sm font-medium">About Us</a>
+                  <a href="#" className="text-gray-900 hover:text-blue-600 px-3 py-2 text-sm font-medium">Interventions</a>
+                  <a href="#" className="text-gray-900 hover:text-blue-600 px-3 py-2 text-sm font-medium">Get Involved</a>
+                  <a href="#" className="text-gray-900 hover:text-blue-600 px-3 py-2 text-sm font-medium">Careers</a>
+                </div>
+              </div>
+
+              {/* Mobile menu button */}
+              <div className="md:hidden">
+                <button
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  className="text-gray-400 hover:text-gray-500"
+                >
+                  {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile Navigation */}
+          <AnimatePresence>
+            {isMenuOpen && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="md:hidden bg-white border-t"
+              >
+                <div className="px-2 pt-2 pb-3 space-y-1">
+                  <a href="#" className="block px-3 py-2 text-base font-medium text-gray-900 hover:text-blue-600">About Us</a>
+                  <a href="#" className="block px-3 py-2 text-base font-medium text-gray-900 hover:text-blue-600">Interventions</a>
+                  <a href="#" className="block px-3 py-2 text-base font-medium text-gray-900 hover:text-blue-600">Get Involved</a>
+                  <a href="#" className="block px-3 py-2 text-base font-medium text-gray-900 hover:text-blue-600">Careers</a>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </nav>
+      </header>
+
+      {/* Hero Section */}
+      <section
+        className="relative h-screen flex items-center justify-start bg-cover bg-center"
+        style={{
+          backgroundImage: 'url("https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=1920&h=1080&fit=crop")',
+          backgroundAttachment: 'fixed'
+        }}
+      >
+        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            className="text-white"
+          >
+            <h1 className="text-5xl md:text-7xl font-serif mb-8">
+              Turning Compassion<br />into Action
             </h1>
-            
-            <div className="w-24 h-1 bg-gradient-to-r from-orange-400 to-orange-600 mx-auto mb-12"></div>
-            
-            <p className="text-xl md:text-2xl font-light text-gray-200 mb-12 max-w-2xl mx-auto leading-relaxed">
-              Empowering communities through sustainable development and social innovation
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="group px-8 py-4 border border-white/30 backdrop-blur-sm rounded-full text-white font-light hover:bg-white hover:text-gray-900 transition-all duration-300">
-                <span className="flex items-center justify-center">
-                  About Us
-                  <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </span>
+            <div className="w-32 h-1 mb-8" style={{ backgroundColor: '#d2d5e0' }}></div>
+            <div className="flex flex-col sm:flex-row gap-4 mb-8">
+              <button className="border border-white text-white px-8 py-3 rounded-full hover:bg-white hover:text-black transition-all duration-300 flex items-center gap-2">
+                about us <ArrowRight size={16} />
               </button>
-              
-              <button className="group px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 backdrop-blur-sm rounded-full text-white font-light hover:from-orange-600 hover:to-orange-700 transition-all duration-300">
-                <span className="flex items-center justify-center">
-                  Our Impact
-                  <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </span>
+              <button className="border border-white text-white px-8 py-3 rounded-full hover:bg-white hover:text-black transition-all duration-300 flex items-center gap-2">
+                our impact <ArrowRight size={16} />
               </button>
             </div>
-          </div>
-          
-          {/* Scroll Indicator */}
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-            <div className="flex flex-col items-center text-white/70 hover:text-white transition-colors cursor-pointer group">
-              <span className="text-sm font-light mb-2 tracking-wider">Discover More</span>
-              <ChevronDown className="w-6 h-6 animate-bounce" />
-            </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* We Care Section */}
-      <section 
-        id="we-care" 
-        className="py-20 bg-gradient-to-r from-orange-100 to-yellow-50"
-      >
-        <div className="container mx-auto px-4 text-center">
-          <div className="mb-12">
-            <h2 className="text-6xl font-light text-gray-800 mb-8 tracking-wider">
-              WE CARE
-            </h2>
-            <p className="text-2xl text-gray-700 max-w-4xl mx-auto leading-relaxed font-light">
-              <span className="font-bold text-blue-900">SWIS™</span> is an Indian non-profit committed to radically impact the life of <span className="font-bold text-blue-900">2M+</span> people in the next <span className="font-bold text-blue-900">2 decades</span>.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* CSAA Tabs Section */}
-      <section id="csaa-tabs" className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-5xl font-light text-gray-800 mb-8">SWIS Institute</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Our three specialized centres work together to create comprehensive social impact
-            </p>
-          </div>
-          
-          {/* Tab Navigation */}
-          <div className="flex justify-center mb-12">
-            <div className="flex bg-gray-100 rounded-full p-1">
-              {Object.keys(csaaContent).map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`px-8 py-3 rounded-full font-medium transition-all duration-300 ${
-                    activeTab === tab
-                      ? 'bg-orange-500 text-white shadow-lg'
-                      : 'text-gray-600 hover:text-gray-800'
-                  }`}
+      <section className="py-20 bg-gradient-to-r from-blue-50 to-indigo-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center"
+          >
+            <div className="text-6xl font-bold mb-8 tracking-wider">
+              {['W', 'E', ' ', 'C', 'A', 'R', 'E'].map((letter, index) => (
+                <span
+                  key={index}
+                  className="inline-block"
+                  style={{
+                    backgroundImage: `url("https://images.unsplash.com/photo-1577896851231-70ef18881754?w=400&h=300&fit=crop")`,
+                    backgroundClip: 'text',
+                    WebkitBackgroundClip: 'text',
+                    color: 'transparent',
+                    backgroundSize: 'cover',
+                    backgroundPosition: `${index * 20}% center`
+                  }}
                 >
-                  {tab}
-                </button>
+                  {letter}
+                </span>
               ))}
             </div>
-          </div>
-          
-          {/* Tab Content */}
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-gradient-to-r from-blue-50 to-orange-50 rounded-2xl p-12">
-              <h3 className="text-3xl font-light text-gray-800 mb-6">
-                {csaaContent[activeTab].title}
-              </h3>
-              <p className="text-lg text-gray-700 mb-8 leading-relaxed">
-                {csaaContent[activeTab].description}
+            <div className="max-w-4xl mx-auto">
+              <p className="text-xl text-gray-700 leading-relaxed mb-8">
+                SWIS™ is an Indian non-profit committed to radically impact the life of 2M+ people in the next 2 decades.
               </p>
-              
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <h4 className="text-xl font-semibold text-gray-800 mb-4">Key Focus Areas:</h4>
-                  <ul className="space-y-3">
-                    {csaaContent[activeTab].details.map((detail, index) => (
-                      <li key={index} className="flex items-start">
-                        <div className="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                        <span className="text-gray-700">{detail}</span>
-                      </li>
-                    ))}
-                  </ul>
+              <div className="grid grid-cols-3 gap-8 mt-16">
+                <div className="text-center">
+                  <div className="w-full h-1 mb-4" style={{ backgroundColor: '#023080' }}></div>
+                  <h3 className="text-lg font-semibold" style={{ color: '#023080' }}>Sustainability</h3>
                 </div>
-                <div className="flex items-center justify-center">
-                  <ImagePlaceholder 
-                    text={`${activeTab} ILLUSTRATION`}
-                    className="w-full h-64 rounded-lg"
-                  />
+                <div className="text-center">
+                  <div className="w-full h-1 mb-4" style={{ backgroundColor: '#023080' }}></div>
+                  <h3 className="text-lg font-semibold" style={{ color: '#023080' }}>Innovation</h3>
+                </div>
+                <div className="text-center">
+                  <div className="w-full h-1 mb-4" style={{ backgroundColor: '#023080' }}></div>
+                  <h3 className="text-lg font-semibold" style={{ color: '#023080' }}>Our Impact</h3>
                 </div>
               </div>
             </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Our Interventions Section */}
+      <section
+        className="py-20 bg-gray-900 text-white relative"
+        style={{
+          backgroundImage: 'url("https://images.unsplash.com/photo-1594736797933-d0d3085cf6dd?w=1920&h=1080&fit=crop")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed'
+        }}
+      >
+        <div className="absolute inset-0 bg-black bg-opacity-60"></div>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <div className="flex items-center mb-6">
+                <div className="w-2 h-2 rounded-full mr-3" style={{ backgroundColor: '#d2d5e0' }}></div>
+                <span className="text-sm uppercase tracking-wider" style={{ color: '#d2d5e0' }}>OUR INTERVENTIONS</span>
+              </div>
+              <h2 className="text-5xl font-serif mb-8">Education</h2>
+              <p className="text-lg leading-relaxed mb-8">
+                Our mission to democratize access to quality education drives our relentless work with underserved children across India. At SWIS, we partner with shelter homes, government schools, and slum communities to provide holistic educational support.
+              </p>
+              <p className="text-lg leading-relaxed mb-8">
+                Education is not just a right; it is a powerful tool for breaking intergenerational cycles of poverty. Our interventions go beyond classroom instruction—we work with communities, parents, and local schools to foster a culture of learning.
+              </p>
+              <button className="border border-white text-white px-8 py-3 rounded-full hover:bg-white hover:text-black transition-all duration-300 flex items-center gap-2">
+                read more <ArrowRight size={16} />
+              </button>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="space-y-4"
+            >
+              <div className="border-l-4 border-orange-400 pl-6 py-4 hover:bg-black hover:bg-opacity-30 transition-all duration-300">
+                <h3 className="text-xl font-semibold mb-2" style={{ color: '#FCFDFF' }}>EDUCATION</h3>
+              </div>
+              <div className="border-l-4 border-transparent pl-6 py-4 hover:border-orange-400 hover:bg-black hover:bg-opacity-30 transition-all duration-300">
+                <h3 className="text-xl font-semibold mb-2" style={{ color: '#FCFDFF' }}>SKILL DEVELOPMENT</h3>
+              </div>
+              <div className="border-l-4 border-transparent pl-6 py-4 hover:border-orange-400 hover:bg-black hover:bg-opacity-30 transition-all duration-300">
+                <h3 className="text-xl font-semibold mb-2" style={{ color: '#FCFDFF' }}>NUTRITION</h3>
+              </div>
+              <div className="border-l-4 border-transparent pl-6 py-4 hover:border-orange-400 hover:bg-black hover:bg-opacity-30 transition-all duration-300">
+                <h3 className="text-xl font-semibold mb-2" style={{ color: '#FCFDFF' }}>HEALTHCARE</h3>
+              </div>
+              <div className="border-l-4 border-transparent pl-6 py-4 hover:border-orange-400 hover:bg-black hover:bg-opacity-30 transition-all duration-300">
+                <h3 className="text-xl font-semibold mb-2" style={{ color: '#FCFDFF' }}>RELIEF OF POOR</h3>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Interventions Section with Tabs */}
-      <section 
-        id="interventions" 
-        className="bg-gray-800 text-white"
-      >
-        <div className="container mx-auto">
-          <div className="flex min-h-screen">
-            {/* Left Content */}
-            <div className="w-1/2 p-16 flex flex-col justify-center">
-              <div className="mb-8">
-                <div className="flex items-center mb-4">
-                  <div className="w-2 h-8 bg-orange-500 mr-4"></div>
-                  <span className="text-orange-500 text-sm uppercase tracking-wider">OUR INTERVENTIONS</span>
-                </div>
-              </div>
-              
-              <h2 className="text-6xl font-light mb-8 leading-tight">
-                {interventionContent[activeIntervention].title}
-              </h2>
-              
-              <div className="space-y-6 text-lg font-light leading-relaxed">
-                <p>{interventionContent[activeIntervention].description}</p>
-                <p>{interventionContent[activeIntervention].extendedDescription}</p>
-                
-                <div className="mt-8">
-                  <h4 className="text-xl font-semibold mb-4">Our Programs:</h4>
-                  <ul className="space-y-2">
-                    {interventionContent[activeIntervention].programs.map((program, index) => (
-                      <li key={index} className="flex items-start">
-                        <div className="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                        <span>{program}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-              
-              <button className="mt-8 px-6 py-3 border-2 border-white rounded-full text-white hover:bg-white hover:text-gray-800 transition-all duration-300 self-start">
-                read more →
-              </button>
+      {/* Centers Section */}
+      <section style={{ backgroundColor: '#023080' }} className="py-20 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-3 gap-8 mb-16">
+            <div className="text-center">
+              <div className="w-full h-1 mb-4" style={{ backgroundColor: '#d2d5e0' }}></div>
+              <h3 className="text-lg font-semibold">CSAA</h3>
             </div>
-            
-            {/* Right Image and Menu */}
-            <div className="w-1/2 relative">
-              <ImagePlaceholder 
-                text={`${activeIntervention} IMAGE`}
-                className="w-full h-full"
+            <div className="text-center">
+              <div className="w-full h-1 mb-4" style={{ backgroundColor: '#d2d5e0' }}></div>
+              <h3 className="text-lg font-semibold">CSII</h3>
+            </div>
+            <div className="text-center">
+              <div className="w-full h-1 mb-4" style={{ backgroundColor: '#d2d5e0' }}></div>
+              <h3 className="text-lg font-semibold">CCAE</h3>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-5xl font-serif mb-8">Centre for Social<br />Awareness & Action</h2>
+              <p className="text-lg leading-relaxed mb-8">
+                Our commitment to creating socially aware leaders is embedded in the work of the Centre for Social Awareness & Action. We recognize that lasting impact begins with understanding—and CSAA equips youth, changemakers, and professionals with the tools to analyze, engage, and act on pressing social issues.
+              </p>
+              <p className="text-lg leading-relaxed mb-8">
+                Our mission is to drive systemic change through education and experiential learning. By nurturing a new generation of social advocates, proposal writers, and on-ground project designers, CSAA serves as a launchpad for impact-driven careers and initiatives.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="flex items-center justify-center"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1577896851231-70ef18881754?w=600&h=400&fit=crop"
+                alt="Solar panels representing sustainability"
+                className="rounded-lg shadow-2xl"
               />
-              
-              {/* Side Menu */}
-              <div className="absolute right-8 top-1/2 transform -translate-y-1/2 space-y-4">
-                {Object.keys(interventionContent).map((intervention) => (
-                  <div
-                    key={intervention}
-                    onClick={() => setActiveIntervention(intervention)}
-                    className={`px-6 py-3 rounded cursor-pointer transition-colors ${
-                      activeIntervention === intervention
-                        ? 'bg-orange-500 text-white'
-                        : 'bg-gray-700 text-white hover:bg-gray-600'
-                    }`}
-                  >
-                    <span className="font-bold">{intervention}</span>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Reach and Presence Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold mb-8" style={{ color: '#023080' }}>Our Reach and Presence</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              SWIS operates across multiple states in India, bringing sustainable change to communities nationwide.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="flex justify-center"
+            >
+              <img
+                src="/lovable-uploads/53ed15fa-9736-4d00-a9ae-935b6d8a1e66.png"
+                alt="India Map showing SWIS presence"
+                className="max-w-full h-auto"
+              />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="space-y-6"
+            >
+              {locations.map((location, index) => (
+                <div key={index} className="p-4 rounded-lg border border-gray-200 hover:shadow-lg transition-all duration-300">
+                  <h3 className="text-xl font-semibold mb-3" style={{ color: '#023080' }}>{location.state}</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {location.cities.map((city, cityIndex) => (
+                      <span
+                        key={cityIndex}
+                        className="px-3 py-1 text-sm rounded-full"
+                        style={{ backgroundColor: '#d2d5e0', color: '#023080' }}
+                      >
+                        {city}
+                      </span>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Sustainability Section */}
-      <section 
-        id="sustainability" 
-        className="bg-blue-900 text-white py-20"
-      >
-        <div className="container mx-auto px-4">
-          <div className="flex items-center min-h-96">
-            <div className="w-1/2 pr-16">
-              <div className="mb-8">
-                <div className="flex space-x-8 mb-8">
-                  <span className="text-orange-500 border-b-2 border-orange-500 pb-2">Sustainability</span>
-                  <span className="text-gray-300 hover:text-white cursor-pointer">Innovation</span>
-                  <span className="text-gray-300 hover:text-white cursor-pointer">Our Impact</span>
                 </div>
-              </div>
-              
-              <h2 className="text-5xl font-light mb-8 leading-tight">
-                Corporate Sustainability
-              </h2>
-              
-              <div className="space-y-6 text-lg font-light leading-relaxed">
-                <p>
-                  Our growth strategy is defined by our mission and our corporate responsibility. Our commitment to sustainable value-creation demonstrates the principle that we care for our people and our planet.
-                </p>
-                
-                <p>
-                  Our mission remains to continue growing as a responsible organisation that enriches lives, while striving for economic and ecological sustainability. We are on the path to transforming our legacy programs to net-zero carbon operations, while ensuring sustainability through circular impact. SWIS has set an ambitious target to become a net-zero carbon organization by 2035.
-                </p>
-              </div>
-              
-              <button className="mt-8 px-6 py-3 border-2 border-white rounded-full text-white hover:bg-white hover:text-blue-900 transition-all duration-300">
-                read more →
-              </button>
-            </div>
-            
-            <div className="w-1/2">
-              <ImagePlaceholder 
-                text="SOLAR PANELS/SUSTAINABILITY IMAGE"
-                className="w-full h-80 rounded-lg"
-              />
-            </div>
+              ))}
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* Life at SWIS Section */}
-      <section 
-        id="careers" 
-        className="py-20 bg-gradient-to-r from-orange-200 to-yellow-100"
+      <section
+        className="py-20 relative"
+        style={{ backgroundColor: '#8e9fc5' }}
       >
-        <div className="container mx-auto px-4">
-          <div className="flex items-center min-h-96">
-            <div className="w-1/2 pr-16">
-              <h2 className="text-5xl font-light text-gray-800 mb-8 leading-tight">
-                Life at SWIS
-              </h2>
-              
-              <h3 className="text-2xl font-light text-gray-700 mb-8">
-                Why work at SWIS?
-              </h3>
-              
-              <p className="text-lg text-gray-700 mb-8 leading-relaxed font-light">
-                SWIS Foundation is one of the biggest non-profit organizations in India. With the help of a robust, consistent, and meritocratic framework for people management, SWIS continues to maintain an inclusive, progressive, and high-performance environment, where purpose-driven talent is enabled with unprecedented access to opportunities for growth.
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-white"
+            >
+              <h2 className="text-5xl font-serif mb-8">Life at SWIS</h2>
+              <h3 className="text-2xl font-semibold mb-6">Why work at SWIS?</h3>
+              <p className="text-lg leading-relaxed mb-8">
+                SWIS is one of the most impactful non-profit organizations in India. With the help of a robust, consistent, and merit-driven framework for people management, SWIS continues to maintain an inclusive, progressive, and high-performance environment, where purpose-driven talent is enabled with unprecedented access to opportunities for growth.
               </p>
-              
-              <div className="flex space-x-4">
-                <button className="px-6 py-3 border-2 border-gray-800 rounded-full text-gray-800 hover:bg-gray-800 hover:text-white transition-all duration-300">
-                  meet our people →
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button className="border border-white text-white px-8 py-3 rounded-full hover:bg-white hover:text-black transition-all duration-300 flex items-center gap-2">
+                  meet our people <ArrowRight size={16} />
                 </button>
-                <button className="px-6 py-3 border-2 border-gray-800 rounded-full text-gray-800 hover:bg-gray-800 hover:text-white transition-all duration-300">
-                  search & apply →
+                <button className="border border-white text-white px-8 py-3 rounded-full hover:bg-white hover:text-black transition-all duration-300 flex items-center gap-2">
+                  search & apply <ArrowRight size={16} />
                 </button>
               </div>
-            </div>
-            
-            <div className="w-1/2 relative">
-              <div className="grid grid-cols-2 gap-4">
-                <ImagePlaceholder 
-                  text="EMPLOYEE 1"
-                  className="w-full h-48 rounded-lg"
-                />
-                <div className="space-y-4">
-                  <div className="bg-red-600 text-white p-4 rounded-lg text-center">
-                    <div className="text-white font-bold">Great Place To Work</div>
-                    <div className="text-sm">Certified</div>
-                    <div className="text-xs mt-1">FOR 2024-2025</div>
-                    <div className="text-xs">INDIA</div>
-                  </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="relative"
+            >
+              <div className="relative h-96 rounded-lg overflow-hidden">
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={currentSlide}
+                    src={slides[currentSlide]}
+                    alt={`Slide ${currentSlide + 1}`}
+                    className="absolute inset-0 w-full h-full object-cover"
+                    initial={{ opacity: 0, scale: 1.1 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.5 }}
+                  />
+                </AnimatePresence>
+               
+                {/* Navigation Arrows */}
+                <button
+                  onClick={prevSlide}
+                  className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition-all duration-300"
+                >
+                  <ChevronLeft size={20} />
+                </button>
+                <button
+                  onClick={nextSlide}
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition-all duration-300"
+                >
+                  <ChevronRight size={20} />
+                </button>
+
+                {/* Slide Indicators */}
+                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                  {slides.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentSlide(index)}
+                      className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                        index === currentSlide ? 'bg-white' : 'bg-white bg-opacity-50'
+                      }`}
+                    />
+                  ))}
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4 mt-4">
-                <ImagePlaceholder 
-                  text="EMPLOYEE 2"
-                  className="w-full h-32 rounded-lg"
-                />
-                <ImagePlaceholder 
-                  text="EMPLOYEES 3"
-                  className="w-full h-32 rounded-lg"
-                />
+
+              {/* Additional Images Grid */}
+              <div className="grid grid-cols-2 gap-4 mt-6">
+                <div className="relative h-32 rounded-lg overflow-hidden">
+                  <img
+                    src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=300&fit=crop"
+                    alt="Team collaboration"
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute bottom-2 left-2 bg-red-600 text-white px-2 py-1 text-xs rounded">
+                    Best Employers
+                  </div>
+                </div>
+                <div className="relative h-32 rounded-lg overflow-hidden">
+                  <img
+                    src="https://images.unsplash.com/photo-1577896851231-70ef18881754?w=400&h=300&fit=crop"
+                    alt="Impact work"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-white py-16 border-t">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-4 gap-8 mb-12">
+      <footer className="bg-gray-900 text-white py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="font-bold text-gray-800 mb-4">About Us</h3>
-              <ul className="space-y-2 text-gray-600">
-                <li><a href="#" className="hover:text-blue-600">Our History</a></li>
-                <li><a href="#" className="hover:text-blue-600">Chairman & Managing Trustee</a></li>
-                <li><a href="#" className="hover:text-blue-600">Advisory Board</a></li>
-                <li><a href="#" className="hover:text-blue-600">Board Members</a></li>
-                <li><a href="#" className="hover:text-blue-600">Core Team</a></li>
-                <li><a href="#" className="hover:text-blue-600">Founding Supporters</a></li>
-                <li><a href="#" className="hover:text-blue-600">Young Change Makers</a></li>
+              <div className="flex items-center mb-4">
+                <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#023080' }}>
+                  <div className="w-full h-full rounded-full flex items-center justify-center text-white font-bold">S</div>
+                </div>
+                <span className="ml-2 text-xl font-bold">SWIS</span>
+              </div>
+              <p className="text-gray-400">Turning Compassion into Action</p>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold mb-4">About</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li><a href="#" className="hover:text-white">Our Story</a></li>
+                <li><a href="#" className="hover:text-white">Mission & Vision</a></li>
+                <li><a href="#" className="hover:text-white">Leadership</a></li>
               </ul>
             </div>
-            
             <div>
-              <h3 className="font-bold text-gray-800 mb-4">Interventions</h3>
-              <ul className="space-y-2 text-gray-600">
-                <li><a href="#" className="hover:text-blue-600">SWIS Foundation</a></li>
-                <li><a href="#" className="hover:text-blue-600">Education</a></li>
-                <li><a href="#" className="hover:text-blue-600">Skill Development</a></li>
-                <li><a href="#" className="hover:text-blue-600">Nutrition</a></li>
-                <li><a href="#" className="hover:text-blue-600">Healthcare</a></li>
-                <li><a href="#" className="hover:text-blue-600">Relief of Poor</a></li>
-              </ul>
-              
-              <h3 className="font-bold text-gray-800 mb-4 mt-8">SWIS Institute</h3>
-              <ul className="space-y-2 text-gray-600">
-                <li><a href="#" className="hover:text-blue-600">Centre for Social Impact & Innovation</a></li>
-                <li><a href="#" className="hover:text-blue-600">Centre for Social Awareness & Action</a></li>
-                <li><a href="#" className="hover:text-blue-600">Centre for Civil Administration & Engagement</a></li>
+              <h3 className="text-lg font-semibold mb-4">Interventions</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li><a href="#" className="hover:text-white">Education</a></li>
+                <li><a href="#" className="hover:text-white">Healthcare</a></li>
+                <li><a href="#" className="hover:text-white">Skill Development</a></li>
               </ul>
             </div>
-            
             <div>
-              <h3 className="font-bold text-gray-800 mb-4">Get Involved</h3>
-              <ul className="space-y-2 text-gray-600">
-                <li><a href="#" className="hover:text-blue-600">Volunteering & Internships</a></li>
-                <li><a href="#" className="hover:text-blue-600">Corporate Partners</a></li>
-                <li><a href="#" className="hover:text-blue-600">Non-Profits</a></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h3 className="font-bold text-gray-800 mb-4">Careers</h3>
-              <ul className="space-y-2 text-gray-600">
-                <li><a href="#" className="hover:text-blue-600">Careers</a></li>
-                <li><a href="#" className="hover:text-blue-600">Search & Apply</a></li>
-                <li><a href="#" className="hover:text-blue-600">Working at SWIS Ventures</a></li>
-                <li><a href="#" className="hover:text-blue-600">Code of Conduct</a></li>
-              </ul>
-              
-              <h3 className="font-bold text-gray-800 mb-4 mt-8">Contact Us</h3>
-              <ul className="space-y-2 text-gray-600">
-                <li><a href="#" className="hover:text-blue-600">Get in Touch</a></li>
-                <li><a href="#" className="hover:text-blue-600">FAQs</a></li>
+              <h3 className="text-lg font-semibold mb-4">Get Involved</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li><a href="#" className="hover:text-white">Volunteer</a></li>
+                <li><a href="#" className="hover:text-white">Donate</a></li>
+                <li><a href="#" className="hover:text-white">Partner</a></li>
               </ul>
             </div>
           </div>
-          
-          <div className="text-center">
-            <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-white font-bold">SWIS</span>
-            </div>
-            <p className="text-gray-600">© 2025 SWIS Foundation. All rights reserved.</p>
+          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+            <p>&copy; 2024 SWIS. All rights reserved.</p>
           </div>
         </div>
       </footer>
@@ -576,4 +525,4 @@ function Start()  {
   );
 };
 
-export default Start;
+export default Index;
