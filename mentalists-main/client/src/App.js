@@ -5,7 +5,7 @@ import Anushka from "./pages/Anushka";
 import Homepage from "./pages/Start";
 import History from "./pages/History";
 import FounderChairman from "./pages/FounderChairman";
-import New from "./pages/New";
+
 
 
 function App() {
@@ -24,7 +24,7 @@ const RoutesWeb = () => {
       <Route path="/homepage" element={<Homepage />} />
       <Route path="/history" element={<History />} />
       <Route path="/founder" element={<FounderChairman />} />
-      <Route path="/new" element={<New />} />
+      
       
     </Routes>
   );
