@@ -8,6 +8,7 @@ import FounderChairman from "./pages/founder";
 import CCAE from "./pages/ccae"; 
 import CSAA from "./pages/csaa"; 
 import CSII from "./pages/csii"; 
+import Member from "./pages/Member"; 
 
 function App() {
   return (
@@ -30,6 +31,7 @@ const RoutesWeb = () => {
       <Route path="/ccae" element={<CCAE />} /> 
       <Route path="/csaa" element={<CSAA />} /> 
       <Route path="/csii" element={<CSII />} /> 
+       <Route path="/Member" element={<Member />} /> 
     </Routes>
   );
 };
