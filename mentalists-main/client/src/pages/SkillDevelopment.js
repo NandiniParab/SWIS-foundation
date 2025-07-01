@@ -8,112 +8,121 @@ import {
   Laptop, 
   Lightbulb, 
   Briefcase, 
+  TrendingUp,
   Award,
   Globe,
   ArrowRight,
   ChevronDown,
   CheckCircle,
-  Zap,
-  BookOpen
+  Zap
 } from 'lucide-react';
 
-const CSAA = () => {
+const SkillDevelopment = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
   const [countAnimated, setCountAnimated] = useState(false);
-  const [activeObjective, setActiveObjective] = useState(0);
+  const [activeProgram, setActiveProgram] = useState(0);
 
-  // Hero content
-  const heroContent = {
-    title: "Centre for Social Awareness & Action",
-    subtitle: "Creating Socially Aware Leaders",
-    description: "Our commitment to creating socially aware leaders is embedded in the work of the Centre for Social Awareness & Action. We equip youth, changemakers, and professionals with the tools to analyze, engage, and act on pressing social issues through intensive courses, live projects, field immersions, and practical workshops.",
-    background: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2340&q=80"
-  };
-
-  // Institutional logos for the carousel
-  const institutions = [
-    { name: "DPS School", logo: "🏫" },
-    { name: "Adamas International", logo: "🎓" },
-    { name: "The Summit School", logo: "🏔️" },
-    { name: "Global Academy", logo: "🌍" },
-    { name: "Elite Institute", logo: "🏆" },
-    { name: "Future Leaders", logo: "🚀" },
-    { name: "Innovation Hub", logo: "💡" },
-    { name: "Excellence Center", logo: "⭐" }
+  // Hero carousel content
+  const heroSlides = [
+    {
+      title: "Skills for Tomorrow",
+      subtitle: "Empowering India's Youth",
+      description: "Bridging the skill gap to create sustainable livelihoods for over 65% of India's youth population under 35.",
+      background: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2340&q=80"
+    },
+    {
+      title: "Digital Transformation",
+      subtitle: "Future-Ready Skills",
+      description: "Preparing communities for a rapidly changing digital economy through comprehensive training programs.",
+      background: "https://images.unsplash.com/photo-1552581234-26160f608093?ixlib=rb-4.0.3&auto=format&fit=crop&w=2340&q=80"
+    },
+    {
+      title: "Inclusive Growth",
+      subtitle: "Grassroots Solutions",
+      description: "Working across urban slums, rural villages, and tribal communities to ensure no one is left behind.",
+      background: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2340&q=80"
+    }
   ];
 
-  // Objectives data
-  const objectives = [
+  // Programs data
+  const programs = [
     {
-      icon: <BookOpen className="w-8 h-8" />,
-      title: "Knowledge & Skills Development",
-      description: "Equips students with knowledge and skills in social issues, policies, and interventions, while enhancing their expertise in grant writing, CSR proposals, research, analysis, presentation, fundraising, and impact measurement.",
-      features: ["Grant writing", "CSR proposals", "Research & analysis", "Fundraising"],
+      icon: <Briefcase className="w-8 h-8" />,
+      title: "Vocational Training & Livelihoods",
+      description: "Nearly 30% of India's youth are NEET (Not in Education, Employment, or Training). We focus on skilling in locally relevant trades—tailoring, carpentry, beauty, plumbing—linked with job placement or self-employment.",
+      features: ["Industry-relevant training", "Job placement assistance", "Self-employment support", "Local trade focus"],
       color: "from-[#023080] to-[#04307b]"
     },
     {
-      icon: <Users className="w-8 h-8" />,
-      title: "Civic Engagement & Empathy",
-      description: "Through on-ground activities like volunteering and community visits, students develop responsibility and empathy, gaining firsthand insights into social challenges. This fosters volunteerism and active citizenship, empowering them to become compassionate changemakers.",
-      features: ["Volunteering", "Community visits", "Empathy building", "Active citizenship"],
+      icon: <Laptop className="w-8 h-8" />,
+      title: "Digital & Financial Literacy",
+      description: "Over 70% of rural youth lack basic digital and financial skills. We bridge this gap through mobile-based learning, community tech hubs, and practical sessions.",
+      features: ["Mobile-based learning", "Community tech hubs", "Financial literacy", "Digital skills training"],
       color: "from-[#8e9fc5] to-[#023080]"
     },
     {
-      icon: <Lightbulb className="w-8 h-8" />,
-      title: "Creative Thinking & Innovation",
-      description: "Encouraging students to develop unique solutions for social challenges through brainstorming, design thinking, and innovative project ideas.",
-      features: ["Brainstorming", "Design thinking", "Innovative projects", "Problem-solving"],
+      icon: <Users className="w-8 h-8" />,
+      title: "Career Guidance & Life Skills",
+      description: "Breaking cycles of poverty through awareness and role models. Our workshops cover communication, problem-solving, gender sensitivity, mental health, and career planning.",
+      features: ["Communication skills", "Problem-solving", "Mental health support", "Career planning"],
       color: "from-[#d2d5e0] to-[#8e9fc5]"
     },
     {
-      icon: <Briefcase className="w-8 h-8" />,
-      title: "Project Management",
-      description: "Building skills to manage time effectively, meet deadlines, and execute projects with efficiency and organization.",
-      features: ["Time management", "Deadline adherence", "Project execution", "Organizational skills"],
+      icon: <Lightbulb className="w-8 h-8" />,
+      title: "Entrepreneurship & Innovation Labs",
+      description: "For youth in regions with limited job markets, we promote micro-entrepreneurship through seed funding, incubation support, and mentorship.",
+      features: ["Seed funding", "Incubation support", "Mentorship programs", "Innovation labs"],
+      color: "from-[#8e9fc5] to-[#023080]"
+    },
+    {
+      icon: <Target className="w-8 h-8" />,
+      title: "Internships & Mentorship",
+      description: "Exposure is key. We partner with local businesses and global volunteers to offer guided internships and mentorship, helping youth build confidence and networks.",
+      features: ["Global partnerships", "Guided internships", "Confidence building", "Network expansion"],
       color: "from-[#04307b] to-[#8e9fc5]"
     }
   ];
 
-  // Key Highlights data
-  const highlights = [
+  // Statistics data
+  const statisticsData = [
     {
-      title: "Introduction to the Social Sector",
-      description: "Provides a foundational understanding of the social sector, covering key issues, public policies, and interventions. Students gain insights into the roles of NGOs, social enterprises, and government programs.",
-      icon: <Globe className="w-8 h-8" />
+      number: "47%",
+      title: "of Indian graduates are not employable",
+      subtitle: "due to lack of industry-relevant skills",
+      source: "India Skills Report 2024",
+      icon: <TrendingUp className="w-8 h-8" />
     },
     {
-      title: "Talk Shows and Workshops",
-      description: "Focus on social issues, policies, and interventions, covering public policy, social entrepreneurship, advocacy, and impact measurement. Enhances practical knowledge and critical thinking.",
+      number: "53%",
+      title: "of youth in India will require reskilling",
+      subtitle: "by 2025 to meet industry demands",
+      source: "World Economic Forum, 2020",
       icon: <Users className="w-8 h-8" />
     },
     {
-      title: "Action-Based Projects",
-      description: "Students engage in hands-on projects addressing real-world social challenges, developing skills in research, planning, execution, and impact assessment.",
+      number: "4.7%",
+      title: "of the total workforce is formally skilled",
+      subtitle: "compared to 52% in the US and 68% in the UK",
+      source: "National Policy on Skill Development and Entrepreneurship 2015",
       icon: <Target className="w-8 h-8" />
-    },
-    {
-      title: "Field Visits",
-      description: "Volunteering, community visits, and fieldwork foster empathy, civic responsibility, and active citizenship through firsthand exposure to social issues.",
-      icon: <MapPin className="w-8 h-8" />
-    },
-    {
-      title: "Expert Engagement",
-      description: "Guest lectures and Q&A sessions with industry leaders provide insights into social issues, leadership strategies, and sector-specific skills.",
-      icon: <Award className="w-8 h-8" />
-    },
-    {
-      title: "Crowdfunding as a Lifeskill",
-      description: "Teaches students to mobilize resources, market ideas, and raise funds for social causes, enhancing financial literacy and persuasive communication.",
-      icon: <Zap className="w-8 h-8" />
     }
   ];
 
   // Impact metrics
   const impactMetrics = [
-    { number: 4000, suffix: "+", label: "Youth Trained", icon: <Users className="w-6 h-6" /> },
-    { number: 50, suffix: "+", label: "Mentors Engaged", icon: <Award className="w-6 h-6" /> },
-    { number: 7, suffix: "+", label: "Communities Reached", icon: <MapPin className="w-6 h-6" /> },
+    { number: 4000, suffix: "+", label: "Youth Impacted", icon: <Users className="w-6 h-6" /> },
+    { number: 50, suffix: "+", label: "Trainers & Mentors", icon: <Award className="w-6 h-6" /> },
+    { number: 7, suffix: "+", label: "Locations", icon: <MapPin className="w-6 h-6" /> },
     { number: 3, suffix: "+", label: "States", icon: <Globe className="w-6 h-6" /> }
   ];
+
+  // Auto-slide for hero
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, [heroSlides.length]);
 
   // Animated counter component
   const AnimatedCounter = ({ end, duration = 2000, suffix = "" }) => {
@@ -144,19 +153,23 @@ const CSAA = () => {
     <div className="bg-[#FCFDFF] overflow-hidden">
       {/* Hero Section */}
       <section className="relative h-screen">
-        <motion.div
-          initial={{ opacity: 0, scale: 1.02 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 2, ease: "easeInOut" }}
-          className="absolute inset-0"
-        >
-          <img
-            src={heroContent.background}
-            alt="Hero background"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-br from-[#023080]/95 via-[#04307b]/85 to-[#8e9fc5]/70"></div>
-        </motion.div>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentSlide}
+            initial={{ opacity: 0, scale: 1.02 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.98 }}
+            transition={{ duration: 2, ease: "easeInOut" }}
+            className="absolute inset-0"
+          >
+            <img
+              src={heroSlides[currentSlide].background}
+              alt="Hero background"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-[#023080]/95 via-[#04307b]/85 to-[#8e9fc5]/70"></div>
+          </motion.div>
+        </AnimatePresence>
 
         {/* Animated background elements */}
         <div className="absolute inset-0 overflow-hidden">
@@ -212,14 +225,14 @@ const CSAA = () => {
                   transition={{ duration: 1, delay: 0.7 }}
                   className="text-5xl lg:text-7xl font-bold mb-8 leading-tight"
                 >
-                  Centre for Social 
+                  {heroSlides[currentSlide].title}
                   <motion.div 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 1.2 }}
                     className="text-[#d2d5e0] text-3xl lg:text-4xl mt-4 font-light"
                   >
-                    Awareness & Action
+                    {heroSlides[currentSlide].subtitle}
                   </motion.div>
                 </motion.h1>
 
@@ -229,7 +242,7 @@ const CSAA = () => {
                   transition={{ duration: 0.8, delay: 1.4 }}
                   className="text-xl text-[#d2d5e0]/90 leading-relaxed mb-10 max-w-2xl"
                 >
-                  Creating socially aware leaders through intensive courses, live projects, field immersions, and practical workshops.
+                  {heroSlides[currentSlide].description}
                 </motion.p>
 
                 <motion.div
@@ -257,10 +270,10 @@ const CSAA = () => {
                 className="grid grid-cols-2 gap-6"
               >
                 {[
-                  { number: "4K+", label: "Youth Trained" },
-                  { number: "50+", label: "Expert Mentors" },
-                  { number: "100+", label: "Projects Completed" },
-                  { number: "7+", label: "Communities" }
+                  { number: "65%", label: "Population under 35" },
+                  { number: "50%", label: "Graduates employable" },
+                  { number: "15K+", label: "Target by 2030" },
+                  { number: "4K+", label: "Youth Impacted" }
                 ].map((stat, index) => (
                   <motion.div
                     key={index}
@@ -277,6 +290,21 @@ const CSAA = () => {
               </motion.div>
             </div>
           </div>
+        </div>
+
+        {/* Slide indicators */}
+        <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 flex gap-4">
+          {heroSlides.map((_, index) => (
+            <motion.button
+              key={index}
+              onClick={() => setCurrentSlide(index)}
+              whileHover={{ scale: 1.2 }}
+              whileTap={{ scale: 0.8 }}
+              className={`w-4 h-4 rounded-full transition-all duration-500 ${
+                index === currentSlide ? 'bg-white shadow-lg' : 'bg-white/40 hover:bg-white/60'
+              }`}
+            />
+          ))}
         </div>
 
         {/* Scroll indicator */}
@@ -296,61 +324,7 @@ const CSAA = () => {
         </motion.div>
       </section>
 
-      {/* Institutions Carousel */}
-      <section className="py-16 bg-white relative overflow-hidden">
-        <div className="text-center mb-12">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-[#023080] text-white mb-6"
-          >
-            <Globe className="w-12 h-12" />
-          </motion.div>
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="text-3xl font-bold text-[#023080] mb-4"
-          >
-            Partner Institutions
-          </motion.h2>
-        </div>
-
-        {/* Moving carousel */}
-        <div className="relative">
-          <motion.div
-            className="flex gap-8 items-center"
-            animate={{ x: [-1000, 1000] }}
-            transition={{
-              duration: 20,
-              repeat: Infinity,
-              ease: "linear"
-            }}
-          >
-            {[...institutions, ...institutions, ...institutions].map((institution, index) => (
-              <motion.div
-                key={index}
-                whileHover={{ scale: 1.1, y: -5 }}
-                className="flex-shrink-0 bg-white rounded-2xl p-6 shadow-lg border border-[#d2d5e0]/30 hover:shadow-xl transition-all duration-300"
-              >
-                <div className="text-4xl mb-3 text-center">{institution.logo}</div>
-                <div className="text-sm font-medium text-[#023080] text-center whitespace-nowrap">
-                  {institution.name}
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          {/* Gradient overlays */}
-          <div className="absolute left-0 top-0 w-32 h-full bg-gradient-to-r from-white to-transparent pointer-events-none"></div>
-          <div className="absolute right-0 top-0 w-32 h-full bg-gradient-to-l from-white to-transparent pointer-events-none"></div>
-        </div>
-      </section>
-
-      {/* Key Highlights Section */}
+      {/* Statistics Section */}
       <section className="py-24 bg-gradient-to-br from-[#FCFDFF] to-[#d2d5e0]/30">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <motion.div
@@ -361,15 +335,17 @@ const CSAA = () => {
             className="text-center mb-20"
           >
             <h2 className="text-4xl lg:text-6xl font-bold text-[#023080] mb-8">
-              Key Highlights of CSAA
+              Statistics About Skill Development in India
             </h2>
             <p className="text-xl text-[#04307b]/80 max-w-4xl mx-auto leading-relaxed">
-              CSAA equips participants with practical skills and real-world experience to drive social change through a blend of education, fieldwork, and mentorship.
+              Despite numerous government schemes and institutional efforts, the skill development landscape in India 
+              still faces major gaps. These numbers underline the urgent need for inclusive and accessible skilling 
+              pathways to prepare youth for the future of work.
             </p>
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-10">
-            {highlights.map((highlight, index) => (
+            {statisticsData.map((stat, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 60 }}
@@ -381,10 +357,16 @@ const CSAA = () => {
               >
                 <div className="text-center">
                   <div className="text-[#8e9fc5] mb-6 flex justify-center group-hover:scale-110 transition-transform duration-300">
-                    {highlight.icon}
+                    {stat.icon}
                   </div>
-                  <h3 className="text-xl font-semibold text-[#04307b] mb-4">{highlight.title}</h3>
-                  <p className="text-[#8e9fc5] leading-relaxed">{highlight.description}</p>
+                  <div className="text-6xl font-bold text-[#023080] mb-6 group-hover:text-[#04307b] transition-colors duration-300">
+                    {stat.number}
+                  </div>
+                  <h3 className="text-xl font-semibold text-[#04307b] mb-4">{stat.title}</h3>
+                  <p className="text-[#8e9fc5] mb-6">{stat.subtitle}</p>
+                  <div className="text-sm text-[#023080] font-medium italic bg-[#d2d5e0]/20 px-4 py-2 rounded-full">
+                    Source: {stat.source}
+                  </div>
                 </div>
               </motion.div>
             ))}
@@ -392,7 +374,66 @@ const CSAA = () => {
         </div>
       </section>
 
-      {/* Objectives Section */}
+      {/* Problem Statement */}
+      <section className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="grid lg:grid-cols-2 gap-20 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -60 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-4xl lg:text-6xl font-bold text-[#023080] mb-10">
+                The Challenge We Face
+              </h2>
+              <div className="space-y-8 text-lg text-[#04307b]/80 leading-relaxed">
+                <p>
+                  India faces a growing skill gap—over 65% of its population is under the age of 35, yet only a fraction 
+                  are job-ready. According to the India Skills Report 2024, less than 50% of graduates are considered employable.
+                </p>
+                <p>
+                  This gap is even wider in rural, tribal, and marginalized communities where access to training, 
+                  mentorship, and opportunities is limited.
+                </p>
+                <p>
+                  At SWIS, we believe that skills are the stepping stones to sustainable livelihoods and dignity. 
+                  We work across urban slums, rural villages, tribal belts, and shelter homes to equip youth and 
+                  adolescents with future-ready, relevant skills.
+                </p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 60 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="relative"
+            >
+              <motion.img
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.3 }}
+                src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                alt="Skills training"
+                className="rounded-3xl shadow-2xl"
+              />
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, delay: 0.5 }}
+                viewport={{ once: true }}
+                className="absolute -bottom-8 -right-8 bg-[#023080] text-white p-8 rounded-3xl shadow-2xl"
+              >
+                <Zap className="w-10 h-10 mb-3" />
+                <div className="text-lg font-semibold">Future-Ready Skills</div>
+              </motion.div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Programs Section */}
       <section className="py-24 bg-gradient-to-br from-[#d2d5e0]/20 to-[#8e9fc5]/10">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <motion.div
@@ -403,36 +444,36 @@ const CSAA = () => {
             className="text-center mb-20"
           >
             <h2 className="text-4xl lg:text-6xl font-bold text-[#023080] mb-8">
-              Objectives of CSAA
+              Our Efforts Include
             </h2>
             <p className="text-xl text-[#04307b]/80 max-w-3xl mx-auto">
-              Our program is designed to foster leadership, empathy, and innovation through targeted skill-building and experiential learning.
+              Comprehensive programs designed to bridge the skill gap and create sustainable pathways to employment and entrepreneurship.
             </p>
           </motion.div>
 
-          {/* Objective Navigation */}
+          {/* Program Navigation */}
           <div className="flex flex-wrap justify-center gap-4 mb-16">
-            {objectives.map((objective, index) => (
+            {programs.map((program, index) => (
               <motion.button
                 key={index}
-                onClick={() => setActiveObjective(index)}
+                onClick={() => setActiveProgram(index)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className={`px-8 py-4 rounded-2xl font-semibold transition-all duration-300 ${
-                  activeObjective === index
+                  activeProgram === index
                     ? 'bg-[#023080] text-white shadow-2xl'
                     : 'bg-white text-[#04307b] hover:bg-[#d2d5e0]/30 shadow-lg hover:shadow-xl'
                 }`}
               >
-                {objective.title}
+                {program.title.split('&')[0].trim()}
               </motion.button>
             ))}
           </div>
 
-          {/* Active Objective Display */}
+          {/* Active Program Display */}
           <AnimatePresence mode="wait">
             <motion.div
-              key={activeObjective}
+              key={activeProgram}
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -40 }}
@@ -441,17 +482,17 @@ const CSAA = () => {
             >
               <div className="grid lg:grid-cols-2 gap-16 items-center">
                 <div>
-                  <div className={`inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-r ${objectives[activeObjective].color} text-white mb-8 shadow-lg`}>
-                    {objectives[activeObjective].icon}
+                  <div className={`inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-r ${programs[activeProgram].color} text-white mb-8 shadow-lg`}>
+                    {programs[activeProgram].icon}
                   </div>
                   <h3 className="text-3xl lg:text-4xl font-bold text-[#023080] mb-8">
-                    {objectives[activeObjective].title}
+                    {programs[activeProgram].title}
                   </h3>
                   <p className="text-lg text-[#04307b]/80 leading-relaxed mb-10">
-                    {objectives[activeObjective].description}
+                    {programs[activeProgram].description}
                   </p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {objectives[activeObjective].features.map((feature, index) => (
+                    {programs[activeProgram].features.map((feature, index) => (
                       <motion.div 
                         key={index}
                         initial={{ opacity: 0, x: -20 }}
@@ -470,17 +511,17 @@ const CSAA = () => {
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.6 }}
-                    src={`https://images.unsplash.com/photo-${1550000000000 + activeObjective * 100000000}?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80`}
-                    alt={objectives[activeObjective].title}
+                    src={`https://images.unsplash.com/photo-${1550000000000 + activeProgram * 100000000}?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80`}
+                    alt={programs[activeProgram].title}
                     className="rounded-3xl shadow-2xl"
                   />
                   <motion.div 
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.6, delay: 0.3 }}
-                    className={`absolute -top-6 -right-6 w-28 h-28 bg-gradient-to-r ${objectives[activeObjective].color} rounded-full flex items-center justify-center text-white shadow-2xl`}
+                    className={`absolute -top-6 -right-6 w-28 h-28 bg-gradient-to-r ${programs[activeProgram].color} rounded-full flex items-center justify-center text-white shadow-2xl`}
                   >
-                    {objectives[activeObjective].icon}
+                    {programs[activeProgram].icon}
                   </motion.div>
                 </div>
               </div>
@@ -517,7 +558,7 @@ const CSAA = () => {
         <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
           <div className="text-center mb-20">
             <h2 className="text-4xl lg:text-6xl font-bold mb-8">Our Impact</h2>
-            <p className="text-xl text-[#d2d5e0]">Transforming lives through social awareness and leadership training</p>
+            <p className="text-xl text-[#d2d5e0]">Transforming lives across India through skill development</p>
           </div>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-10">
@@ -560,7 +601,7 @@ const CSAA = () => {
               Where We Work
             </h2>
             <p className="text-xl text-[#04307b]/80">
-              Our programs reach communities across India, fostering social awareness and leadership
+              Our grassroots-driven solutions reach communities across India
             </p>
           </motion.div>
 
@@ -621,7 +662,8 @@ const CSAA = () => {
               15,000+
             </motion.div>
             <p className="text-2xl text-[#d2d5e0]/90 max-w-4xl mx-auto leading-relaxed">
-              To train 15,000+ young leaders annually by 2030, equipping them with the skills and empathy to drive systemic social change across India.
+              To enable 15,000+ young people annually by 2030 to access relevant skills, employment pathways, 
+              or start small businesses—especially those from underserved and vulnerable backgrounds.
             </p>
           </motion.div>
         </div>
@@ -640,7 +682,8 @@ const CSAA = () => {
               Join Our Mission
             </h2>
             <p className="text-xl text-[#04307b]/80 mb-16 leading-relaxed">
-              Be part of a movement to create socially aware leaders. Help us empower youth to drive meaningful social change.
+              Be part of India's transformation. Help us bridge the skill gap and create sustainable 
+              livelihoods for millions of young Indians.
             </p>
             <motion.button 
               whileHover={{ scale: 1.05, y: -2 }}
@@ -657,4 +700,4 @@ const CSAA = () => {
   );
 };
 
-export default CSAA;
+export default SkillDevelopment;
