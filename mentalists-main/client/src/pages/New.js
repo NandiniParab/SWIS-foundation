@@ -13,7 +13,7 @@ const New = () => {
     "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80"
   ];
 
-  // Timeline data with your provided content
+  // Timeline data with your provided content including H1 2025
   const timelineData = [
     {
       year: "2021",
@@ -62,9 +62,22 @@ const New = () => {
         "H2 2024: Comprehensive strategic planning initiatives for institutional transition and sustainable growth models"
       ],
       
+    },
+    {
+      year: "2025",
+      title: "New Era - SWIS Foundation",
+      subtitle: "Transformational Rebrand",
+      description: "A pivotal transformation marking our evolution from Sangharsh to SWIS Foundation - Social Welfare & Impact Solutions. This strategic rebrand represents our commitment to structured growth and ambitious scaling to impact millions of lives.",
+      achievements: [
+        "H1 2025 (Jan–Jun): Launched the SWIS Foundation – Social Welfare & Impact Solutions",
+        "Transitioned from Sangharsh to SWIS, symbolising a new era of structured growth",
+        "Vision expanded to impact 2 million+ lives over the next 20 years through scalable, data-driven, and expert-led programs"
+      ],
+      
     }
   ];
 
+  
   // Auto-slide for hero carousel
   useEffect(() => {
     const timer = setInterval(() => {
@@ -220,12 +233,73 @@ const New = () => {
             viewport={{ once: true }}
             className="max-w-4xl mx-auto"
           >
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-[#d2d5e0] leading-relaxed font-light">
+            <p className="text-base sm:text-lg md:text-xl text-[#d2d5e0] leading-relaxed font-light">
               Over 4 years of dedicated service, transformative growth, and unwavering commitment to social change. 
               From humble beginnings to revolutionary impact - this is our story.
             </p>
           </motion.div>
         </div>
+      </section>
+
+      {/* Chairman Quote Section - Continuation of Our History */}
+      <section className="bg-[#023080] py-12 sm:py-16 lg:py-24 relative overflow-hidden">
+        {/* Connecting line from above */}
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-2 h-12 sm:h-16 bg-[#d2d5e0] opacity-60"></div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+          <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
+            {/* Quote Content - Left Side */}
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="flex-1 text-center lg:text-left"
+            >
+              <blockquote className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-light text-white leading-relaxed mb-8 sm:mb-12">
+                "Our purpose has to be clear. Our compassion stronger.<br />
+                Our commitment deeper. And our impact wider.<br />
+                This is my dream for SWIS and for India."
+              </blockquote>
+              
+              <div className="text-lg sm:text-xl md:text-2xl text-[#8e9fc5] font-light mb-2">
+                Soubhik Kundu
+              </div>
+              <div className="text-base sm:text-lg text-[#d2d5e0]">
+                Chairman & Managing Trustee
+              </div>
+              <div className="text-base sm:text-lg text-[#d2d5e0] font-medium">
+                SWIS Foundation
+              </div>
+              
+              {/* Decorative Line */}
+              <div className="w-24 sm:w-32 h-1 bg-gradient-to-r from-[#8e9fc5] to-[#d2d5e0] rounded-full mt-6 sm:mt-8 mx-auto lg:mx-0"></div>
+            </motion.div>
+
+            {/* Portrait Image - Right Side */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="flex-1 max-w-md lg:max-w-lg"
+            >
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#8e9fc5]/20 to-[#d2d5e0]/20 rounded-2xl transform rotate-3"></div>
+                <img
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                  alt="Soubhik Kundu - Chairman & Managing Trustee"
+                  className="relative z-10 w-full h-auto rounded-2xl shadow-2xl object-cover"
+                />
+                <div className="absolute -bottom-4 -right-4 w-24 h-24 sm:w-32 sm:h-32 bg-[#8e9fc5] rounded-full opacity-20"></div>
+                <div className="absolute -top-4 -left-4 w-16 h-16 sm:w-20 sm:h-20 bg-[#d2d5e0] rounded-full opacity-30"></div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+        
+        {/* Connecting line to below */}
+        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-2 h-12 sm:h-16 bg-[#d2d5e0] opacity-60"></div>
       </section>
 
       {/* Timeline Section - Fully Responsive */}
