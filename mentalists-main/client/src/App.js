@@ -1,51 +1,30 @@
-// src/App.js
 import "./App.css";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
 import Anushka from "./pages/Anushka";
 import Homepage from "./pages/Start";
 import History from "./pages/History";
-import FounderChairman from "./pages/FounderChairman";
-import CCAE from "./pages/ccae";
-import CSAA from "./pages/csaa";
-import CSII from "./pages/csii";
-import Member from "./pages/Member";
-import Allinone from "./pages/Allinone";
-import New from "./pages/New";
-
-// Import the TypeScript Navbar
-import Navbar from "./components/Navbar";
+import FounderChairman from "./pages/founder"; // 
 
 function App() {
   return (
     <BrowserRouter>
-      <RoutesWithNavbar />
+      <RoutesWeb />
     </BrowserRouter>
   );
 }
 
-const RoutesWithNavbar = () => {
+const RoutesWeb = () => {
   const location = useLocation();
-  const hideNavbar = location.pathname === "/landing"; // optional
+  const hideLayout = location.pathname === "/landing";
 
   return (
-    <>
-      {!hideNavbar && <Navbar />}
-      <div style={{ paddingTop: '64px' }}> {/* offset for fixed navbar */}
-        <Routes>
-          <Route path="/anushka" element={<Anushka />} />
-          <Route path="/homepage" element={<Homepage />} />
-          <Route path="/history" element={<History />} />
-          <Route path="/founderchairman" element={<FounderChairman />} />
-          <Route path="/ccae" element={<CCAE />} />
-          <Route path="/csaa" element={<CSAA />} />
-          <Route path="/csii" element={<CSII />} />
-          <Route path="/member" element={<Member />} />
-          <Route path="/allinone" element={<Allinone />} />
-          <Route path="/new" element={<New />} />
-        </Routes>
-      </div>
-    </>
+    <Routes>
+      <Route path="/anushka" element={<Anushka />} />
+      <Route path="/homepage" element={<Homepage />} />
+      <Route path="/history" element={<History />} />
+      <Route path="/founder" element={<FounderChairman />} /> {/* ✅ new route */}
+    </Routes>
   );
 };
 
