@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Droplet } from 'lucide-react';
 
+
 const New = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   
@@ -115,9 +116,10 @@ const New = () => {
             <div className="absolute inset-0 bg-gradient-to-r from-[#023080]/80 via-[#04307b]/60 to-transparent"></div>
           </motion.div>
         </AnimatePresence>
-
+ 
         {/* Hero Content - Responsive */}
         <div className="relative z-10 h-full flex items-center">
+         
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 w-full">
             <div className="max-w-4xl">
               <motion.div
@@ -306,6 +308,7 @@ const New = () => {
           </button>
         </motion.div>
       </section>
+       
     </div>
   );
 };
