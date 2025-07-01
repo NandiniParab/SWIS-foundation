@@ -12,6 +12,8 @@ import CSII from "./pages/csii";
 import Member from "./pages/Member";
 import Allinone from "./pages/Allinone";
 import New from "./pages/New";
+import COC from "./pages/coc";
+import SkillDevelopment from "./pages/SkillDevelopment";
 
 // Import the TypeScript Navbar
 import Navbar from "./components/Navbar";
@@ -43,6 +45,8 @@ const RoutesWithNavbar = () => {
           <Route path="/member" element={<Member />} />
           <Route path="/allinone" element={<Allinone />} />
           <Route path="/new" element={<New />} />
+          <Route path="/coc" element={<COC />} />
+          <Route path="/SkillDevelopment" element={<SkillDevelopment />} />
         </Routes>
       </div>
     </>
