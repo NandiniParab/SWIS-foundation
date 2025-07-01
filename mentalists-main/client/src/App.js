@@ -13,6 +13,8 @@ import Member from "./pages/Member";
 import Allinone from "./pages/Allinone";
 import New from "./pages/New";
 import COC from "./pages/coc";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsAndConditions from "./pages/TermsAndConditions";
 import SkillDevelopment from "./pages/SkillDevelopment";
 
 // Import the TypeScript Navbar
@@ -46,6 +48,8 @@ const RoutesWithNavbar = () => {
           <Route path="/allinone" element={<Allinone />} />
           <Route path="/new" element={<New />} />
           <Route path="/coc" element={<COC />} />
+          <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
+          <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
           <Route path="/SkillDevelopment" element={<SkillDevelopment />} />
         </Routes>
       </div>
