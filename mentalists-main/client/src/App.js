@@ -16,6 +16,7 @@ import COC from "./pages/coc";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import SkillDevelopment from "./pages/SkillDevelopment";
+import Careers from "./pages/Careers";
 
 // Import the TypeScript Navbar
 import Navbar from "./components/Navbar";
@@ -51,6 +52,7 @@ const RoutesWithNavbar = () => {
           <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
           <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
           <Route path="/SkillDevelopment" element={<SkillDevelopment />} />
+          <Route path="/Careers" element={<Careers />} />
         </Routes>
       </div>
     </>
