@@ -1,46 +1,43 @@
-import "./App.css";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import "./App.css"
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom"
 
 // Pages
-import Anushka from "./pages/Anushka";
-import Homepage from "./pages/Start";
-import History from "./pages/History";
-import FounderChairman from "./pages/FounderChairman";
-import CCAE from "./pages/ccae";
-import CSAA from "./pages/csaa";
-import CSII from "./pages/csii";
-import Member from "./pages/Member";
-import Allinone from "./pages/Allinone";
-import New from "./pages/New";
-import COC from "./pages/coc";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
-import TermsAndConditions from "./pages/TermsAndConditions";
-import SkillDevelopment from "./pages/SkillDevelopment";
-import Careers from "./pages/Careers";
+import Anushka from "./pages/Anushka"
+import Homepage from "./pages/Start"
+import History from "./pages/History"
+import FounderChairman from "./pages/FounderChairman"
+import CCAE from "./pages/ccae"
+import CSAA from "./pages/csaa"
+import CSII from "./pages/csii"
+import Member from "./pages/Member"
+import Allinone from "./pages/Allinone"
+import New from "./pages/New"
+import COC from "./pages/coc"
+import PrivacyPolicy from "./pages/PrivacyPolicy"
+import TermsAndConditions from "./pages/TermsAndConditions"
+import SkillDevelopment from "./pages/SkillDevelopment"
+import Careers from "./pages/Careers"
 
 // Components
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-
+import Footer from "./components/Footer"
+import ScrollHeader from "./components/ScrollHeader" // New header component
 import ContactPage from "../src/components/ContactPage"
-
 
 function App() {
   return (
     <BrowserRouter>
       <RoutesWithNavbar />
     </BrowserRouter>
-  );
+  )
 }
 
 const RoutesWithNavbar = () => {
-  const location = useLocation();
-  const hideNavbar = location.pathname === "/landing";
+  const location = useLocation()
+  const hideNavbar = location.pathname === "/landing"
 
   return (
     <>
-      {!hideNavbar && <Navbar />}
-
+      {!hideNavbar && <ScrollHeader />}
       <Routes>
         <Route path="/anushka" element={<Anushka />} />
         <Route path="/homepage" element={<Homepage />} />
@@ -57,11 +54,11 @@ const RoutesWithNavbar = () => {
         <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
         <Route path="/SkillDevelopment" element={<SkillDevelopment />} />
         <Route path="/ContactPage" element={<ContactPage />} />
+        <Route path="/Careers" element={<Careers />} />
       </Routes>
       {!hideNavbar && <Footer />}
-
     </>
-  );
-};
+  )
+}
 
-export default App;
+export default App
