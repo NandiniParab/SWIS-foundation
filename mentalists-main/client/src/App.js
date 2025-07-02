@@ -21,6 +21,9 @@ import SkillDevelopment from "./pages/SkillDevelopment";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
+import ContactPage from "../src/components/ContactPage"
+
+
 function App() {
   return (
     <BrowserRouter>
@@ -51,6 +54,7 @@ const RoutesWithNavbar = () => {
         <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
         <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
         <Route path="/SkillDevelopment" element={<SkillDevelopment />} />
+        <Route path="/ContactPage" element={<ContactPage />} />
       </Routes>
       {!hideNavbar && <Footer />}
     </>
