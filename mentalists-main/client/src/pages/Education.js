@@ -17,18 +17,18 @@ import {
 } from 'lucide-react';
 
 // Counter animation component
-const AnimatedCounter = ({ value, duration = 2 }: { value: number; duration?: number }) => {
+const AnimatedCounter = ({ value, duration = 2 }) => { // Removed TypeScript syntax for JS compatibility
   const [count, setCount] = useState(0);
   const ref = React.useRef(null);
   const isInView = useInView(ref, { once: true });
 
   useEffect(() => {
     if (isInView) {
-      let startTime: number;
+      let startTime;
       const startValue = 0;
       const endValue = value;
 
-      const animate = (currentTime: number) => {
+      const animate = (currentTime) => {
         if (!startTime) startTime = currentTime;
         const progress = Math.min((currentTime - startTime) / (duration * 1000), 1);
         
@@ -83,7 +83,7 @@ const Education = () => {
     }
   ];
 
-  // Cards data - removed "Providing Learning Kits & School Supplies"
+  // Cards data
   const cardsData = [
     {
       icon: BookOpen,
@@ -119,7 +119,7 @@ const Education = () => {
     'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800&h=600&fit=crop'
   ];
 
-  // Impact areas data - updated to remove descriptions
+  // Impact areas data
   const impactAreas = [
     { 
       icon: Home, 
@@ -205,6 +205,27 @@ const Education = () => {
                 </button>
               </div>
             </div>
+
+            {/* Mobile Navigation */}
+            <AnimatePresence>
+              {isMenuOpen && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="md:hidden bg-white border-t"
+                >
+                  <div className="px-2 pt-2 pb-3 space-y-1">
+                    <a href="/" className="block px-3 py-2 text-base font-medium text-gray-900 hover:text-blue-600">Home</a>
+                    <a href="#" className="block px-3 py-2 text-base font-medium text-gray-900 hover:text-blue-600">Education</a>
+                    <a href="#" className="block px-3 py-2 text-base font-medium text-gray-900 hover:text-blue-600">Skill Development</a>
+                    <a href="#" className="block px-3 py-2 text-base font-medium text-gray-900 hover:text-blue-600">Nutrition</a>
+                    <a href="#" className="block px-3 py-2 text-base font-medium text-gray-900 hover:text-blue-600">Healthcare</a>
+                    <a href="#" className="block px-3 py-2 text-base font-medium text-gray-900 hover:text-blue-600">Relief of Poor</a>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </nav>
       </header>
@@ -310,7 +331,7 @@ const Education = () => {
       {/* Cards Section with Horizontal Navigation */}
       <section className="py-20" style={{ backgroundColor: '#8e9fc5' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Horizontal Navigation Buttons - Made Bigger and Span Full Width */}
+          {/* Horizontal Navigation Buttons */}
           <div className="flex justify-center gap-2 mb-12">
             {cardsData.map((card, index) => (
               <motion.button
@@ -631,8 +652,7 @@ const Education = () => {
               Statistics About <span style={{ color: '#023080' }}>Child Education</span> in India
             </h2>
             <p className="text-lg text-gray-700 max-w-6xl mx-auto mb-16">
-              Despite progress made in recent years and a large number of NGOs working for education in India the below numbers highlight the urgent need to provide help 
-              for the education of children. Children are the building blocks of our nation, their future depends on us.
+              Despite progress made in recent years and a large number of NGOs working for education in India, the below numbers highlight the urgent need to provide help for the education of children. Children are the building blocks of our nation, their future depends on us.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -733,7 +753,7 @@ const Education = () => {
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 SWIS. All rights reserved.</p>
+            <p>© 2024 SWIS. All rights reserved.</p>
           </div>
         </div>
       </footer>

@@ -1,9 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Menu, X, ArrowRight, Building, TrendingUp, Users } from 'lucide-react';
 
-const Index = () => {
+const Homepage = () => { // Changed from Index to Homepage
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -687,7 +686,7 @@ const Index = () => {
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 SWIS. All rights reserved.</p>
+            <p>© 2024 SWIS. All rights reserved.</p>
           </div>
         </div>
       </footer>
@@ -695,4 +694,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Homepage; 
