@@ -16,6 +16,7 @@ import COC from "./pages/coc";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import SkillDevelopment from "./pages/SkillDevelopment";
+import Careers from "./pages/Careers";
 
 // Components
 import Navbar from "./components/Navbar";
@@ -39,6 +40,7 @@ const RoutesWithNavbar = () => {
   return (
     <>
       {!hideNavbar && <Navbar />}
+
       <Routes>
         <Route path="/anushka" element={<Anushka />} />
         <Route path="/homepage" element={<Homepage />} />
@@ -57,6 +59,7 @@ const RoutesWithNavbar = () => {
         <Route path="/ContactPage" element={<ContactPage />} />
       </Routes>
       {!hideNavbar && <Footer />}
+
     </>
   );
 };
