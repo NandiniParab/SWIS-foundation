@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, ChevronDown, Globe, Target, Award, Users, TrendingUp, Lightbulb, Zap, Play, Shield, BookOpen } from 'lucide-react';
+import { ArrowRight, ChevronDown, Globe, Target, Award, Users, TrendingUp, Lightbulb, Zap, Play, Shield } from 'lucide-react';
 
 // AnimatedCounter Component
 const AnimatedCounter = ({ end, duration = 2000, suffix = "", countAnimated }) => {
@@ -109,9 +109,9 @@ const HeroSection = () => {
             </p>
 
             <div className="flex gap-4 flex-wrap animate-fadeInUp stagger-3">
-              <button className="bg-white text-[#023080] px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold hover:bg-[#FCFDFF] transition-all duration-300 transform hover:scale-105 flex items-center gap-2 text-sm sm:text-base">
+              <a href="/JoinUs" className="bg-white text-[#023080] px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold hover:bg-[#FCFDFF] transition-all duration-300 transform hover:scale-105 flex items-center gap-2 text-sm sm:text-base">
                 Apply Now <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
-              </button>
+              </a>
             </div>
           </div>
         </div>
@@ -211,9 +211,9 @@ const MissionSection = ({ isVisible }) => {
             <p className="text-lg sm:text-xl text-[#d2d5e0] mb-8 max-w-3xl mx-auto">
               Every citizen has the power to shape their community's future. Through CCAE, we're building the bridge between civic awareness and meaningful action.
             </p>
-            <button className="bg-white text-[#023080] px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold hover:bg-[#FCFDFF] transition-all duration-300 transform hover:scale-105">
+            <a href="/JoinUs" className="bg-white text-[#023080] px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold hover:bg-[#FCFDFF] transition-all duration-300 transform hover:scale-105">
               Start Your Journey
-            </button>
+            </a>
           </div>
         </div>
       </div>
@@ -225,6 +225,7 @@ const MissionSection = ({ isVisible }) => {
 const ObjectivesSection = ({ isVisible }) => {
   const objectives = [
     {
+      to: "/JoinUs",
       icon: <Target className="w-8 h-8" />,
       title: "Awareness",
       description: "To raise awareness about the development sector and foster understanding of civic responsibilities.",
@@ -475,12 +476,9 @@ const CTASection = ({ isVisible }) => {
             Help us create the next generation of ethical public leaders.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-white text-[#023080] px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold hover:bg-[#FCFDFF] transition-all duration-300 transform hover:scale-105 flex items-center gap-2 justify-center animate-pulse-slow">
+            <a href="/JoinUs" className="bg-white text-[#023080] px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold hover:bg-[#FCFDFF] transition-all duration-300 transform hover:scale-105 flex items-center gap-2 justify-center animate-pulse-slow">
               Apply Now <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
-            </button>
-            <button className="border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold hover:bg-white hover:text-[#023080] transition-all duration-300 flex items-center gap-2 justify-center">
-              Learn More <BookOpen className="w-4 h-4 sm:w-5 sm:h-5" />
-            </button>
+            </a>
           </div>
         </div>
       </div>

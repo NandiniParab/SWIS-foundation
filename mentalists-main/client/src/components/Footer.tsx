@@ -89,7 +89,7 @@ const Footer = () => {
               </h4>
               <ul className="space-y-1">
                 <li>
-                  <Link to="/new" className="transition-colors hover:text-[#023080]" style={{ color: "#04307b" }}>
+                  <Link to="/Education" className="transition-colors hover:text-[#023080]" style={{ color: "#04307b" }}>
                     Education
                   </Link>
                 </li>
@@ -172,7 +172,7 @@ const Footer = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/anushka" className="transition-colors hover:text-[#023080]" style={{ color: "#04307b" }}>
+                  <Link to="/JoinUs" className="transition-colors hover:text-[#023080]" style={{ color: "#04307b" }}>
                     Join Us
                   </Link>
                 </li>

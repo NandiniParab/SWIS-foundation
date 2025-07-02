@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Menu, X, ArrowRight, Building, TrendingUp, Users } from 'lucide-react';
 
-const Homepage = () => { // Changed from Index to Homepage
+const Homepage = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -40,9 +40,9 @@ const Homepage = () => { // Changed from Index to Homepage
   ];
 
   const partnerLogos = [
-    "/lovable-uploads/5373f37c-4692-4348-b4f0-cf58ed3b35a9.png",
-    "/lovable-uploads/529a02fb-320f-4d30-a086-f3181bdaf088.png",
-    "/lovable-uploads/b7cdd1b9-9e6d-4002-bee8-0bcb4526e482.png",
+    "/lovable-Uploads/5373f37c-4692-4348-b4f0-cf58ed3b35a9.png",
+    "/lovable-Uploads/529a02fb-320f-4d30-a086-f3181bdaf088.png",
+    "/lovable-Uploads/b7cdd1b9-9e6d-4002-bee8-0bcb4526e482.png",
   ];
 
   const ImageSlideshow = ({ images, className = "" }) => {
@@ -567,9 +567,9 @@ const Homepage = () => { // Changed from Index to Homepage
                 <button className="border border-white text-white px-8 py-3 rounded-full hover:bg-white hover:text-black transition-all duration-300 flex items-center gap-2">
                   meet our people <ArrowRight size={16} />
                 </button>
-                <button className="border border-white text-white px-8 py-3 rounded-full hover:bg-white hover:text-black transition-all duration-300 flex items-center gap-2">
+                <a href="/JoinUs" className="border border-white text-white px-8 py-3 rounded-full hover:bg-white hover:text-black transition-all duration-300 flex items-center gap-2">
                   search & apply <ArrowRight size={16} />
-                </button>
+                </a>
               </div>
             </motion.div>
 
@@ -694,4 +694,4 @@ const Homepage = () => { // Changed from Index to Homepage
   );
 };
 
-export default Homepage; 
+export default Homepage;

@@ -372,9 +372,9 @@ const Member = () => {
             Be part of our journey towards creating meaningful impact in communities across India.
             Together, we can build a better future for all.
           </p>
-          <button className="bg-[#8e9fc5] hover:bg-[#d2d5e0] text-[#023080] px-8 py-4 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 text-lg">
+          <a href="/JoinUs" className="bg-[#8e9fc5] hover:bg-[#d2d5e0] text-[#023080] px-8 py-4 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 text-lg">
             Get Involved
-          </button>
+          </a>
         </motion.div>
       </section>
     </div>

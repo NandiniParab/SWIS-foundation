@@ -109,9 +109,9 @@ const HeroSection = () => {
             </p>
 
             <div className="flex gap-4 flex-wrap animate-fadeInUp stagger-3">
-              <button className="bg-white text-[#023080] px-6 sm: px-8 py-3 sm:py-4 rounded-lg font-semibold hover:bg-[#FCFDFF] transition-all duration-300 transform hover:scale-105 flex items-center gap-2 text-sm sm:text-base">
+              <a href="/JoinUs" className="bg-white text-[#023080] px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold hover:bg-[#FCFDFF] transition-all duration-300 transform hover:scale-105 flex items-center gap-2 text-sm sm:text-base">
                 Apply Now <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
-              </button>
+              </a>
             </div>
           </div>
         </div>
@@ -221,9 +221,9 @@ const MissionSection = ({ isVisible }) => {
             <p className="text-lg sm:text-xl text-[#d2d5e0] mb-8 max-w-3xl mx-auto">
               Our commitment to creating socially aware leaders is embedded in the work of the Centre for Social Awareness & Action. We recognize that lasting impact begins with understanding—and CSAA equips youth, changemakers, and professionals with the tools to analyze, engage, and act on pressing social issues. Through intensive courses, live projects, field immersions, and practical workshops, CSAA fosters a deep sense of responsibility and purpose.
             </p>
-            <button className="bg-white text-[#023080] px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold hover:bg-[#FCFDFF] transition-all duration-300 transform hover:scale-105">
+            <a href="/JoinUs" className="bg-white text-[#023080] px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold hover:bg-[#FCFDFF] transition-all duration-300 transform hover:scale-105">
               Start Your Journey
-            </button>
+            </a>
           </div>
         </div>
       </div>
@@ -494,9 +494,9 @@ const CTASection = ({ isVisible }) => {
             Be part of a transformative movement to create socially aware leaders who drive systemic change through education and action.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-white text-[#023080] px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold hover:bg-[#FCFDFF] transition-all duration-300 transform hover:scale-105 flex items-center gap-2 justify-center animate-pulse-slow">
+            <a href="/JoinUs" className="bg-white text-[#023080] px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold hover:bg-[#FCFDFF] transition-all duration-300 transform hover:scale-105 flex items-center gap-2 justify-center animate-pulse-slow">
               Apply Now <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
-            </button>
+            </a>
           </div>
         </div>
       </div>

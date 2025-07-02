@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -251,14 +250,15 @@ const SkillDevelopment = () => {
                   transition={{ duration: 0.8, delay: 1.6 }}
                   className="flex justify-center lg:justify-start"
                 >
-                  <motion.button 
+                  <motion.a
+                    href="/JoinUs"
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     className="bg-white text-[#023080] px-12 py-5 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-3xl transition-all duration-300 flex items-center gap-3 group"
                   >
                     Join Us
                     <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform duration-300" />
-                  </motion.button>
+                  </motion.a>
                 </motion.div>
               </motion.div>
 
@@ -685,14 +685,15 @@ const SkillDevelopment = () => {
               Be part of India's transformation. Help us bridge the skill gap and create sustainable 
               livelihoods for millions of young Indians.
             </p>
-            <motion.button 
+            <motion.a
+              href="/JoinUs"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
               className="bg-[#023080] text-white px-12 py-6 rounded-2xl font-bold text-xl hover:bg-[#04307b] transition-all duration-300 transform hover:shadow-2xl flex items-center gap-4 justify-center mx-auto group"
             >
               Join Us
               <ArrowRight className="w-7 h-7 group-hover:translate-x-1 transition-transform duration-300" />
-            </motion.button>
+            </motion.a>
           </motion.div>
         </div>
       </section>

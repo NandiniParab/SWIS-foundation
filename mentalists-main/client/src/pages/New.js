@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Droplet } from 'lucide-react';
 
-
 const New = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   
@@ -25,7 +24,6 @@ const New = () => {
         "Founder Soubhik Kundu began conceptualising a comprehensive youth-driven initiative for sustainable social change",
         "H2 2021: Strategic brainstorming sessions, extensive network-building, and meaningful community conversations established the foundation"
       ],
-     
     },
     {
       year: "2022",
@@ -37,7 +35,6 @@ const New = () => {
         "Successfully launched pilot volunteering initiatives with the first cohort of dedicated youth volunteers",
         "H2 2022: Strategically expanded initial projects including systematic meal distribution and comprehensive awareness drives"
       ],
-      
     },
     {
       year: "2023",
@@ -49,7 +46,6 @@ const New = () => {
         "Successfully built a robust core team and strategically onboarded the first cohort of committed long-term volunteers",
         "H2 2023: Established strategic partnerships with 7+ shelter homes across diverse regions of India"
       ],
-      
     },
     {
       year: "2024",
@@ -61,7 +57,6 @@ const New = () => {
         "Organizational growth: Core team expanded to 30+ dedicated members; volunteer base surpassed 400+ active contributors",
         "H2 2024: Comprehensive strategic planning initiatives for institutional transition and sustainable growth models"
       ],
-      
     },
     {
       year: "2025",
@@ -73,11 +68,9 @@ const New = () => {
         "Transitioned from Sangharsh to SWIS, symbolising a new era of structured growth",
         "Vision expanded to impact 2 million+ lives over the next 20 years through scalable, data-driven, and expert-led programs"
       ],
-      
     }
   ];
 
-  
   // Auto-slide for hero carousel
   useEffect(() => {
     const timer = setInterval(() => {
@@ -129,10 +122,9 @@ const New = () => {
             <div className="absolute inset-0 bg-gradient-to-r from-[#023080]/80 via-[#04307b]/60 to-transparent"></div>
           </motion.div>
         </AnimatePresence>
- 
+
         {/* Hero Content - Responsive */}
         <div className="relative z-10 h-full flex items-center">
-         
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 w-full">
             <div className="max-w-4xl">
               <motion.div
@@ -377,12 +369,11 @@ const New = () => {
             Join us as we work towards impacting 2 million+ lives through our innovative, 
             data-driven approach to social welfare and sustainable development.
           </p>
-          <button className="bg-[#8e9fc5] hover:bg-[#d2d5e0] text-[#023080] px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 text-base sm:text-lg">
+          <a href="/JoinUs" className="bg-[#8e9fc5] hover:bg-[#d2d5e0] text-[#023080] px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 text-base sm:text-lg">
             Be Part of Our Story
-          </button>
+          </a>
         </motion.div>
       </section>
-       
     </div>
   );
 };
