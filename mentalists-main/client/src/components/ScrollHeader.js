@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useState, useEffect } from "react"
@@ -13,7 +12,7 @@ const ScrollHeader = () => {
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY
-      setScrolled(scrollPosition > 100)
+      setScrolled(scrollPosition > 50) // Reduced threshold for faster transition
     }
 
     window.addEventListener("scroll", handleScroll)
@@ -96,20 +95,6 @@ const ScrollHeader = () => {
           isSubheading: false,
           parent: "SWIS Foundation",
         },
-        {
-          title: "Healthcare",
-          href: "/new",
-          description: "Medical care and wellness",
-          isSubheading: false,
-          parent: "SWIS Foundation",
-        },
-        {
-          title: "Relief of Poor",
-          href: "/new",
-          description: "Poverty alleviation programs",
-          isSubheading: false,
-          parent: "SWIS Foundation",
-        },
         { title: "SWIS Institute", href: "#", description: "", isSubheading: true },
         {
           title: "Centre for Social Impact & Innovation",
@@ -135,33 +120,12 @@ const ScrollHeader = () => {
       ],
     },
     {
-      title: "Join Us",
-      items: [
-        { title: "Join Us", href: "/anushka", description: "Get involved with our mission", isSubheading: false },
-      ],
-    },
-    {
       title: "Careers",
       items: [
         { title: "Careers", href: "/Careers", description: "Available positions", isSubheading: false },
         { title: "Working at SWIS", href: "/Careers", description: "Employee experience", isSubheading: false },
         { title: "Code of Conduct", href: "/coc", description: "Our values and ethics", isSubheading: false },
       ],
-    },
-    {
-      title: "News & Media",
-      items: [
-        { title: "Press Releases", href: "/new", description: "Latest announcements", isSubheading: false },
-        { title: "Media Coverage", href: "/new", description: "News articles and features", isSubheading: false },
-        { title: "Photo Gallery", href: "/new", description: "Event photos and moments", isSubheading: false },
-        { title: "Video Gallery", href: "/new", description: "Documentary and videos", isSubheading: false },
-        { title: "Annual Reports", href: "/new", description: "Yearly impact reports", isSubheading: false },
-        { title: "Newsletter", href: "/new", description: "Subscribe to updates", isSubheading: false },
-      ],
-    },
-    {
-      title: "Contact Us",
-      items: [{ title: "Get in Touch", href: "/ContactPage", description: "Reach out to us", isSubheading: false }],
     },
   ]
 
@@ -226,14 +190,16 @@ const ScrollHeader = () => {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? "bg-white shadow-lg" : "bg-gradient-to-b from-black/80 via-black/40 to-transparent"
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+          scrolled ? "bg-white shadow-lg" : "bg-gradient-to-b from-black/60 via-black/30 to-transparent"
         }`}
       >
         {/* Top Info Bar - Hidden when scrolled */}
         <div
-          className={`border-b transition-all duration-300 ${
-            scrolled ? "h-0 opacity-0 overflow-hidden border-transparent" : "h-12 opacity-100 border-white/10"
+          className={`border-b transition-all duration-500 ${
+            scrolled
+              ? "h-0 opacity-0 overflow-hidden border-transparent -translate-y-full"
+              : "h-12 opacity-100 border-white/20"
           }`}
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -268,14 +234,16 @@ const ScrollHeader = () => {
 
         {/* Main Navigation */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div
+            className={`flex items-center justify-between transition-all duration-500 ${scrolled ? "h-14" : "h-16"}`}
+          >
             {/* Logo */}
             <div className="flex items-center">
               <Link to="/homepage">
                 <img
                   src={scrolled ? "/swis-logo-blue.png" : "/swis-logo-white.png"}
                   alt="SWIS Foundation"
-                  className="h-12 w-auto transition-opacity duration-300"
+                  className={`transition-all duration-500 ${scrolled ? "h-10 w-auto" : "h-12 w-auto"}`}
                 />
               </Link>
             </div>
@@ -302,6 +270,31 @@ const ScrollHeader = () => {
                   </button>
                 </div>
               ))}
+
+              {/* Direct Links */}
+              <Link
+                to="/anushka"
+                className={`transition-colors py-2 ${
+                  scrolled ? "text-gray-700 hover:text-blue-600" : "text-white hover:text-orange-400"
+                }`}
+                style={{
+                  color: scrolled ? "#023080" : undefined,
+                }}
+              >
+                Join Us
+              </Link>
+
+              <Link
+                to="/ContactPage"
+                className={`transition-colors py-2 ${
+                  scrolled ? "text-gray-700 hover:text-blue-600" : "text-white hover:text-orange-400"
+                }`}
+                style={{
+                  color: scrolled ? "#023080" : undefined,
+                }}
+              >
+                Contact Us
+              </Link>
             </nav>
 
             {/* Right side icons */}
@@ -377,14 +370,8 @@ const ScrollHeader = () => {
                             key={index}
                             to={subItem.href}
                             onClick={handleLinkClick}
-                            className="block transition-colors text-sm py-1"
+                            className="block transition-colors text-sm py-1 hover:text-[#04307b]"
                             style={{ color: "#8e9fc5" }}
-                            onMouseEnter={(e) => {
-                              e.currentTarget.style.color = "#04307b"
-                            }}
-                            onMouseLeave={(e) => {
-                              e.currentTarget.style.color = "#8e9fc5"
-                            }}
                           >
                             {subItem.title}
                           </Link>
@@ -392,6 +379,26 @@ const ScrollHeader = () => {
                     </div>
                   </div>
                 ))}
+
+                {/* Direct Links for Mobile */}
+                <div className="space-y-3 pt-4">
+                  <Link
+                    to="/anushka"
+                    onClick={handleLinkClick}
+                    className="block font-semibold transition-colors py-2"
+                    style={{ color: "#023080" }}
+                  >
+                    Join Us
+                  </Link>
+                  <Link
+                    to="/ContactPage"
+                    onClick={handleLinkClick}
+                    className="block font-semibold transition-colors py-2"
+                    style={{ color: "#023080" }}
+                  >
+                    Contact Us
+                  </Link>
+                </div>
               </nav>
             </div>
           </div>
