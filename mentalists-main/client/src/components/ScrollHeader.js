@@ -76,7 +76,7 @@ const ScrollHeader = () => {
         { title: "SWIS Foundation", href: "#", description: "", isSubheading: true },
         {
           title: "Education",
-          href: "/new",
+          href: "/Education",
           description: "Quality education initiatives",
           isSubheading: false,
           parent: "SWIS Foundation",
@@ -90,7 +90,7 @@ const ScrollHeader = () => {
         },
         {
           title: "Nutrition",
-          href: "/new",
+          href: "/Nutrition",
           description: "Food security and nutrition",
           isSubheading: false,
           parent: "SWIS Foundation",
@@ -273,7 +273,7 @@ const ScrollHeader = () => {
 
               {/* Direct Links */}
               <Link
-                to="/anushka"
+                to="/JoinUs"
                 className={`transition-colors py-2 ${
                   scrolled ? "text-gray-700 hover:text-blue-600" : "text-white hover:text-orange-400"
                 }`}
@@ -383,7 +383,7 @@ const ScrollHeader = () => {
                 {/* Direct Links for Mobile */}
                 <div className="space-y-3 pt-4">
                   <Link
-                    to="/anushka"
+                    to="/JoinUs"
                     onClick={handleLinkClick}
                     className="block font-semibold transition-colors py-2"
                     style={{ color: "#023080" }}

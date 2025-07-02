@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 
 // Counter animation component
-const AnimatedCounter = ({ value, duration = 2 }) => { // Removed TypeScript syntax for JS compatibility
+const AnimatedCounter = ({ value, duration = 2 }) => {
   const [count, setCount] = useState(0);
   const ref = React.useRef(null);
   const isInView = useInView(ref, { once: true });
@@ -628,11 +628,12 @@ const Education = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <button 
+              <a 
+                href="/JoinUs"
                 className="border-2 border-white text-white px-8 py-4 rounded-full hover:bg-white hover:text-black transition-all duration-300 flex items-center gap-2 mx-auto text-lg font-medium"
               >
                 Join Our Mission <ArrowRight size={20} />
-              </button>
+              </a>
             </motion.div>
           </motion.div>
         </div>
