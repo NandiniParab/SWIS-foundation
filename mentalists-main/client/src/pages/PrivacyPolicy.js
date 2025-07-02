@@ -1,4 +1,5 @@
-import { Shield, CheckCircle } from "lucide-react";
+import { CheckCircle } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const PrivacyPolicy = () => {
   const sections = [
@@ -52,17 +53,14 @@ const PrivacyPolicy = () => {
   return (
     <div className="min-h-screen bg-[#FCFDFF] font-sans">
       {/* Header */}
-      <header className="py-8 md:py-10 text-center border-b border-[#d2d5e0]">
+      <header className="py-8 md:py-10 border-b border-[#d2d5e0]">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex flex-col items-center space-y-3">
-            <Shield className="h-7 w-7 text-[#023080]" />
-            <h1 className="text-2xl md:text-3xl font-semibold text-[#023080]">
-              Privacy Policy
-            </h1>
-            <p className="text-[#04307b] text-base md:text-lg max-w-4xl mx-auto">
-              At SWIS, we are committed to protecting your privacy and ensuring the security of your personal information. This policy outlines how we collect, use, and safeguard your data.
-            </p>
-          </div>
+          <h1 className="text-2xl md:text-3xl font-semibold text-[#023080] mb-3">
+            Privacy Policy
+          </h1>
+          <p className="text-[#04307b] text-base md:text-lg max-w-4xl">
+            At SWIS, we are committed to protecting your privacy and ensuring the security of your personal information. This policy outlines how we collect, use, and safeguard your data.
+          </p>
         </div>
       </header>
 
@@ -87,19 +85,20 @@ const PrivacyPolicy = () => {
 
       {/* Footer */}
       <footer className="bg-[#023080] text-white py-8">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <p className="text-sm md:text-base">
-            If you have questions or concerns about this Policy, please{" "}
-            <a
-              href="mailto:swisinstitute@gmail.com"
-              className="underline hover:text-[#d2d5e0] transition"
-            >
-              contact us
-            </a>
-            .
-          </p>
-        </div>
-      </footer>
+      <div className="max-w-7xl mx-auto px-4 text-center">
+        <p className="text-sm md:text-base">
+          If you have questions or concerns about this Policy, please{" "}
+          <Link
+            to="/ContactPage"
+            className="underline hover:text-[#d2d5e0] transition"
+          >
+            contact us
+          </Link>
+          .
+        </p>
+      </div>
+    </footer>
+
     </div>
   );
 };

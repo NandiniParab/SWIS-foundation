@@ -1,6 +1,6 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { Users, Award, Clock, Heart, Target, Globe } from 'lucide-react';
 
 const Careers = () => {
@@ -20,21 +20,21 @@ const Careers = () => {
       title: "Center for Social Innovation & Impact",
       description: "Join us in co-creating a better future with passionate and bright minds who care about people and planet",
       image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      applyLink: "#"
+      applyLink: "/csii"
     },
     {
       name: "CSAA",
       title: "Center for Social Action & Advocacy",
       description: "Be part of our mission to create sustainable change through strategic social action and advocacy",
       image: "https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      applyLink: "#"
+      applyLink: "/csaa"
     },
     {
       name: "CCAE",
       title: "Center for Community & Educational Advancement",
       description: "Help us build stronger communities through education and empowerment initiatives",
       image: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      applyLink: "#"
+      applyLink: "/ccae"
     }
   ];
 
@@ -44,7 +44,7 @@ const Careers = () => {
       <nav className="bg-[#FCFDFF] py-3 sm:py-4 px-4 sm:px-6 lg:px-12 border-b border-gray-100">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center space-x-2 sm:space-x-3 text-xs sm:text-sm text-gray-600">
-            <span className="hover:text-[#023080] cursor-pointer transition-colors">Home</span>
+            <Link to="/" className="hover:text-[#023080] cursor-pointer transition-colors">Home</Link>
             <span>›</span>
             <span className="text-[#023080] font-medium">Careers</span>
           </div>
@@ -118,9 +118,11 @@ const Careers = () => {
                 </p>
               </div>
               
-              <button className="mt-8 border-2 border-[#8e9fc5] text-[#8e9fc5] px-8 py-3 rounded-full hover:bg-[#8e9fc5] hover:text-white transition-all duration-300 font-medium">
-                know more →
-              </button>
+              <Link to="/">
+                <button className="mt-8 border-2 border-[#8e9fc5] text-[#8e9fc5] px-8 py-3 rounded-full hover:bg-[#8e9fc5] hover:text-white transition-all duration-300 font-medium">
+                  know more →
+                </button>
+              </Link>
             </motion.div>
 
             {/* Right Image Grid */}
@@ -334,12 +336,14 @@ const Careers = () => {
                       {center.title}
                     </p>
                     
-                    <button className="bg-transparent border-2 border-white text-white px-6 py-2 rounded-full hover:bg-white hover:text-[#023080] transition-all duration-300 text-sm font-medium">
-                      apply now ↗
-                    </button>
+                    <Link to={center.applyLink}>
+                      <button className="bg-transparent border-2 border-white text-white px-6 py-2 rounded-alive full hover:bg-white hover:text-[#023080] transition-all duration-300 text-sm font-medium">
+                        apply now ↗
+                      </button>
+                    </Link>
                   </div>
                 </div>
-              </motion.div>
+                </motion.div>
             ))}
           </div>
 
