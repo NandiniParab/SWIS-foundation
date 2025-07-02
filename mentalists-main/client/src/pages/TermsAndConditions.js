@@ -1,4 +1,5 @@
 import { CheckCircle } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const TermsAndConditions = () => {
   const sections = [
@@ -52,12 +53,12 @@ const TermsAndConditions = () => {
   return (
     <div className="min-h-screen bg-[#FCFDFF] font-sans">
       {/* Header */}
-      <header className="py-8 md:py-10 text-center border-b border-[#d2d5e0]">
+      <header className="py-8 md:py-10 border-b border-[#d2d5e0]">
         <div className="max-w-7xl mx-auto px-4">
-          <h1 className="text-2xl md:text-3xl font-semibold text-[#023080] mb-2">
+          <h1 className="text-2xl md:text-3xl font-semibold text-[#023080] mb-3">
             Terms and Conditions
           </h1>
-          <p className="text-[#04307b] text-base md:text-lg max-w-4xl mx-auto">
+          <p className="text-[#04307b] text-base md:text-lg max-w-4xl">
             Please read these Terms and Conditions carefully before using the SWIS website. These terms govern your use of our services and outline your rights and responsibilities.
           </p>
         </div>
@@ -87,12 +88,12 @@ const TermsAndConditions = () => {
         <div className="max-w-7xl mx-auto px-4 text-center">
           <p className="text-sm md:text-base">
             If you have questions about these Terms, please{" "}
-            <a
-              href="mailto:swisinstitute@gmail.com"
-              className="underline hover:text-[#d2d5e0] transition"
-            >
-              contact us
-            </a>
+            <Link
+            to="/ContactPage"
+            className="underline hover:text-[#d2d5e0] transition"
+          >
+            contact us
+          </Link>
             .
           </p>
         </div>
