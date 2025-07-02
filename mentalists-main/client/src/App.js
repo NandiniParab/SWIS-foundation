@@ -1,7 +1,7 @@
-// src/App.js
 import "./App.css";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
+// Pages
 import Anushka from "./pages/Anushka";
 import Homepage from "./pages/Start";
 import History from "./pages/History";
@@ -18,8 +18,9 @@ import TermsAndConditions from "./pages/TermsAndConditions";
 import SkillDevelopment from "./pages/SkillDevelopment";
 import Careers from "./pages/Careers";
 
-// Import the TypeScript Navbar
+// Components
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -31,30 +32,30 @@ function App() {
 
 const RoutesWithNavbar = () => {
   const location = useLocation();
-  const hideNavbar = location.pathname === "/landing"; // optional
+  const hideNavbar = location.pathname === "/landing";
 
   return (
     <>
       {!hideNavbar && <Navbar />}
-      <div style={{ paddingTop: '64px' }}> {/* offset for fixed navbar */}
-        <Routes>
-          <Route path="/anushka" element={<Anushka />} />
-          <Route path="/homepage" element={<Homepage />} />
-          <Route path="/history" element={<History />} />
-          <Route path="/founderchairman" element={<FounderChairman />} />
-          <Route path="/ccae" element={<CCAE />} />
-          <Route path="/csaa" element={<CSAA />} />
-          <Route path="/csii" element={<CSII />} />
-          <Route path="/member" element={<Member />} />
-          <Route path="/allinone" element={<Allinone />} />
-          <Route path="/new" element={<New />} />
-          <Route path="/coc" element={<COC />} />
-          <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
-          <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
-          <Route path="/SkillDevelopment" element={<SkillDevelopment />} />
-          <Route path="/Careers" element={<Careers />} />
-        </Routes>
-      </div>
+
+      <Routes>
+        <Route path="/anushka" element={<Anushka />} />
+        <Route path="/homepage" element={<Homepage />} />
+        <Route path="/history" element={<History />} />
+        <Route path="/founderchairman" element={<FounderChairman />} />
+        <Route path="/ccae" element={<CCAE />} />
+        <Route path="/csaa" element={<CSAA />} />
+        <Route path="/csii" element={<CSII />} />
+        <Route path="/member" element={<Member />} />
+        <Route path="/allinone" element={<Allinone />} />
+        <Route path="/new" element={<New />} />
+        <Route path="/coc" element={<COC />} />
+        <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
+        <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
+        <Route path="/SkillDevelopment" element={<SkillDevelopment />} />
+      </Routes>
+      {!hideNavbar && <Footer />}
+
     </>
   );
 };
