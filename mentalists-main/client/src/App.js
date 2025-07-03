@@ -12,6 +12,7 @@ import Member from "./pages/Member";
 import Allinone from "./pages/Allinone";
 import New from "./pages/New";
 import COC from "./pages/coc";
+import Nutrition from "./pages/Nutrition";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import SkillDevelopment from "./pages/SkillDevelopment";
@@ -51,6 +52,7 @@ const RoutesWithNavbar = () => {
         <Route path="/allinone" element={<Allinone />} />
         <Route path="/new" element={<New />} />
         <Route path="/coc" element={<COC />} />
+        <Route path="/Nutrition" element={<Nutrition />} />
         <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
         <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
         <Route path="/SkillDevelopment" element={<SkillDevelopment />} />
