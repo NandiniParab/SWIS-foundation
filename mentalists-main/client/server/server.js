@@ -2,6 +2,7 @@ const express = require("express")
 const cors = require("cors")
 const dotenv = require("dotenv")
 const contactRoutes = require("./routes/contact")
+const volunteerRoutes = require("./routes/volunteer")
 
 // Load environment variables
 dotenv.config()
@@ -22,11 +23,18 @@ app.use(express.urlencoded({ extended: true }))
 
 // Routes
 app.use("/api", contactRoutes)
+app.use("/api", volunteerRoutes)
 
 // Health check route
 app.get("/api/health", (req, res) => {
   console.log("✅ Health check route hit!")
-  res.status(200).json({ message: "Server is running!" })
+  res.status(200).json({
+    message: "Server is running!",
+    endpoints: {
+      contact: "/api/contact",
+      volunteer: "/api/volunteer",
+    },
+  })
 })
 
 // Error handling middleware
@@ -43,4 +51,5 @@ app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`)
   console.log(`🔗 Health check: http://localhost:${PORT}/api/health`)
   console.log(`📧 Contact endpoint: http://localhost:${PORT}/api/contact`)
+  console.log(`🙋‍♂️ volunteer endpoint: http://localhost:${PORT}/api/volunteer`)
 })

@@ -2,8 +2,7 @@ import "./App.css";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
 // Pages
-import Anushka from "./pages/Anushka";
-import Start from "./pages/Start";
+import Homepage from "./pages/Start"; // Updated from "./pages/Start"
 import History from "./pages/History";
 import FounderChairman from "./pages/FounderChairman";
 import CCAE from "./pages/ccae";
@@ -17,13 +16,13 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import SkillDevelopment from "./pages/SkillDevelopment";
 import Careers from "./pages/Careers";
+import Education from "./pages/Education";
 
 // Components
-import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-
-import ContactPage from "../src/components/ContactPage"
-
+import ScrollHeader from "./components/ScrollHeader";
+import ContactPage from "./components/ContactPage";
+import JoinUs from "./components/JoinUs";
 
 function App() {
   return (
@@ -39,11 +38,10 @@ const RoutesWithNavbar = () => {
 
   return (
     <>
-      {!hideNavbar && <Navbar />}
-
+      {!hideNavbar && <ScrollHeader />}
       <Routes>
-        <Route path="/anushka" element={<Anushka />} />
-        <Route path="/start" element={<Start />} />
+        <Route path="/" element={<Homepage />} />
+        <Route path="/homepage" element={<Homepage />} />
         <Route path="/history" element={<History />} />
         <Route path="/founderchairman" element={<FounderChairman />} />
         <Route path="/ccae" element={<CCAE />} />
@@ -57,10 +55,13 @@ const RoutesWithNavbar = () => {
         <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
         <Route path="/SkillDevelopment" element={<SkillDevelopment />} />
         <Route path="/ContactPage" element={<ContactPage />} />
+        <Route path="/JoinUs" element={<JoinUs />} />
         <Route path="/Careers" element={<Careers />} />
+        <Route path="/Education" element={<Education />} />
+        {/* Optional: Redirect unmatched routes to homepage */}
+        <Route path="*" element={<Homepage />} />
       </Routes>
       {!hideNavbar && <Footer />}
-
     </>
   );
 };

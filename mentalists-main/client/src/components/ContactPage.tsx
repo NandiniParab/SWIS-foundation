@@ -63,7 +63,7 @@ const ContactPage: React.FC = () => {
           submitting: false,
           submitted: true,
           error: null,
-          success: response.data.message || "Thank you for your message! We will get back to you soon.",
+          success: response.data.message || "Message sent successfully! We will get back to you soon.",
         })
 
         setFormData({
@@ -82,8 +82,6 @@ const ContactPage: React.FC = () => {
         errorMessage = "Request timeout. Please check your connection."
       } else if (error.code === "ERR_NETWORK") {
         errorMessage = "Cannot connect to server. Make sure backend is running on port 5000."
-      } else if (error.response) {
-        errorMessage = error.response.data?.message || `Server error: ${error.response.status}`
       } else if (error.request) {
         errorMessage = "No response from server. Check if backend is running."
       }
@@ -95,6 +93,31 @@ const ContactPage: React.FC = () => {
         success: null,
       })
     }
+  }
+
+  // Success page with updated message
+  if (status.submitted) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4">
+        <div className="max-w-2xl mx-auto text-center">
+          <div className="bg-white rounded-lg shadow-sm p-8">
+            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <svg className="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-4">Message Sent Successfully!</h1>
+            <p className="text-lg text-gray-600 mb-6">We will get back to you soon.</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="bg-blue-600 text-white px-8 py-3 rounded-md font-medium hover:bg-blue-700 transition-colors"
+            >
+              Send Another Message
+            </button>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -229,12 +252,6 @@ const ContactPage: React.FC = () => {
               {status.error && (
                 <div className="p-4 bg-red-50 border border-red-200 rounded-md">
                   <p className="text-red-600 text-sm">{status.error}</p>
-                </div>
-              )}
-
-              {status.success && (
-                <div className="p-4 bg-green-50 border border-green-200 rounded-md">
-                  <p className="text-green-600 text-sm">{status.success}</p>
                 </div>
               )}
 

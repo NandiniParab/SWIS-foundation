@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 // Inline Button Component
 const Button = React.forwardRef(({ className = "", variant = "default", size = "default", ...props }, ref) => {
@@ -116,11 +117,11 @@ const Allinone = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
             {[
-              { title: "Education", image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=500&h=300&fit=crop" },
-              { title: "Skill Development", image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=300&fit=crop" },
-              { title: "Nutrition", image: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=500&h=300&fit=crop" },
-              { title: "Healthcare", image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=500&h=300&fit=crop" },
-              { title: "Relief of Poor", image: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=500&h=300&fit=crop" }
+              { title: "Education", image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=500&h=300&fit=crop", path: "/education" },
+              { title: "Skill Development", image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=300&fit=crop", path: "/SkillDevelopment" },
+              { title: "Nutrition", image: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=500&h=300&fit=crop", path: "/nutrition" },
+              { title: "Healthcare", image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=500&h=300&fit=crop", path: "/healthcare" },
+              { title: "Relief of Poor", image: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=500&h=300&fit=crop", path: "/relief-of-poor" }
             ].map((intervention, index) => (
               <motion.div
                 key={intervention.title}
@@ -140,12 +141,14 @@ const Allinone = () => {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                     <div className="absolute bottom-6 left-6 right-6">
                       <h3 className="text-2xl font-light text-white mb-3">{intervention.title}</h3>
-                      <Button
-                        variant="outline"
-                        className="text-white border-white hover:bg-white hover:text-black transition-colors"
-                      >
-                        Know More →
-                      </Button>
+                      <Link to={intervention.path}>
+                        <Button
+                          variant="outline"
+                          className="text-white border-white hover:bg-white hover:text-black transition-colors"
+                        >
+                          Know More →
+                        </Button>
+                      </Link>
                     </div>
                   </div>
                 </Card>
@@ -263,7 +266,7 @@ const Allinone = () => {
             <div className="mt-12 text-white text-sm space-y-2">
               <p className="font-semibold">Disclaimer:</p>
               <p>
-                In case any of the provisions hereinabove, contravenes any law or any instrument having force of law, the law time being in-force shall prevail.
+                In case any of the provisions hereinabove, contravenes any law or any instrument having force of law, theFU law time being in-force shall prevail.
               </p>
               <p>
                 Wherever the policy is translated in the vernacular language for easy understanding by the members, if there is any conflict or varied interpretation of the policy in vernacular language, the interpretation of English version shall prevail.
