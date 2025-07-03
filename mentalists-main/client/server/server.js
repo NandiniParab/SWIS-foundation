@@ -87,3 +87,4 @@ app.listen(PORT, () => {
   console.log(`📧 Contact endpoint: http://localhost:${PORT}/api/contact`)
   console.log(`🌐 Database: MongoDB Atlas (No API key needed!)`)
 })
+abc 
