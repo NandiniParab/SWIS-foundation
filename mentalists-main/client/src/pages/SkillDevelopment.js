@@ -17,31 +17,8 @@ import {
 } from 'lucide-react';
 
 const SkillDevelopment = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
   const [countAnimated, setCountAnimated] = useState(false);
   const [activeProgram, setActiveProgram] = useState(0);
-
-  // Hero carousel content
-  const heroSlides = [
-    {
-      title: "Skills for Tomorrow",
-      subtitle: "Empowering India's Youth",
-      description: "Bridging the skill gap to create sustainable livelihoods for over 65% of India's youth population under 35.",
-      background: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2340&q=80"
-    },
-    {
-      title: "Digital Transformation",
-      subtitle: "Future-Ready Skills",
-      description: "Preparing communities for a rapidly changing digital economy through comprehensive training programs.",
-      background: "https://images.unsplash.com/photo-1552581234-26160f608093?ixlib=rb-4.0.3&auto=format&fit=crop&w=2340&q=80"
-    },
-    {
-      title: "Inclusive Growth",
-      subtitle: "Grassroots Solutions",
-      description: "Working across urban slums, rural villages, and tribal communities to ensure no one is left behind.",
-      background: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2340&q=80"
-    }
-  ];
 
   // Programs data
   const programs = [
@@ -115,14 +92,6 @@ const SkillDevelopment = () => {
     { number: 3, suffix: "+", label: "States", icon: <Globe className="w-6 h-6" /> }
   ];
 
-  // Auto-slide for hero
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-    }, 6000);
-    return () => clearInterval(timer);
-  }, [heroSlides.length]);
-
   // Animated counter component
   const AnimatedCounter = ({ end, duration = 2000, suffix = "" }) => {
     const [count, setCount] = useState(0);
@@ -152,23 +121,14 @@ const SkillDevelopment = () => {
     <div className="bg-[#FCFDFF] overflow-hidden">
       {/* Hero Section */}
       <section className="relative h-screen">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentSlide}
-            initial={{ opacity: 0, scale: 1.02 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.98 }}
-            transition={{ duration: 2, ease: "easeInOut" }}
-            className="absolute inset-0"
-          >
-            <img
-              src={heroSlides[currentSlide].background}
-              alt="Hero background"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-br from-[#023080]/95 via-[#04307b]/85 to-[#8e9fc5]/70"></div>
-          </motion.div>
-        </AnimatePresence>
+        <div className="absolute inset-0">
+          <img
+            src="/img/your-image.png" // Replace with the correct path to your uploaded image
+            alt="Skill Development Hero"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#023080]/95 via-[#04307b]/85 to-[#8e9fc5]/70"></div>
+        </div>
 
         {/* Animated background elements */}
         <div className="absolute inset-0 overflow-hidden">
@@ -224,15 +184,7 @@ const SkillDevelopment = () => {
                   transition={{ duration: 1, delay: 0.7 }}
                   className="text-5xl lg:text-7xl font-bold mb-8 leading-tight"
                 >
-                  {heroSlides[currentSlide].title}
-                  <motion.div 
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 1.2 }}
-                    className="text-[#d2d5e0] text-3xl lg:text-4xl mt-4 font-light"
-                  >
-                    {heroSlides[currentSlide].subtitle}
-                  </motion.div>
+                  Statistics About Skill Development in India
                 </motion.h1>
 
                 <motion.p
@@ -241,14 +193,36 @@ const SkillDevelopment = () => {
                   transition={{ duration: 0.8, delay: 1.4 }}
                   className="text-xl text-[#d2d5e0]/90 leading-relaxed mb-10 max-w-2xl"
                 >
-                  {heroSlides[currentSlide].description}
+                  Despite numerous government schemes and institutional efforts, the skill development landscape in India still faces major gaps. These numbers underline the urgent need for inclusive and accessible skilling pathways to prepare youth for the future of work.
                 </motion.p>
 
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 1.6 }}
-                  className="flex justify-center lg:justify-start"
+                  className="grid grid-cols-1 md:grid-cols-3 gap-6"
+                >
+                  {statisticsData.map((stat, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 40 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.8, delay: 1.8 + index * 0.2 }}
+                      className="bg-white/10 backdrop-blur-lg rounded-3xl p-6 text-center"
+                    >
+                      <div className="text-4xl font-bold text-white mb-2">{stat.number}</div>
+                      <div className="text-[#d2d5e0] text-sm">{stat.title}</div>
+                      <div className="text-[#d2d5e0] text-xs">{stat.subtitle}</div>
+                      <div className="text-xs text-[#d2d5e0] italic mt-2">Source: {stat.source}</div>
+                    </motion.div>
+                  ))}
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 2.4 }}
+                  className="flex justify-center lg:justify-start mt-10"
                 >
                   <motion.a
                     href="/JoinUs"
@@ -262,49 +236,39 @@ const SkillDevelopment = () => {
                 </motion.div>
               </motion.div>
 
-              {/* Hero Stats */}
               <motion.div
                 initial={{ opacity: 0, x: 60 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 1.2, delay: 0.8 }}
-                className="grid grid-cols-2 gap-6"
+                className="text-center"
               >
-                {[
-                  { number: "65%", label: "Population under 35" },
-                  { number: "50%", label: "Graduates employable" },
-                  { number: "15K+", label: "Target by 2030" },
-                  { number: "4K+", label: "Youth Impacted" }
-                ].map((stat, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 40 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 1.2 + index * 0.2 }}
-                    whileHover={{ scale: 1.05, y: -5 }}
-                    className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 hover:bg-white/20 transition-all duration-300 group cursor-pointer border border-white/20"
-                  >
-                    <div className="text-4xl font-bold text-white mb-2">{stat.number}</div>
-                    <div className="text-[#d2d5e0] text-sm leading-relaxed">{stat.label}</div>
-                  </motion.div>
-                ))}
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 1.0 }}
+                  className="text-7xl lg:text-9xl font-bold text-[#d2d5e0] mb-6"
+                >
+                  15,000+
+                </motion.div>
+                <motion.h2
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 1.2 }}
+                  className="text-3xl lg:text-5xl font-bold text-white mb-4"
+                >
+                  Our 2030 Vision
+                </motion.h2>
+                <motion.p
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 1.4 }}
+                  className="text-xl text-[#d2d5e0]/90 leading-relaxed max-w-md mx-auto"
+                >
+                  To enable 15,000+ young people annually by 2030 to access relevant skills, employment pathways, or start small businesses—especially those from underserved and vulnerable backgrounds.
+                </motion.p>
               </motion.div>
             </div>
           </div>
-        </div>
-
-        {/* Slide indicators */}
-        <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 flex gap-4">
-          {heroSlides.map((_, index) => (
-            <motion.button
-              key={index}
-              onClick={() => setCurrentSlide(index)}
-              whileHover={{ scale: 1.2 }}
-              whileTap={{ scale: 0.8 }}
-              className={`w-4 h-4 rounded-full transition-all duration-500 ${
-                index === currentSlide ? 'bg-white shadow-lg' : 'bg-white/40 hover:bg-white/60'
-              }`}
-            />
-          ))}
         </div>
 
         {/* Scroll indicator */}
@@ -324,114 +288,8 @@ const SkillDevelopment = () => {
         </motion.div>
       </section>
 
-      {/* Statistics Section */}
-      <section className="py-24 bg-gradient-to-br from-[#FCFDFF] to-[#d2d5e0]/30">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-20"
-          >
-            <h2 className="text-4xl lg:text-6xl font-bold text-[#023080] mb-8">
-              Statistics About Skill Development in India
-            </h2>
-            <p className="text-xl text-[#04307b]/80 max-w-4xl mx-auto leading-relaxed">
-              Despite numerous government schemes and institutional efforts, the skill development landscape in India 
-              still faces major gaps. These numbers underline the urgent need for inclusive and accessible skilling 
-              pathways to prepare youth for the future of work.
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-10">
-            {statisticsData.map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 60 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: index * 0.2 }}
-                viewport={{ once: true }}
-                whileHover={{ scale: 1.05, y: -10 }}
-                className="bg-white rounded-3xl p-10 shadow-2xl hover:shadow-3xl transition-all duration-500 border border-[#d2d5e0]/20 group"
-              >
-                <div className="text-center">
-                  <div className="text-[#8e9fc5] mb-6 flex justify-center group-hover:scale-110 transition-transform duration-300">
-                    {stat.icon}
-                  </div>
-                  <div className="text-6xl font-bold text-[#023080] mb-6 group-hover:text-[#04307b] transition-colors duration-300">
-                    {stat.number}
-                  </div>
-                  <h3 className="text-xl font-semibold text-[#04307b] mb-4">{stat.title}</h3>
-                  <p className="text-[#8e9fc5] mb-6">{stat.subtitle}</p>
-                  <div className="text-sm text-[#023080] font-medium italic bg-[#d2d5e0]/20 px-4 py-2 rounded-full">
-                    Source: {stat.source}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Problem Statement */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <div className="grid lg:grid-cols-2 gap-20 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -60 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-4xl lg:text-6xl font-bold text-[#023080] mb-10">
-                The Challenge We Face
-              </h2>
-              <div className="space-y-8 text-lg text-[#04307b]/80 leading-relaxed">
-                <p>
-                  India faces a growing skill gap—over 65% of its population is under the age of 35, yet only a fraction 
-                  are job-ready. According to the India Skills Report 2024, less than 50% of graduates are considered employable.
-                </p>
-                <p>
-                  This gap is even wider in rural, tribal, and marginalized communities where access to training, 
-                  mentorship, and opportunities is limited.
-                </p>
-                <p>
-                  At SWIS, we believe that skills are the stepping stones to sustainable livelihoods and dignity. 
-                  We work across urban slums, rural villages, tribal belts, and shelter homes to equip youth and 
-                  adolescents with future-ready, relevant skills.
-                </p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 60 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="relative"
-            >
-              <motion.img
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.3 }}
-                src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                alt="Skills training"
-                className="rounded-3xl shadow-2xl"
-              />
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8, delay: 0.5 }}
-                viewport={{ once: true }}
-                className="absolute -bottom-8 -right-8 bg-[#023080] text-white p-8 rounded-3xl shadow-2xl"
-              >
-                <Zap className="w-10 h-10 mb-3" />
-                <div className="text-lg font-semibold">Future-Ready Skills</div>
-              </motion.div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
+      {/* Statistics Section (moved below hero) */}
+      {/* ... (rest of the sections remain unchanged) ... */}
 
       {/* Programs Section */}
       <section className="py-24 bg-gradient-to-br from-[#d2d5e0]/20 to-[#8e9fc5]/10">
@@ -631,41 +489,62 @@ const SkillDevelopment = () => {
         </div>
       </section>
 
-      {/* Impact Goal */}
-      <section className="py-24 bg-gradient-to-br from-[#04307b] to-[#023080] text-white relative overflow-hidden">
-        <div className="absolute inset-0">
-          <motion.div
-            animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.3, 0.1] }}
-            transition={{ duration: 8, repeat: Infinity }}
-            className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-[#8e9fc5]/20 to-transparent"
-          />
-        </div>
-        
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center"
-          >
-            <h2 className="text-4xl lg:text-6xl font-bold mb-12">
-              Our 2030 Vision
-            </h2>
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, delay: 0.3 }}
+      {/* Problem Statement */}
+      <section className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="grid lg:grid-cols-2 gap-20 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -60 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
               viewport={{ once: true }}
-              className="text-7xl lg:text-9xl font-bold text-[#d2d5e0] mb-12"
             >
-              15,000+
+              <h2 className="text-4xl lg:text-6xl font-bold text-[#023080] mb-10">
+                The Challenge We Face
+              </h2>
+              <div className="space-y-8 text-lg text-[#04307b]/80 leading-relaxed">
+                <p>
+                  India faces a growing skill gap—over 65% of its population is under the age of 35, yet only a fraction 
+                  are job-ready. According to the India Skills Report 2024, less than 50% of graduates are considered employable.
+                </p>
+                <p>
+                  This gap is even wider in rural, tribal, and marginalized communities where access to training, 
+                  mentorship, and opportunities is limited.
+                </p>
+                <p>
+                  At SWIS, we believe that skills are the stepping stones to sustainable livelihoods and dignity. 
+                  We work across urban slums, rural villages, tribal belts, and shelter homes to equip youth and 
+                  adolescents with future-ready, relevant skills.
+                </p>
+              </div>
             </motion.div>
-            <p className="text-2xl text-[#d2d5e0]/90 max-w-4xl mx-auto leading-relaxed">
-              To enable 15,000+ young people annually by 2030 to access relevant skills, employment pathways, 
-              or start small businesses—especially those from underserved and vulnerable backgrounds.
-            </p>
-          </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 60 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="relative"
+            >
+              <motion.img
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.3 }}
+                src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                alt="Skills training"
+                className="rounded-3xl shadow-2xl"
+              />
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, delay: 0.5 }}
+                viewport={{ once: true }}
+                className="absolute -bottom-8 -right-8 bg-[#023080] text-white p-8 rounded-3xl shadow-2xl"
+              >
+                <Zap className="w-10 h-10 mb-3" />
+                <div className="text-lg font-semibold">Future-Ready Skills</div>
+              </motion.div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
