@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
 // Pages
 import Anushka from "./pages/Anushka";
-import Homepage from "./pages/Start";
+import Start from "./pages/Start";
 import History from "./pages/History";
 import FounderChairman from "./pages/FounderChairman";
 import CCAE from "./pages/ccae";
@@ -43,7 +43,7 @@ const RoutesWithNavbar = () => {
 
       <Routes>
         <Route path="/anushka" element={<Anushka />} />
-        <Route path="/homepage" element={<Homepage />} />
+        <Route path="/start" element={<Start />} />
         <Route path="/history" element={<History />} />
         <Route path="/founderchairman" element={<FounderChairman />} />
         <Route path="/ccae" element={<CCAE />} />
@@ -57,6 +57,7 @@ const RoutesWithNavbar = () => {
         <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
         <Route path="/SkillDevelopment" element={<SkillDevelopment />} />
         <Route path="/ContactPage" element={<ContactPage />} />
+        <Route path="/Careers" element={<Careers />} />
       </Routes>
       {!hideNavbar && <Footer />}
 
