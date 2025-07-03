@@ -1,11 +1,97 @@
 const express = require("express")
 const nodemailer = require("nodemailer")
+const mongoose = require("mongoose")
 const router = express.Router()
+
+// Volunteer Schema for database storage
+const volunteerSchema = new mongoose.Schema(
+  {
+    domain: {
+      type: String,
+      required: true,
+      enum: ["ccae", "csii", "csaa", "general"],
+    },
+    firstName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    lastName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    contact: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    dateOfBirth: {
+      type: Date,
+      required: true,
+    },
+    age: {
+      type: Number,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      trim: true,
+      lowercase: true,
+    },
+    whyJoinUs: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    questionsForUs: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    resumeFileName: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    applicationId: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    status: {
+      type: String,
+      enum: ["new", "under-review", "accepted", "rejected", "on-hold"],
+      default: "new",
+    },
+    priority: {
+      type: String,
+      enum: ["low", "medium", "high"],
+      default: "medium",
+    },
+    appliedAt: {
+      type: Date,
+      default: Date.now,
+    },
+    reviewedAt: {
+      type: Date,
+    },
+    notes: {
+      type: String,
+      default: "",
+    },
+  },
+  {
+    timestamps: true,
+  },
+)
+
+const Volunteer = mongoose.model("Volunteer", volunteerSchema)
 
 // Create transporter for email
 const createTransporter = () => {
   console.log("🔧 Creating email transporter...")
-
   if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
     throw new Error("Email credentials not found in environment variables")
   }
@@ -19,12 +105,8 @@ const createTransporter = () => {
       pass: process.env.EMAIL_PASS,
     },
     tls: {
-      ciphers: "SSLv3",
       rejectUnauthorized: false,
     },
-    connectionTimeout: 60000,
-    greetingTimeout: 30000,
-    socketTimeout: 60000,
   })
 }
 
@@ -38,6 +120,104 @@ const getInitiativeName = (code) => {
   }
   return initiatives[code] || code
 }
+
+// GET route to view all volunteer applications (for admin)
+router.get("/volunteers", async (req, res) => {
+  try {
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(503).json({
+        success: false,
+        message: "Database not connected. Check MongoDB Atlas connection.",
+      })
+    }
+
+    const volunteers = await Volunteer.find().sort({ appliedAt: -1 })
+
+    res.status(200).json({
+      success: true,
+      count: volunteers.length,
+      data: volunteers,
+    })
+  } catch (error) {
+    console.error("Error fetching volunteer applications:", error)
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch volunteer applications",
+    })
+  }
+})
+
+// GET route to view single volunteer application
+router.get("/volunteers/:id", async (req, res) => {
+  try {
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(503).json({
+        success: false,
+        message: "Database not connected. Check MongoDB Atlas connection.",
+      })
+    }
+
+    const volunteer = await Volunteer.findById(req.params.id)
+
+    if (!volunteer) {
+      return res.status(404).json({
+        success: false,
+        message: "Volunteer application not found",
+      })
+    }
+
+    res.status(200).json({
+      success: true,
+      data: volunteer,
+    })
+  } catch (error) {
+    console.error("Error fetching volunteer application:", error)
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch volunteer application",
+    })
+  }
+})
+
+// PUT route to update volunteer application status
+router.put("/volunteers/:id", async (req, res) => {
+  try {
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(503).json({
+        success: false,
+        message: "Database not connected. Check MongoDB Atlas connection.",
+      })
+    }
+
+    const { status, priority, notes } = req.body
+
+    const updateData = {}
+    if (status) updateData.status = status
+    if (priority) updateData.priority = priority
+    if (notes) updateData.notes = notes
+    if (status === "accepted" || status === "rejected") updateData.reviewedAt = new Date()
+
+    const volunteer = await Volunteer.findByIdAndUpdate(req.params.id, updateData, { new: true })
+
+    if (!volunteer) {
+      return res.status(404).json({
+        success: false,
+        message: "Volunteer application not found",
+      })
+    }
+
+    res.status(200).json({
+      success: true,
+      data: volunteer,
+    })
+  } catch (error) {
+    console.error("Error updating volunteer application:", error)
+    res.status(500).json({
+      success: false,
+      message: "Failed to update volunteer application",
+    })
+  }
+})
 
 // POST route to handle simple volunteer application submission
 router.post("/volunteer-simple", async (req, res) => {
@@ -88,6 +268,35 @@ router.post("/volunteer-simple", async (req, res) => {
     const applicationId = `SWIS-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`
     console.log("✅ Generated Application ID:", applicationId)
 
+    let savedVolunteer = null
+
+    // Try to save to database (optional - will work without it)
+    try {
+      if (mongoose.connection.readyState === 1) {
+        console.log("💾 Saving volunteer application to database...")
+        const newVolunteer = new Volunteer({
+          domain,
+          firstName,
+          lastName,
+          contact,
+          dateOfBirth: birthDate,
+          age,
+          email,
+          whyJoinUs,
+          questionsForUs: questionsForUs || "",
+          resumeFileName: resumeFileName || "",
+          applicationId,
+        })
+
+        savedVolunteer = await newVolunteer.save()
+        console.log("✅ Volunteer application saved to database with ID:", savedVolunteer._id)
+      } else {
+        console.log("⚠️ Database not connected - continuing with email only")
+      }
+    } catch (dbError) {
+      console.log("⚠️ Database save failed - continuing with email only:", dbError.message)
+    }
+
     console.log("✅ Validation passed, creating transporter...")
     const transporter = createTransporter()
 
@@ -117,6 +326,7 @@ router.post("/volunteer-simple", async (req, res) => {
               <p style="margin: 8px 0;"><strong>📅 Date of Birth:</strong> ${new Date(dateOfBirth).toLocaleDateString()}</p>
               <p style="margin: 8px 0;"><strong>🎯 Domain:</strong> <span style="background: #3b82f6; color: white; padding: 4px 12px; border-radius: 6px; font-size: 14px;">${getInitiativeName(domain)}</span></p>
               <p style="margin: 8px 0;"><strong>🆔 Application ID:</strong> ${applicationId}</p>
+              ${savedVolunteer ? `<p style="margin: 8px 0;"><strong>🗄️ Database ID:</strong> ${savedVolunteer._id}</p>` : ""}
               ${resumeFileName ? `<p style="margin: 8px 0;"><strong>📄 Resume:</strong> ${resumeFileName}</p>` : ""}
             </div>
           </div>
@@ -259,12 +469,12 @@ router.post("/volunteer-simple", async (req, res) => {
       message:
         "Thank you for your application! We have received your submission and will contact you within 3-5 business days.",
       applicationId: applicationId,
+      databaseId: savedVolunteer ? savedVolunteer._id : null,
     })
   } catch (error) {
     console.error("❌ Detailed Error:", error)
 
     let errorMessage = "Failed to submit application. Please try again later."
-
     if (error.code === "EAUTH") {
       errorMessage = "Email authentication failed. Please check your Gmail app password."
     } else if (error.code === "ESOCKET" || error.code === "ECONNECTION") {

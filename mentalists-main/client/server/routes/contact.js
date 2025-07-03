@@ -3,6 +3,9 @@ const nodemailer = require("nodemailer")
 const mongoose = require("mongoose")
 const router = express.Router()
 
+// Add this at the top with other imports
+const volunteerRoutes = require("./volunteer")
+
 // Simple Contact Schema (No separate model file needed)
 const contactSchema = new mongoose.Schema(
   {
@@ -279,5 +282,8 @@ router.post("/contact", async (req, res) => {
     })
   }
 })
+
+// Add this at the end before module.exports
+router.use("/", volunteerRoutes)
 
 module.exports = router
