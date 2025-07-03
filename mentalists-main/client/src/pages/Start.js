@@ -102,94 +102,7 @@ const Homepage = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="bg-white shadow-sm sticky top-0 z-50">
-        {/* Top Banner */}
-        <div className="bg-gray-800 text-white py-2 px-4 text-sm">
-          <div className="max-w-7xl mx-auto flex justify-between items-center">
-            <div className="flex space-x-8">
-              <span className="text-red-400">IND Ranks 132 - Education</span>
-              <span className="text-red-400">IND Ranks 111 - Hunger</span>
-            </div>
-            <div className="flex space-x-4">
-              <button className="hover:text-blue-400">eB2B</button>
-              <button className="hover:text-blue-400">Fraud Alert</button>
-              <button className="hover:text-blue-400">Contact Us</button>
-            </div>
-          </div>
-        </div>
-
-        {/* Main Navigation */}
-        <nav className="bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-16">
-              {/* Logo */}
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 rounded-full" style={{ backgroundColor: '#023080' }}>
-                    <div className="w-full h-full rounded-full flex items-center justify-center text-white font-bold text-xl">
-                      S
-                    </div>
-                  </div>
-                </div>
-                <div className="ml-3">
-                  <div className="text-xl font-bold text-gray-900">SWIS</div>
-                  <div className="text-xs text-gray-600">Turning Compassion into Action</div>
-                </div>
-              </div>
-
-              {/* Desktop Navigation */}
-              <div className="hidden md:block">
-                <div className="ml-10 flex items-baseline space-x-8">
-                  <a href="#" className="text-gray-900 hover:text-blue-600 px-3 py-2 text-sm font-medium">About Us</a>
-                  <div className="relative group">
-                    <button className="text-gray-900 hover:text-blue-600 px-3 py-2 text-sm font-medium">Interventions</button>
-                    <div className="absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                      <a href="/education" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Education</a>
-                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Skill Development</a>
-                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Nutrition</a>
-                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Healthcare</a>
-                      <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Relief of Poor</a>
-                    </div>
-                  </div>
-                  <a href="#" className="text-gray-900 hover:text-blue-600 px-3 py-2 text-sm font-medium">Get Involved</a>
-                  <a href="#" className="text-gray-900 hover:text-blue-600 px-3 py-2 text-sm font-medium">Careers</a>
-                </div>
-              </div>
-
-              {/* Mobile menu button */}
-              <div className="md:hidden">
-                <button
-                  onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className="text-gray-400 hover:text-gray-500"
-                >
-                  {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Mobile Navigation */}
-          <AnimatePresence>
-            {isMenuOpen && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                className="md:hidden bg-white border-t"
-              >
-                <div className="px-2 pt-2 pb-3 space-y-1">
-                  <a href="#" className="block px-3 py-2 text-base font-medium text-gray-900 hover:text-blue-600">About Us</a>
-                  <a href="/education" className="block px-3 py-2 text-base font-medium text-gray-900 hover:text-blue-600">Education</a>
-                  <a href="#" className="block px-3 py-2 text-base font-medium text-gray-900 hover:text-blue-600">Get Involved</a>
-                  <a href="#" className="block px-3 py-2 text-base font-medium text-gray-900 hover:text-blue-600">Careers</a>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </nav>
-      </header>
-
+      
       {/* Hero Section */}
       <section 
         className="relative h-screen flex items-center justify-start bg-cover bg-center"
@@ -647,49 +560,7 @@ const Homepage = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <div className="flex items-center mb-4">
-                <div className="w-8 h-8 rounded-full" style={{ backgroundColor: '#023080' }}>
-                  <div className="w-full h-full rounded-full flex items-center justify-center text-white font-bold">S</div>
-                </div>
-                <span className="ml-2 text-xl font-bold">SWIS</span>
-              </div>
-              <p className="text-gray-400">Turning Compassion into Action</p>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-4">About</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white">Our Story</a></li>
-                <li><a href="#" className="hover:text-white">Mission & Vision</a></li>
-                <li><a href="#" className="hover:text-white">Leadership</a></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Interventions</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white">Education</a></li>
-                <li><a href="#" className="hover:text-white">Healthcare</a></li>
-                <li><a href="#" className="hover:text-white">Skill Development</a></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Get Involved</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white">Volunteer</a></li>
-                <li><a href="#" className="hover:text-white">Donate</a></li>
-                <li><a href="#" className="hover:text-white">Partner</a></li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>© 2024 SWIS. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+      
     </div>
   );
 };
