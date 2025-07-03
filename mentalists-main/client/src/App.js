@@ -23,6 +23,7 @@ import Footer from "./components/Footer";
 import ScrollHeader from "./components/ScrollHeader";
 import ContactPage from "./components/ContactPage";
 import JoinUs from "./components/JoinUs";
+import FileUploadTest from "./components/FileUploadTest"
 
 function App() {
   return (
@@ -55,6 +56,7 @@ const RoutesWithNavbar = () => {
         <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
         <Route path="/SkillDevelopment" element={<SkillDevelopment />} />
         <Route path="/ContactPage" element={<ContactPage />} />
+        <Route path="/FileUploadTest" element={<FileUploadTest />} />
         <Route path="/JoinUs" element={<JoinUs />} />
         <Route path="/Careers" element={<Careers />} />
         <Route path="/Education" element={<Education />} />

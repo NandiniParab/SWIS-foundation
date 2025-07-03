@@ -10,7 +10,7 @@ dotenv.config()
 const app = express()
 const PORT = process.env.PORT || 5000
 
-// Connect to MongoDB Atlas (No API key needed!)
+// Connect to MongoDB Atlas (Fixed - removed deprecated options)
 const connectDB = async () => {
   try {
     console.log("🔗 Connecting to MongoDB Atlas...")
@@ -18,8 +18,8 @@ const connectDB = async () => {
     await mongoose.connect(
       "mongodb+srv://jiyagudhaka23:3CONNRAloSDTSmMe@swis.fisa8ak.mongodb.net/swis-ngo?retryWrites=true&w=majority&appName=swis",
       {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
+        // Removed deprecated options: useNewUrlParser and useUnifiedTopology
+        // These are no longer needed in modern MongoDB driver versions
       },
     )
 
@@ -85,6 +85,6 @@ app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`)
   console.log(`🔗 Health check: http://localhost:${PORT}/api/health`)
   console.log(`📧 Contact endpoint: http://localhost:${PORT}/api/contact`)
+  console.log(`🙋‍♂️ Volunteer endpoint: http://localhost:${PORT}/api/volunteer-simple`)
   console.log(`🌐 Database: MongoDB Atlas (No API key needed!)`)
 })
-abc 
