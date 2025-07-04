@@ -62,6 +62,7 @@ const RoutesWithNavbar = () => {
         <Route path="/JoinUs" element={<JoinUs />} />
         <Route path="/Careers" element={<Careers />} />
         <Route path="/Education" element={<Education />} />
+        <Route path="/Nutrition" element={<Nutrition />} />
         {/* Optional: Redirect unmatched routes to homepage */}
         <Route path="*" element={<Homepage />} />
       </Routes>
