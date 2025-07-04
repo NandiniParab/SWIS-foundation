@@ -9,6 +9,10 @@ const ScrollHeader = () => {
   const [activeDropdown, setActiveDropdown] = useState(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
+  // Import images using require for better compatibility
+  const bluelogo = require("../img/bluelogo.png")
+  const whitelogo = require("../img/whitelogo.png")
+
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY
@@ -76,7 +80,7 @@ const ScrollHeader = () => {
         { title: "SWIS Foundation", href: "#", description: "", isSubheading: true },
         {
           title: "Education",
-          href: "/Education",
+          href: "/new",
           description: "Quality education initiatives",
           isSubheading: false,
           parent: "SWIS Foundation",
@@ -90,7 +94,7 @@ const ScrollHeader = () => {
         },
         {
           title: "Nutrition",
-          href: "/Nutrition",
+          href: "/new",
           description: "Food security and nutrition",
           isSubheading: false,
           parent: "SWIS Foundation",
@@ -235,15 +239,15 @@ const ScrollHeader = () => {
         {/* Main Navigation */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div
-            className={`flex items-center justify-between transition-all duration-500 ${scrolled ? "h-14" : "h-16"}`}
+            className={`flex items-center justify-between transition-all duration-500 ${scrolled ? "h-16" : "h-20"}`}
           >
-            {/* Logo */}
+            {/* Logo - Increased size */}
             <div className="flex items-center">
               <Link to="/homepage">
                 <img
-                  src={scrolled ? "/swis-logo-blue.png" : "/swis-logo-white.png"}
+                  src={scrolled ? bluelogo : whitelogo}
                   alt="SWIS Foundation"
-                  className={`transition-all duration-500 ${scrolled ? "h-10 w-auto" : "h-12 w-auto"}`}
+                  className={`transition-all duration-500 ${scrolled ? "h-14 w-auto" : "h-16 w-auto"}`}
                 />
               </Link>
             </div>
@@ -273,7 +277,7 @@ const ScrollHeader = () => {
 
               {/* Direct Links */}
               <Link
-                to="/JoinUs"
+                to="/anushka"
                 className={`transition-colors py-2 ${
                   scrolled ? "text-gray-700 hover:text-blue-600" : "text-white hover:text-orange-400"
                 }`}
@@ -344,7 +348,7 @@ const ScrollHeader = () => {
             <div className="p-6">
               <div className="flex items-center justify-between mb-8">
                 <Link to="/homepage" onClick={handleLinkClick}>
-                  <img src="/swis-logo-blue.png" alt="SWIS Foundation" className="h-10 w-auto" />
+                  <img src={bluelogo || "/placeholder.svg"} alt="SWIS Foundation" className="h-12 w-auto" />
                 </Link>
                 <button
                   onClick={() => setMobileMenuOpen(false)}
@@ -383,7 +387,7 @@ const ScrollHeader = () => {
                 {/* Direct Links for Mobile */}
                 <div className="space-y-3 pt-4">
                   <Link
-                    to="/JoinUs"
+                    to="/anushka"
                     onClick={handleLinkClick}
                     className="block font-semibold transition-colors py-2"
                     style={{ color: "#023080" }}

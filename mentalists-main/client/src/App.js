@@ -23,6 +23,7 @@ import Footer from "./components/Footer";
 import ScrollHeader from "./components/ScrollHeader";
 import ContactPage from "./components/ContactPage";
 import JoinUs from "./components/JoinUs";
+import Nutrition from "./pages/Nutrition";
 
 function App() {
   return (
@@ -58,6 +59,7 @@ const RoutesWithNavbar = () => {
         <Route path="/JoinUs" element={<JoinUs />} />
         <Route path="/Careers" element={<Careers />} />
         <Route path="/Education" element={<Education />} />
+        <Route path="/Nutrition" element={<Nutrition />} />
         {/* Optional: Redirect unmatched routes to homepage */}
         <Route path="*" element={<Homepage />} />
       </Routes>
