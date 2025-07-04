@@ -1,10 +1,29 @@
 const express = require("express")
 const nodemailer = require("nodemailer")
+const mongoose = require("mongoose")
 const router = express.Router()
 
-// Create transporter optimized for Node.js 22
+// Add this at the top with other imports
+const volunteerRoutes = require("./volunteer")
+
+// Simple Contact Schema (No separate model file needed)
+const contactSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    phone: { type: String, required: true },
+    email: { type: String, required: true },
+    message: { type: String, required: true },
+    status: { type: String, default: "new" },
+    submittedAt: { type: Date, default: Date.now },
+  },
+  { timestamps: true },
+)
+
+const Contact = mongoose.model("Contact", contactSchema)
+
+// Create transporter (No API key needed!)
 const createTransporter = () => {
-  console.log("🔧 Creating email transporter for Node.js 22...")
+  console.log("🔧 Creating email transporter...")
   console.log("📧 Email user:", process.env.EMAIL_USER)
   console.log("🔑 Email pass exists:", !!process.env.EMAIL_PASS)
 
@@ -21,15 +40,38 @@ const createTransporter = () => {
       pass: process.env.EMAIL_PASS,
     },
     tls: {
-      ciphers: "SSLv3",
       rejectUnauthorized: false,
     },
-    connectionTimeout: 60000,
-    greetingTimeout: 30000,
-    socketTimeout: 60000,
   })
 }
 
+// GET route to view all queries (No API key needed!)
+router.get("/queries", async (req, res) => {
+  try {
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(503).json({
+        success: false,
+        message: "Database not connected. Check MongoDB Atlas connection.",
+      })
+    }
+
+    const queries = await Contact.find().sort({ submittedAt: -1 })
+
+    res.status(200).json({
+      success: true,
+      count: queries.length,
+      data: queries,
+    })
+  } catch (error) {
+    console.error("Error fetching queries:", error)
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch queries",
+    })
+  }
+})
+
+// POST route to handle contact form submission (No API key needed!)
 router.post("/contact", async (req, res) => {
   console.log("🎯 Contact route hit!")
   console.log("📝 Request body:", req.body)
@@ -56,13 +98,29 @@ router.post("/contact", async (req, res) => {
       })
     }
 
-    console.log("✅ Validation passed, creating transporter...")
+    let savedContact = null
+
+    // Try to save to database (optional - will work without it)
+    try {
+      if (mongoose.connection.readyState === 1) {
+        console.log("💾 Saving query to database...")
+        const newContact = new Contact({ name, phone, email, message })
+        savedContact = await newContact.save()
+        console.log("✅ Query saved to database with ID:", savedContact._id)
+      } else {
+        console.log("⚠️ Database not connected - continuing with email only")
+      }
+    } catch (dbError) {
+      console.log("⚠️ Database save failed - continuing with email only:", dbError.message)
+    }
+
+    console.log("✅ Creating email transporter...")
     const transporter = createTransporter()
 
-    // 📧 EMAIL 1: TO YOU (INSTITUTE) - Query notification with person's details
+    // 📧 EMAIL 1: TO YOU (INSTITUTE) - Query notification
     const instituteNotificationEmail = {
       from: `"SWIS NGO Contact Form" <${process.env.EMAIL_USER}>`,
-      to: "gudhakaj@gmail.com", // Your institute email
+      to: "swisinstitute@gmail.com",
       subject: `🔔 New Query from ${name} - Contact Form`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
@@ -81,6 +139,7 @@ router.post("/contact", async (req, res) => {
               <p style="margin: 8px 0;"><strong>📛 Name:</strong> ${name}</p>
               <p style="margin: 8px 0;"><strong>📞 Phone:</strong> ${phone}</p>
               <p style="margin: 8px 0;"><strong>📧 Email:</strong> <a href="mailto:${email}" style="color: #007bff;">${email}</a></p>
+              ${savedContact ? `<p style="margin: 8px 0;"><strong>🆔 Query ID:</strong> ${savedContact._id}</p>` : ""}
             </div>
           </div>
           
@@ -113,28 +172,12 @@ router.post("/contact", async (req, res) => {
           </div>
         </div>
       `,
-      text: `
-        🔔 NEW CONTACT QUERY - SWIS FOUNDATION
-        
-        👤 PERSON DETAILS:
-        Name: ${name}
-        Phone: ${phone}
-        Email: ${email}
-        
-        💬 THEIR QUERY:
-        ${message}
-        
-        📅 Received: ${new Date().toLocaleString()}
-        
-        Reply to them at: ${email}
-        Call them at: ${phone}
-      `,
     }
 
-    // 📧 EMAIL 2: TO PERSON - Acknowledgment that query was received
+    // 📧 EMAIL 2: TO PERSON - Acknowledgment
     const acknowledgmentEmail = {
       from: `"SWIS Foundation" <${process.env.EMAIL_USER}>`,
-      to: email, // Person who filled the form
+      to: email,
       subject: "✅ Query Received - SWIS Foundation",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
@@ -150,6 +193,13 @@ router.post("/contact", async (req, res) => {
             <p style="font-size: 16px; line-height: 1.6; color: #333;">
               Thank you for reaching out to <strong>SWIS Foundation</strong>! We have successfully received your query and appreciate you taking the time to contact us.
             </p>
+            ${
+              savedContact
+                ? `<p style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin: 15px 0;">
+              <strong>Your Query Reference ID:</strong> ${savedContact._id}
+            </p>`
+                : ""
+            }
           </div>
           
           <!-- Query Summary -->
@@ -191,29 +241,6 @@ router.post("/contact", async (req, res) => {
           </div>
         </div>
       `,
-      text: `
-        ✅ QUERY RECEIVED - SWIS FOUNDATION
-        
-        Dear ${name},
-        
-        Thank you for contacting SWIS Foundation!
-        
-        Your Query: "${message}"
-        
-        WHAT HAPPENS NEXT:
-        ✅ Our team will review your query
-        📞 We'll respond within 24-48 hours
-        💬 You'll receive a call or email
-        
-        NEED IMMEDIATE HELP?
-        📧 Email: swisinstitute@gmail.com
-        📞 Phone: +91 848 200 4559
-        
-        Best regards,
-        SWIS Foundation Team
-        
-        (This is an automated acknowledgment)
-      `,
     }
 
     console.log("📧 Sending emails...")
@@ -231,26 +258,21 @@ router.post("/contact", async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Message sent successfully! We will get back to you soon.",
+      queryId: savedContact ? savedContact._id : null,
     })
   } catch (error) {
     console.error("❌ Detailed Error:", error)
-    console.error("❌ Error Code:", error.code)
-    console.error("❌ Error Command:", error.command)
 
     let errorMessage = "Failed to send message. Please try again later."
 
     if (error.code === "EAUTH") {
       errorMessage = "Email authentication failed. Please check your Gmail app password."
-      console.error("🔑 Gmail authentication failed!")
     } else if (error.code === "ESOCKET" || error.code === "ECONNECTION") {
       errorMessage = "Connection error. Please check your internet connection."
-      console.error("🌐 Network connection error!")
     } else if (error.code === "ETIMEDOUT") {
       errorMessage = "Connection timeout. Please try again."
-      console.error("⏰ Connection timeout!")
     } else if (error.message.includes("certificate")) {
       errorMessage = "SSL certificate error. Please try again."
-      console.error("🔒 SSL certificate error!")
     }
 
     res.status(500).json({
@@ -260,5 +282,8 @@ router.post("/contact", async (req, res) => {
     })
   }
 })
+
+// Add this at the end before module.exports
+router.use("/", volunteerRoutes)
 
 module.exports = router

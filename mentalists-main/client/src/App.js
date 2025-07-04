@@ -12,6 +12,7 @@ import Member from "./pages/Member";
 import Allinone from "./pages/Allinone";
 import New from "./pages/New";
 import COC from "./pages/coc";
+import Nutrition from "./pages/Nutrition";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import SkillDevelopment from "./pages/SkillDevelopment";
@@ -23,7 +24,7 @@ import Footer from "./components/Footer";
 import ScrollHeader from "./components/ScrollHeader";
 import ContactPage from "./components/ContactPage";
 import JoinUs from "./components/JoinUs";
-import Nutrition from "./pages/Nutrition";
+import FileUploadTest from "./components/FileUploadTest"
 
 function App() {
   return (
@@ -52,10 +53,12 @@ const RoutesWithNavbar = () => {
         <Route path="/allinone" element={<Allinone />} />
         <Route path="/new" element={<New />} />
         <Route path="/coc" element={<COC />} />
+        <Route path="/Nutrition" element={<Nutrition />} />
         <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
         <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
         <Route path="/SkillDevelopment" element={<SkillDevelopment />} />
         <Route path="/ContactPage" element={<ContactPage />} />
+        <Route path="/FileUploadTest" element={<FileUploadTest />} />
         <Route path="/JoinUs" element={<JoinUs />} />
         <Route path="/Careers" element={<Careers />} />
         <Route path="/Education" element={<Education />} />

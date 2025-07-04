@@ -1,11 +1,90 @@
 const express = require("express")
 const nodemailer = require("nodemailer")
+const mongoose = require("mongoose")
+const multer = require("multer")
+const { GridFSBucket } = require("mongodb")
+const { Readable } = require("stream")
 const router = express.Router()
+
+const Volunteer = require("../models/Volunteer")
+
+// 🔧 FIXED: Configure multer for memory storage with detailed logging
+const storage = multer.memoryStorage()
+
+const fileFilter = (req, file, cb) => {
+  console.log("🔍 MULTER FILE FILTER CALLED:")
+  console.log("  - Field name:", file.fieldname)
+  console.log("  - Original name:", file.originalname)
+  console.log("  - MIME type:", file.mimetype)
+  console.log("  - Size:", file.size)
+
+  // Accept only PDF files
+  if (file.mimetype === "application/pdf") {
+    console.log("✅ PDF file accepted by filter")
+    cb(null, true)
+  } else {
+    console.log("❌ File rejected by filter - not PDF")
+    cb(new Error("Only PDF files are allowed!"), false)
+  }
+}
+
+// 🔧 FIXED: Enhanced multer configuration with logging
+const upload = multer({
+  storage: storage,
+  fileFilter: fileFilter,
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB limit
+  },
+  onError: (err, next) => {
+    console.log("❌ MULTER ERROR:", err)
+    next(err)
+  },
+})
+
+// 🔧 FIXED: Add multer debugging middleware
+const multerDebug = (req, res, next) => {
+  console.log("🔍 MULTER DEBUG MIDDLEWARE:")
+  console.log("  - Content-Type:", req.headers["content-type"])
+  console.log("  - Content-Length:", req.headers["content-length"])
+  console.log("  - Method:", req.method)
+  console.log("  - URL:", req.url)
+  console.log("  - Body keys:", Object.keys(req.body || {}))
+  console.log("  - Files:", req.files)
+  console.log("  - File:", req.file)
+  next()
+}
+
+// GridFS bucket for storing PDFs in MongoDB
+let gfsBucket
+let isGridFSReady = false
+
+const initializeGridFS = () => {
+  if (mongoose.connection.readyState === 1 && !isGridFSReady) {
+    try {
+      gfsBucket = new GridFSBucket(mongoose.connection.db, {
+        bucketName: "resumes",
+      })
+      isGridFSReady = true
+      console.log("✅ GridFS bucket initialized for PDF storage")
+    } catch (error) {
+      console.error("❌ Failed to initialize GridFS:", error)
+    }
+  }
+}
+
+// Initialize GridFS when connection is ready
+mongoose.connection.on("connected", () => {
+  console.log("🔗 MongoDB connected, initializing GridFS...")
+  setTimeout(initializeGridFS, 1000)
+})
+
+if (mongoose.connection.readyState === 1) {
+  initializeGridFS()
+}
 
 // Create transporter for email
 const createTransporter = () => {
   console.log("🔧 Creating email transporter...")
-
   if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
     throw new Error("Email credentials not found in environment variables")
   }
@@ -19,12 +98,8 @@ const createTransporter = () => {
       pass: process.env.EMAIL_PASS,
     },
     tls: {
-      ciphers: "SSLv3",
       rejectUnauthorized: false,
     },
-    connectionTimeout: 60000,
-    greetingTimeout: 30000,
-    socketTimeout: 60000,
   })
 }
 
@@ -39,14 +114,314 @@ const getInitiativeName = (code) => {
   return initiatives[code] || code
 }
 
-// POST route to handle simple volunteer application submission
-router.post("/volunteer-simple", async (req, res) => {
-  console.log("🎯 Simple volunteer application route hit!")
+// Helper function to store PDF in MongoDB GridFS
+const storePDFInMongoDB = (fileBuffer, filename) => {
+  return new Promise((resolve, reject) => {
+    if (!isGridFSReady || !gfsBucket) {
+      reject(new Error("GridFS bucket not ready"))
+      return
+    }
+
+    console.log("📄 Starting GridFS upload for:", filename)
+    console.log("📊 File buffer size:", fileBuffer.length, "bytes")
+
+    const readableStream = new Readable()
+    readableStream.push(fileBuffer)
+    readableStream.push(null)
+
+    const uploadStream = gfsBucket.openUploadStream(filename, {
+      metadata: {
+        originalName: filename,
+        uploadDate: new Date(),
+        contentType: "application/pdf",
+      },
+    })
+
+    uploadStream.on("error", (error) => {
+      console.error("❌ GridFS upload error:", error)
+      reject(error)
+    })
+
+    uploadStream.on("finish", (file) => {
+      console.log("✅ PDF stored in MongoDB GridFS with ID:", file._id)
+      resolve(file._id)
+    })
+
+    readableStream.pipe(uploadStream)
+  })
+}
+
+// 🔧 FIXED: Enhanced test endpoint with better debugging
+router.post("/test-upload", multerDebug, upload.single("resume"), (req, res) => {
+  console.log("🧪 TEST UPLOAD ENDPOINT HIT")
   console.log("📝 Request body:", req.body)
+  console.log("📄 Request file:", req.file)
+  console.log("📋 Request headers:", req.headers)
+  console.log("📋 Content-Type:", req.headers["content-type"])
+
+  if (req.file) {
+    console.log("✅ FILE RECEIVED SUCCESSFULLY!")
+    console.log("📄 File details:", {
+      fieldname: req.file.fieldname,
+      originalname: req.file.originalname,
+      mimetype: req.file.mimetype,
+      size: req.file.size,
+      bufferLength: req.file.buffer ? req.file.buffer.length : "No buffer",
+    })
+  } else {
+    console.log("❌ NO FILE RECEIVED")
+    console.log("📋 Available request properties:", Object.keys(req))
+  }
+
+  res.json({
+    success: true,
+    message: "Test upload endpoint",
+    fileReceived: !!req.file,
+    fileDetails: req.file
+      ? {
+          fieldname: req.file.fieldname,
+          originalname: req.file.originalname,
+          mimetype: req.file.mimetype,
+          size: req.file.size,
+          hasBuffer: !!req.file.buffer,
+          bufferSize: req.file.buffer ? req.file.buffer.length : 0,
+        }
+      : null,
+    bodyKeys: Object.keys(req.body || {}),
+    headers: req.headers,
+  })
+})
+
+// Route to serve PDFs from MongoDB GridFS
+router.get("/resume/:fileId", async (req, res) => {
+  try {
+    const fileId = req.params.fileId
+    console.log("📄 Serving PDF with ID:", fileId)
+
+    if (!mongoose.Types.ObjectId.isValid(fileId)) {
+      console.log("❌ Invalid file ID:", fileId)
+      return res.status(400).json({
+        success: false,
+        message: "Invalid file ID",
+      })
+    }
+
+    if (!isGridFSReady || !gfsBucket) {
+      console.log("❌ GridFS not ready")
+      return res.status(503).json({
+        success: false,
+        message: "File service not available",
+      })
+    }
+
+    const files = await gfsBucket.find({ _id: new mongoose.Types.ObjectId(fileId) }).toArray()
+
+    if (!files || files.length === 0) {
+      console.log("❌ File not found in GridFS:", fileId)
+      return res.status(404).json({
+        success: false,
+        message: "File not found",
+      })
+    }
+
+    const file = files[0]
+    console.log("✅ Found file in GridFS:", file.filename)
+
+    res.setHeader("Content-Type", "application/pdf")
+    res.setHeader("Content-Disposition", `inline; filename="${file.filename}"`)
+    res.setHeader("Content-Length", file.length)
+
+    const downloadStream = gfsBucket.openDownloadStream(new mongoose.Types.ObjectId(fileId))
+
+    downloadStream.on("error", (error) => {
+      console.error("❌ Error streaming file:", error)
+      if (!res.headersSent) {
+        res.status(500).json({ success: false, message: "Error streaming file" })
+      }
+    })
+
+    downloadStream.pipe(res)
+  } catch (error) {
+    console.error("❌ Error serving PDF from MongoDB:", error)
+    if (!res.headersSent) {
+      res.status(500).json({
+        success: false,
+        message: "Error serving file",
+      })
+    }
+  }
+})
+
+// Route to download PDF from MongoDB GridFS
+router.get("/download/:fileId", async (req, res) => {
+  try {
+    const fileId = req.params.fileId
+    console.log("⬇️ Download PDF with ID:", fileId)
+
+    if (!mongoose.Types.ObjectId.isValid(fileId)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid file ID",
+      })
+    }
+
+    if (!isGridFSReady || !gfsBucket) {
+      return res.status(503).json({
+        success: false,
+        message: "File service not available",
+      })
+    }
+
+    const files = await gfsBucket.find({ _id: new mongoose.Types.ObjectId(fileId) }).toArray()
+
+    if (!files || files.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "File not found",
+      })
+    }
+
+    const file = files[0]
+
+    res.setHeader("Content-Type", "application/pdf")
+    res.setHeader("Content-Disposition", `attachment; filename="${file.filename}"`)
+    res.setHeader("Content-Length", file.length)
+
+    const downloadStream = gfsBucket.openDownloadStream(new mongoose.Types.ObjectId(fileId))
+    downloadStream.pipe(res)
+  } catch (error) {
+    console.error("❌ Error downloading PDF:", error)
+    res.status(500).json({
+      success: false,
+      message: "Error downloading file",
+    })
+  }
+})
+
+// GET route to view all volunteer applications (for admin)
+router.get("/volunteers", async (req, res) => {
+  try {
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(503).json({
+        success: false,
+        message: "Database not connected. Check MongoDB Atlas connection.",
+      })
+    }
+
+    const volunteers = await Volunteer.find().sort({ appliedAt: -1 })
+
+    res.status(200).json({
+      success: true,
+      count: volunteers.length,
+      data: volunteers,
+    })
+  } catch (error) {
+    console.error("Error fetching volunteer applications:", error)
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch volunteer applications",
+    })
+  }
+})
+
+// GET route to view single volunteer application
+router.get("/volunteers/:id", async (req, res) => {
+  try {
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(503).json({
+        success: false,
+        message: "Database not connected. Check MongoDB Atlas connection.",
+      })
+    }
+
+    const volunteer = await Volunteer.findById(req.params.id)
+
+    if (!volunteer) {
+      return res.status(404).json({
+        success: false,
+        message: "Volunteer application not found",
+      })
+    }
+
+    res.status(200).json({
+      success: true,
+      data: volunteer,
+    })
+  } catch (error) {
+    console.error("Error fetching volunteer application:", error)
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch volunteer application",
+    })
+  }
+})
+
+// PUT route to update volunteer application status
+router.put("/volunteers/:id", async (req, res) => {
+  try {
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(503).json({
+        success: false,
+        message: "Database not connected. Check MongoDB Atlas connection.",
+      })
+    }
+
+    const { status, priority, notes } = req.body
+
+    const updateData = {}
+    if (status) updateData.status = status
+    if (priority) updateData.priority = priority
+    if (notes) updateData.notes = notes
+    if (status === "accepted" || status === "rejected") updateData.reviewedAt = new Date()
+
+    const volunteer = await Volunteer.findByIdAndUpdate(req.params.id, updateData, { new: true })
+
+    if (!volunteer) {
+      return res.status(404).json({
+        success: false,
+        message: "Volunteer application not found",
+      })
+    }
+
+    res.status(200).json({
+      success: true,
+      data: volunteer,
+    })
+  } catch (error) {
+    console.error("Error updating volunteer application:", error)
+    res.status(500).json({
+      success: false,
+      message: "Failed to update volunteer application",
+    })
+  }
+})
+
+// 🔧 FIXED: Main volunteer route with enhanced debugging and proper multer setup
+router.post("/volunteer-simple", multerDebug, upload.single("resume"), async (req, res) => {
+  console.log("🎯 VOLUNTEER APPLICATION ROUTE HIT!")
+  console.log("📝 Request body:", req.body)
+  console.log("📄 Request file:", req.file)
+  console.log("📋 Request headers content-type:", req.headers["content-type"])
+  console.log("📋 All headers:", req.headers)
+
+  // Enhanced file debugging
+  if (req.file) {
+    console.log("✅ FILE RECEIVED BY MULTER:")
+    console.log("  - Field name:", req.file.fieldname)
+    console.log("  - Original name:", req.file.originalname)
+    console.log("  - MIME type:", req.file.mimetype)
+    console.log("  - Size:", req.file.size, "bytes")
+    console.log("  - Buffer exists:", !!req.file.buffer)
+    console.log("  - Buffer length:", req.file.buffer ? req.file.buffer.length : "N/A")
+  } else {
+    console.log("❌ NO FILE RECEIVED BY MULTER")
+    console.log("📋 Request body keys:", Object.keys(req.body || {}))
+    console.log("📋 Request files:", req.files)
+    console.log("📋 Request file:", req.file)
+  }
 
   try {
-    const { domain, firstName, lastName, contact, dateOfBirth, email, whyJoinUs, questionsForUs, resumeFileName } =
-      req.body
+    const { domain, firstName, lastName, contact, dateOfBirth, email, whyJoinUs, questionsForUs } = req.body
 
     // Validate required fields
     if (!domain || !firstName || !lastName || !contact || !dateOfBirth || !email || !whyJoinUs) {
@@ -88,23 +463,110 @@ router.post("/volunteer-simple", async (req, res) => {
     const applicationId = `SWIS-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`
     console.log("✅ Generated Application ID:", applicationId)
 
-    console.log("✅ Validation passed, creating transporter...")
+    // Handle PDF storage in MongoDB
+    let resumeFileName = ""
+    let resumeFileId = null
+    let resumeFileUrl = ""
+    let resumeFileSize = 0
+    let pdfBuffer = null
+
+    if (req.file && req.file.buffer && req.file.buffer.length > 0) {
+      resumeFileName = req.file.originalname
+      resumeFileSize = req.file.size
+      pdfBuffer = req.file.buffer
+      console.log("✅ PDF PROCESSING:")
+      console.log("  - File name:", resumeFileName)
+      console.log("  - File size:", resumeFileSize, "bytes")
+      console.log("  - Buffer size:", pdfBuffer.length, "bytes")
+
+      try {
+        if (isGridFSReady && gfsBucket) {
+          console.log("💾 STORING PDF IN MONGODB GRIDFS...")
+          resumeFileId = await storePDFInMongoDB(pdfBuffer, resumeFileName)
+          resumeFileUrl = `${req.protocol}://${req.get("host")}/api/resume/${resumeFileId}`
+          console.log("✅ PDF STORED SUCCESSFULLY!")
+          console.log("  - GridFS ID:", resumeFileId)
+          console.log("  - URL:", resumeFileUrl)
+        } else {
+          console.log("⚠️ GridFS not ready - PDF will only be sent via email")
+        }
+      } catch (gridfsError) {
+        console.error("❌ Failed to store PDF in MongoDB:", gridfsError)
+      }
+    } else {
+      console.log("❌ NO VALID PDF FILE RECEIVED")
+      console.log("  - req.file exists:", !!req.file)
+      if (req.file) {
+        console.log("  - req.file.buffer exists:", !!req.file.buffer)
+        console.log("  - req.file.buffer.length:", req.file.buffer ? req.file.buffer.length : "N/A")
+      }
+    }
+
+    let savedVolunteer = null
+
+    // Try to save to database
+    try {
+      if (mongoose.connection.readyState === 1) {
+        console.log("💾 SAVING TO DATABASE...")
+        const newVolunteer = new Volunteer({
+          domain,
+          firstName,
+          lastName,
+          contact,
+          dateOfBirth: birthDate,
+          age,
+          email,
+          whyJoinUs,
+          questionsForUs: questionsForUs || "",
+          resumeFileName,
+          resumeFileId,
+          resumeFileUrl,
+          resumeFileSize,
+          applicationId,
+        })
+
+        savedVolunteer = await newVolunteer.save()
+        console.log("✅ SAVED TO DATABASE:")
+        console.log("  - Database ID:", savedVolunteer._id)
+        console.log("  - Resume file name:", savedVolunteer.resumeFileName)
+        console.log("  - Resume file ID:", savedVolunteer.resumeFileId)
+        console.log("  - Resume URL:", savedVolunteer.resumeFileUrl)
+      } else {
+        console.log("⚠️ Database not connected - continuing with email only")
+      }
+    } catch (dbError) {
+      console.log("⚠️ Database save failed - continuing with email only:", dbError.message)
+    }
+
+    console.log("✅ Creating email transporter...")
     const transporter = createTransporter()
 
-    // 📧 EMAIL 1: TO SWIS INSTITUTE - Volunteer application notification
+    // Prepare email attachments
+    const emailAttachments = []
+    if (req.file && pdfBuffer && pdfBuffer.length > 0) {
+      emailAttachments.push({
+        filename: resumeFileName,
+        content: pdfBuffer,
+        contentType: "application/pdf",
+      })
+      console.log("📎 EMAIL ATTACHMENT PREPARED:", resumeFileName)
+    } else {
+      console.log("⚠️ NO EMAIL ATTACHMENT - no valid PDF file")
+    }
+
+    // Email content (keeping the same as before)
     const instituteNotificationEmail = {
       from: `"SWIS NGO Volunteer Application" <${process.env.EMAIL_USER}>`,
       to: "parabnandini7412@gmail.com",
       subject: `🙋‍♂️ New Volunteer Application - ${firstName} ${lastName} (${getInitiativeName(domain)})`,
+      attachments: emailAttachments,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #ddd; border-radius: 12px; overflow: hidden;">
-          <!-- Header -->
           <div style="background: linear-gradient(135deg, #1e40af, #3b82f6); color: white; padding: 25px; text-align: center;">
             <h1 style="margin: 0; font-size: 28px;">🙋‍♂️ New Volunteer Application</h1>
             <p style="margin: 8px 0 0 0; opacity: 0.9; font-size: 16px;">SWIS Foundation - Join Us Application</p>
           </div>
           
-          <!-- Personal Information -->
           <div style="padding: 25px; background-color: #f8fafc;">
             <h2 style="color: #1e40af; margin-top: 0; border-bottom: 3px solid #1e40af; padding-bottom: 10px;">
               👤 Applicant Information
@@ -117,11 +579,30 @@ router.post("/volunteer-simple", async (req, res) => {
               <p style="margin: 8px 0;"><strong>📅 Date of Birth:</strong> ${new Date(dateOfBirth).toLocaleDateString()}</p>
               <p style="margin: 8px 0;"><strong>🎯 Domain:</strong> <span style="background: #3b82f6; color: white; padding: 4px 12px; border-radius: 6px; font-size: 14px;">${getInitiativeName(domain)}</span></p>
               <p style="margin: 8px 0;"><strong>🆔 Application ID:</strong> ${applicationId}</p>
-              ${resumeFileName ? `<p style="margin: 8px 0;"><strong>📄 Resume:</strong> ${resumeFileName}</p>` : ""}
+              ${savedVolunteer ? `<p style="margin: 8px 0;"><strong>🗄️ Database ID:</strong> ${savedVolunteer._id}</p>` : ""}
+              
+              ${
+                resumeFileName && pdfBuffer
+                  ? `
+                <div style="background: #f0f9ff; padding: 15px; border-radius: 8px; margin: 10px 0; border-left: 4px solid #0ea5e9;">
+                  <p style="margin: 8px 0; color: #0ea5e9; font-weight: bold;">✅ Resume Successfully Uploaded</p>
+                  <p style="margin: 8px 0;"><strong>📄 File Name:</strong> ${resumeFileName}</p>
+                  <p style="margin: 8px 0;"><strong>📊 File Size:</strong> ${(resumeFileSize / 1024).toFixed(2)} KB</p>
+                  ${resumeFileUrl ? `<p style="margin: 8px 0;"><strong>🔗 View Online:</strong> <a href="${resumeFileUrl}" style="color: #1e40af; text-decoration: underline;">Click to view PDF</a></p>` : ""}
+                  <p style="margin: 8px 0; font-size: 12px; color: #059669;">📎 <strong>Resume is attached to this email</strong></p>
+                  <p style="margin: 8px 0; font-size: 12px; color: #0ea5e9;">💾 PDF stored in MongoDB Atlas</p>
+                </div>
+              `
+                  : `
+                <div style="background: #fef3c7; padding: 15px; border-radius: 8px; margin: 10px 0; border-left: 4px solid #f59e0b;">
+                  <p style="margin: 0; color: #f59e0b; font-weight: bold;">⚠️ No resume uploaded</p>
+                  <p style="margin: 8px 0; font-size: 12px; color: #92400e;">The applicant did not upload a resume file.</p>
+                </div>
+              `
+              }
             </div>
           </div>
           
-          <!-- Motivation -->
           <div style="padding: 25px;">
             <h2 style="color: #3b82f6; margin-top: 0; border-bottom: 3px solid #3b82f6; padding-bottom: 10px;">
               💭 Why They Want to Join
@@ -134,7 +615,6 @@ router.post("/volunteer-simple", async (req, res) => {
           ${
             questionsForUs
               ? `
-          <!-- Questions -->
           <div style="padding: 25px; background-color: #f8fafc;">
             <h2 style="color: #1e40af; margin-top: 0; border-bottom: 3px solid #1e40af; padding-bottom: 10px;">
               ❓ Questions for Us
@@ -147,7 +627,6 @@ router.post("/volunteer-simple", async (req, res) => {
               : ""
           }
           
-          <!-- Action Buttons -->
           <div style="padding: 25px; background-color: #e5e7eb; text-align: center;">
             <a href="mailto:${email}?subject=Re: Your volunteer application to SWIS Foundation&body=Dear ${firstName},%0A%0AThank you for your application to SWIS Foundation for ${getInitiativeName(domain)}.%0A%0A" 
                style="display: inline-block; background: linear-gradient(135deg, #1e40af, #3b82f6); color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; margin: 8px; font-weight: bold;">
@@ -157,31 +636,38 @@ router.post("/volunteer-simple", async (req, res) => {
                style="display: inline-block; background: linear-gradient(135deg, #3b82f6, #60a5fa); color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; margin: 8px; font-weight: bold;">
               📞 Call ${firstName}
             </a>
+            ${
+              resumeFileUrl
+                ? `
+            <a href="${resumeFileUrl}" 
+               style="display: inline-block; background: linear-gradient(135deg, #dc2626, #ef4444); color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; margin: 8px; font-weight: bold;">
+              📄 View Resume
+            </a>
+            `
+                : ""
+            }
           </div>
           
-          <!-- Footer -->
           <div style="padding: 20px; background-color: #1e40af; text-align: center; color: white;">
             <p style="margin: 0; font-size: 14px;">📅 Applied on: ${new Date().toLocaleString()}</p>
             <p style="margin: 8px 0 0 0; font-size: 14px; opacity: 0.8;">🌐 From: SWIS NGO Join Us Form</p>
+            ${resumeFileName ? `<p style="margin: 8px 0 0 0; font-size: 12px; opacity: 0.8;">💾 Resume: ${resumeFileName} (${(resumeFileSize / 1024).toFixed(2)} KB)</p>` : ""}
           </div>
         </div>
       `,
     }
 
-    // 📧 EMAIL 2: TO VOLUNTEER - Acknowledgment
     const volunteerAcknowledgmentEmail = {
       from: `"SWIS Foundation" <${process.env.EMAIL_USER}>`,
       to: email,
       subject: "🎉 Application Received - SWIS Foundation",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #ddd; border-radius: 12px; overflow: hidden;">
-          <!-- Header -->
           <div style="background: linear-gradient(135deg, #1e40af, #3b82f6); color: white; padding: 25px; text-align: center;">
             <h1 style="margin: 0; font-size: 28px;">🎉 Application Received!</h1>
             <p style="margin: 8px 0 0 0; opacity: 0.9; font-size: 16px;">Welcome to the SWIS Foundation Family</p>
           </div>
           
-          <!-- Personal Greeting -->
           <div style="padding: 25px; background-color: #f8fafc;">
             <h2 style="color: #1e40af; margin-top: 0;">Dear ${firstName},</h2>
             <p style="font-size: 16px; line-height: 1.6; color: #333;">
@@ -195,7 +681,6 @@ router.post("/volunteer-simple", async (req, res) => {
             </div>
           </div>
           
-          <!-- Application Summary -->
           <div style="padding: 0 25px 25px 25px;">
             <div style="background: white; padding: 20px; border-radius: 8px; border-left: 4px solid #1e40af;">
               <h3 style="color: #1e40af; margin-top: 0;">📋 Your Application Summary:</h3>
@@ -203,11 +688,10 @@ router.post("/volunteer-simple", async (req, res) => {
               <p style="margin: 5px 0;"><strong>Age:</strong> ${age} years</p>
               <p style="margin: 5px 0;"><strong>Contact:</strong> ${contact}</p>
               <p style="margin: 5px 0;"><strong>Email:</strong> ${email}</p>
-              ${resumeFileName ? `<p style="margin: 5px 0;"><strong>Resume:</strong> ${resumeFileName}</p>` : ""}
+              ${resumeFileName ? `<p style="margin: 5px 0;"><strong>Resume:</strong> ${resumeFileName} ✅ Uploaded Successfully</p>` : `<p style="margin: 5px 0;"><strong>Resume:</strong> ⚠️ Not uploaded</p>`}
             </div>
           </div>
           
-          <!-- What Happens Next -->
           <div style="padding: 0 25px 25px 25px;">
             <h3 style="color: #3b82f6;">🔄 What happens next?</h3>
             <div style="background-color: #f8fafc; padding: 20px; border-radius: 8px; border-left: 4px solid #3b82f6;">
@@ -221,7 +705,6 @@ router.post("/volunteer-simple", async (req, res) => {
             </div>
           </div>
           
-          <!-- Contact Info -->
           <div style="padding: 25px; background-color: #f8fafc;">
             <h3 style="color: #1e40af; margin-top: 0;">📞 Questions?</h3>
             <div style="background: white; padding: 20px; border-radius: 8px; border-left: 4px solid #3b82f6;">
@@ -230,7 +713,6 @@ router.post("/volunteer-simple", async (req, res) => {
             </div>
           </div>
           
-          <!-- Footer -->
           <div style="padding: 25px; background: linear-gradient(135deg, #1e40af, #3b82f6); text-align: center; color: white;">
             <p style="margin: 0; font-weight: bold; font-size: 18px;">Welcome to the SWIS Family!</p>
             <p style="margin: 8px 0; font-weight: bold; color: #93c5fd;">SWIS Foundation Team</p>
@@ -242,9 +724,9 @@ router.post("/volunteer-simple", async (req, res) => {
       `,
     }
 
-    console.log("📧 Sending emails...")
+    console.log("📧 SENDING EMAILS...")
 
-    // Send notification to institute
+    // Send notification to institute with PDF attachment
     console.log("📤 Sending volunteer application notification to institute...")
     await transporter.sendMail(instituteNotificationEmail)
     console.log("✅ Volunteer application notification sent to institute!")
@@ -259,12 +741,22 @@ router.post("/volunteer-simple", async (req, res) => {
       message:
         "Thank you for your application! We have received your submission and will contact you within 3-5 business days.",
       applicationId: applicationId,
+      databaseId: savedVolunteer ? savedVolunteer._id : null,
+      resumeUrl: resumeFileUrl || null,
+      resumeStoredInMongoDB: !!resumeFileId,
+      resumeAttachedToEmail: !!pdfBuffer,
+      debug: {
+        fileReceived: !!req.file,
+        fileName: resumeFileName,
+        fileSize: resumeFileSize,
+        gridfsReady: isGridFSReady,
+        mongoConnected: mongoose.connection.readyState === 1,
+      },
     })
   } catch (error) {
-    console.error("❌ Detailed Error:", error)
+    console.error("❌ DETAILED ERROR:", error)
 
     let errorMessage = "Failed to submit application. Please try again later."
-
     if (error.code === "EAUTH") {
       errorMessage = "Email authentication failed. Please check your Gmail app password."
     } else if (error.code === "ESOCKET" || error.code === "ECONNECTION") {
@@ -273,6 +765,10 @@ router.post("/volunteer-simple", async (req, res) => {
       errorMessage = "Connection timeout. Please try again."
     } else if (error.message.includes("certificate")) {
       errorMessage = "SSL certificate error. Please try again."
+    } else if (error.message.includes("Only PDF files are allowed")) {
+      errorMessage = "Only PDF files are allowed for resume upload."
+    } else if (error.code === "LIMIT_FILE_SIZE") {
+      errorMessage = "File size too large. Please upload a PDF smaller than 5MB."
     }
 
     res.status(500).json({
