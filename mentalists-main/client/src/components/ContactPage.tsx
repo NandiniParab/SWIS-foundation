@@ -1,21 +1,21 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useState } from "react"
-import axios from "axios"
+import type React from "react";
+import { useState } from "react";
+import axios from "axios";
 
 interface FormData {
-  name: string
-  phone: string
-  email: string
-  message: string
+  name: string;
+  phone: string;
+  email: string;
+  message: string;
 }
 
 interface FormStatus {
-  submitting: boolean
-  submitted: boolean
-  error: string | null
-  success: string | null
+  submitting: boolean;
+  submitted: boolean;
+  error: string | null;
+  success: string | null;
 }
 
 const ContactPage: React.FC = () => {
@@ -24,66 +24,80 @@ const ContactPage: React.FC = () => {
     phone: "",
     email: "",
     message: "",
-  })
+  });
 
   const [status, setStatus] = useState<FormStatus>({
     submitting: false,
     submitted: false,
     error: null,
     success: null,
-  })
+  });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }))
+    }));
 
     if (status.error || status.success) {
-      setStatus((prev) => ({ ...prev, error: null, success: null }))
+      setStatus((prev) => ({ ...prev, error: null, success: null }));
     }
-  }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    setStatus({ submitting: true, submitted: false, error: null, success: null })
+    setStatus({
+      submitting: true,
+      submitted: false,
+      error: null,
+      success: null,
+    });
 
     try {
-      const response = await axios.post("http://localhost:5000/api/contact", formData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        timeout: 10000,
-      })
+      const response = await axios.post(
+        "http://localhost:5000/api/contact",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          timeout: 10000,
+        }
+      );
 
       if (response.data.success) {
         setStatus({
           submitting: false,
           submitted: true,
           error: null,
-          success: response.data.message || "Message sent successfully! We will get back to you soon.",
-        })
+          success:
+            response.data.message ||
+            "Message sent successfully! We will get back to you soon.",
+        });
 
         setFormData({
           name: "",
           phone: "",
           email: "",
           message: "",
-        })
+        });
       }
     } catch (error: any) {
-      console.error("Contact form error:", error)
+      console.error("Contact form error:", error);
 
-      let errorMessage = "Something went wrong. Please try again."
+      let errorMessage = "Something went wrong. Please try again.";
 
       if (error.code === "ECONNABORTED") {
-        errorMessage = "Request timeout. Please check your connection."
+        errorMessage = "Request timeout. Please check your connection.";
       } else if (error.code === "ERR_NETWORK") {
-        errorMessage = "Cannot connect to server. Make sure backend is running on port 5000."
+        errorMessage =
+          "Cannot connect to server. Make sure backend is running on port 5000.";
       } else if (error.request) {
-        errorMessage = "No response from server. Check if backend is running."
+        errorMessage = "No response from server. Check if backend is running.";
       }
 
       setStatus({
@@ -91,23 +105,37 @@ const ContactPage: React.FC = () => {
         submitted: false,
         error: errorMessage,
         success: null,
-      })
+      });
     }
-  }
+  };
 
-  // Success page with updated message
+  // Success page with consistent spacing
   if (status.submitted) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4">
+      <div className="min-h-screen bg-gray-50 pt-28 px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mx-auto text-center">
           <div className="bg-white rounded-lg shadow-sm p-8">
             <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <svg className="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              <svg
+                className="w-10 h-10 text-green-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
               </svg>
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">Message Sent Successfully!</h1>
-            <p className="text-lg text-gray-600 mb-6">We will get back to you soon.</p>
+            <h1 className="text-3xl font-bold text-gray-900 mb-4">
+              Message Sent Successfully!
+            </h1>
+            <p className="text-lg text-gray-600 mb-6">
+              We will get back to you soon.
+            </p>
             <button
               onClick={() => window.location.reload()}
               className="bg-blue-600 text-white px-8 py-3 rounded-md font-medium hover:bg-blue-700 transition-colors"
@@ -117,17 +145,19 @@ const ContactPage: React.FC = () => {
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 pt-28 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Left Column - Contact Info */}
           <div className="space-y-8">
             <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">Registered Office</h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-4">
+                Registered Office
+              </h2>
               <div className="space-y-2 text-gray-600">
                 <p className="font-medium">SWIS Foundation:</p>
                 <p>1-24-607/1, First Floor, Road No. 5,</p>
@@ -145,47 +175,30 @@ const ContactPage: React.FC = () => {
             </div>
 
             <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-lg font-bold text-gray-900 mb-3">FOR CORPORATE PARTNERSHIPS</h3>
-              <div className="space-y-1 text-gray-600">
-                <p>Parul Sharma - 9266740073</p>
-                <p className="text-blue-600">cp@smilefoundationindia.org</p>
-              </div>
-            </div>
-
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-lg font-bold text-gray-900 mb-3">DONATION RELATED QUERIES</h3>
-              <div className="mb-4">
-                <h4 className="font-semibold text-gray-800 mb-2">FOR NEW DONORS</h4>
-                <div className="space-y-1 text-gray-600">
-                  <p>Aakanksha Wahi - 7042128777</p>
-                  <p className="text-blue-600">donation@smilefoundationindia.org</p>
-                </div>
-              </div>
-              <div>
-                <h4 className="font-semibold text-gray-800 mb-2">FOR EXISTING DONORS</h4>
-                <div className="space-y-1 text-gray-600">
-                  <p>Parul Kapoor - 8882517003</p>
-                  <p className="text-blue-600">donorcare@smilefoundationindia.org</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-lg font-bold text-gray-900 mb-3">FOR ALL GENERAL QUERIES</h3>
-              <p className="text-blue-600">info@smilefoundationindia.org</p>
+              <h3 className="text-lg font-bold text-gray-900 mb-3">
+                FOR ALL GENERAL QUERIES
+              </h3>
+              <p className="text-blue-600">swisinstitute@gmail.com</p>
             </div>
           </div>
 
           {/* Right Column - Form */}
           <div className="bg-white p-8 rounded-lg shadow-sm">
             <div className="mb-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">HELPDESK</h2>
-              <p className="text-gray-600">For any grievance, suggestions and queries kindly write to us.</p>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                HELPDESK
+              </h2>
+              <p className="text-gray-600">
+                For any grievance, suggestions and queries kindly write to us.
+              </p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Name <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -202,7 +215,10 @@ const ContactPage: React.FC = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="phone"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Phone <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -217,7 +233,10 @@ const ContactPage: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Email <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -234,7 +253,10 @@ const ContactPage: React.FC = () => {
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="message"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Message <span className="text-red-500">*</span>
                 </label>
                 <textarea
@@ -271,7 +293,7 @@ const ContactPage: React.FC = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ContactPage
+export default ContactPage;

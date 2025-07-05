@@ -202,19 +202,7 @@ const Member = () => {
 
   return (
     <div className="bg-white">
-      {/* Navigation Breadcrumb */}
-      <nav className="bg-[#FCFDFF] py-4 px-6 lg:px-12 border-b border-gray-100">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-center space-x-3 text-sm text-gray-600">
-            <span className="hover:text-[#023080] cursor-pointer transition-colors">Home</span>
-            <span>›</span>
-            <span className="hover:text-[#023080] cursor-pointer transition-colors">About</span>
-            <span>›</span>
-            <span className="text-[#023080] font-medium">Board & Committee Members</span>
-          </div>
-        </div>
-      </nav>
-
+  
       {/* Hero Section with Slideshow */}
       <section className="relative h-screen overflow-hidden bg-gradient-to-br from-[#023080] via-[#04307b] to-[#8e9fc5]">
         {/* Hero Images */}

@@ -293,38 +293,6 @@ const ObjectivesSection = ({ isVisible }) => {
   );
 };
 
-// PartnersSection Component
-const PartnersSection = ({ isVisible }) => {
-  const partners = [
-    { name: "Civic Alliance", image: "https://via.placeholder.com/150x50.png?text=Civic+Alliance" },
-    { name: "Youth Empowerment Network", image: "https://via.placeholder.com/150x50.png?text=Youth+Network" },
-    { name: "Governance Partners", image: "https://via.placeholder.com/150x50.png?text=Governance+Partners" },
-    { name: "Community Action League", image: "https://via.placeholder.com/150x50.png?text=Community+Action" },
-    { name: "Public Policy Forum", image: "https://via.placeholder.com/150x50.png?text=Policy+Forum" }
-  ];
-
-  return (
-    <section className="py-10 bg-gray-100">
-      <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 ${isVisible ? 'animate-fadeInUp' : 'opacity-0'}`}>
-        <h2 className="text-2xl sm:text-3xl font-light text-[#023080] text-center mb-6">Our Partners</h2>
-        <div className="relative overflow-hidden">
-          <div className="flex animate-marquee whitespace-nowrap">
-            {[...partners, ...partners].map((partner, index) => (
-              <div key={index} className="inline-flex items-center justify-center mx-4">
-                <img
-                  src={partner.image}
-                  alt={partner.name}
-                  className="h-12 sm:h-16 object-contain"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
 // MetricsSection Component
 const MetricsSection = ({ isVisible, countAnimated }) => {
   const impactMetrics = [
@@ -337,7 +305,7 @@ const MetricsSection = ({ isVisible, countAnimated }) => {
     <section id="metrics" className="py-20 bg-gradient-to-br from-[#FCFDFF] via-[#d2d5e0] to-[#8e9fc5] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
         <div className={`text-center mb-16 ${isVisible ? 'animate-fadeInUp' : 'opacity-0'}`}>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light mb-6 text-[#023080] italic">Our Work in Numbers</h2>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light mb-6 text-[#023080] italic">Glimpses of what we do</h2>
           <p className="text-lg sm:text-xl text-[#04307b] max-w-3xl mx-auto">Driving impactful social change through measurable outcomes</p>
         </div>
 
@@ -581,7 +549,6 @@ const CentreSocialAwareness = () => {
       <HeroSection />
       <MissionSection isVisible={isVisible.mission} />
       <ObjectivesSection isVisible={isVisible.objectives} />
-      <PartnersSection isVisible={isVisible.partners} />
       <MetricsSection isVisible={isVisible.metrics} countAnimated={countAnimated} />
       <HighlightsSection isVisible={isVisible.highlights} />
       <CTASection isVisible={isVisible.cta} />
