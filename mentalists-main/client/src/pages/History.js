@@ -1,784 +1,368 @@
-import React, { useState, useEffect, useRef } from 'react';
-import teamPhoto from "../img/tutor.jpg";
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronLeft, ChevronRight, Droplet } from 'lucide-react';
 
-const History = () => {
-  const [visibleSections, setVisibleSections] = useState(new Set());
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const sectionsRef = useRef([]);
+const New = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  
+  // Hero carousel images
+  const heroImages = [
+    "https://images.unsplash.com/photo-1559027615-cd4628902d4a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80",
+    "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80",
+    "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80"
+  ];
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = (window.scrollY / scrollHeight) * 100;
-      setScrollProgress(progress);
-
-      const newVisibleSections = new Set();
-      sectionsRef.current.forEach((section, index) => {
-        if (section) {
-          const rect = section.getBoundingClientRect();
-          if (rect.top < window.innerHeight * 0.8 && rect.bottom > 0) {
-            newVisibleSections.add(index);
-          }
-        }
-      });
-      setVisibleSections(newVisibleSections);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
+  // Timeline data with your provided content including H1 2025
   const timelineData = [
     {
       year: "2021",
-      title: "Seeds of Change",
-      subtitle: "The Beginning",
+      title: "The Beginning",
+      subtitle: "Seeds of Change",
       description: "The foundation of our vision was laid with the birth of Sangharsh (संघर्ष). A movement that began with a simple yet powerful idea - to create meaningful change in society through youth-driven initiatives.",
       achievements: [
         "H1 2021: The seed of Sangharsh (संघर्ष) were sown with extensive research and community analysis",
         "Founder Soubhik Kundu began conceptualising a comprehensive youth-driven initiative for sustainable social change",
         "H2 2021: Strategic brainstorming sessions, extensive network-building, and meaningful community conversations established the foundation"
       ],
-      icon: "🌱",
-      color: "#10B981"
     },
     {
       year: "2022",
-      title: "Taking Shape",
-      subtitle: "Foundation Building",
+      title: "Foundation Building",
+      subtitle: "Taking Shape",
       description: "From abstract concept to tangible reality - Sangharsh Empowerment Foundation was officially born. This year marked the transition from ideation to implementation with structured programs and dedicated team building.",
       achievements: [
         "H1 2022: Sangharsh Empowerment Foundation informally founded in Hyderabad with a core team of passionate changemakers",
         "Successfully launched pilot volunteering initiatives with the first cohort of dedicated youth volunteers",
         "H2 2022: Strategically expanded initial projects including systematic meal distribution and comprehensive awareness drives"
       ],
-      icon: "🏗️",
-      color: "#3B82F6"
     },
     {
       year: "2023",
-      title: "Formal Recognition",
-      subtitle: "Official Establishment",
+      title: "Official Establishment",
+      subtitle: "Formal Recognition",
       description: "Official registration marked our evolution into a structured, legally recognized organization. This milestone year established our credibility and opened doors to larger partnerships and collaborative opportunities.",
       achievements: [
         "H1 2023: Officially registered as a not-for-profit public charitable trust with comprehensive legal documentation",
         "Successfully built a robust core team and strategically onboarded the first cohort of committed long-term volunteers",
         "H2 2023: Established strategic partnerships with 7+ shelter homes across diverse regions of India"
       ],
-      icon: "📋",
-      color: "#8B5CF6"
     },
     {
       year: "2024",
-      title: "Exponential Growth",
-      subtitle: "Scaling Impact",
+      title: "Scaling Impact",
+      subtitle: "Exponential Growth",
       description: "A transformative year of remarkable expansion and strategic evolution. Our reach extended across multiple states while maintaining quality and impact. Strategic planning sessions shaped our ambitious future vision.",
       achievements: [
         "H1 2024: Successfully operated in 12+ diverse locations across India with consistent quality standards",
         "Organizational growth: Core team expanded to 30+ dedicated members; volunteer base surpassed 400+ active contributors",
         "H2 2024: Comprehensive strategic planning initiatives for institutional transition and sustainable growth models"
       ],
-      icon: "📈",
-      color: "#F59E0B"
     },
     {
       year: "2025",
-      title: "SWIS Foundation",
-      subtitle: "Revolutionary Transformation",
-      description: "The birth of SWIS Foundation - Social Welfare & Impact Solutions represents our evolution into a sophisticated, data-driven organization with ambitious goals and professional excellence at its core.",
+      title: "New Era - SWIS Foundation",
+      subtitle: "Transformational Rebrand",
+      description: "A pivotal transformation marking our evolution from Sangharsh to SWIS Foundation - Social Welfare & Impact Solutions. This strategic rebrand represents our commitment to structured growth and ambitious scaling to impact millions of lives.",
       achievements: [
-        "H1 2025: Successfully launched SWIS Foundation with enhanced operational capabilities and strategic focus",
-        "Completed seamless transition from Sangharsh to SWIS, symbolizing structured growth and professional maturity",
-        "Established ambitious vision to positively impact 2 million+ lives over the next 20 years through innovative programs"
+        "H1 2025 (Jan–Jun): Launched the SWIS Foundation – Social Welfare & Impact Solutions",
+        "Transitioned from Sangharsh to SWIS, symbolising a new era of structured growth",
+        "Vision expanded to impact 2 million+ lives over the next 20 years through scalable, data-driven, and expert-led programs"
       ],
-      icon: "🚀",
-      color: "#EF4444"
     }
   ];
 
-  return (
-    <div className="history-container">
-      {/* Progress Bar */}
-      <div className="progress-wrapper">
-        <div className="progress-bar" style={{ width: `${scrollProgress}%` }}></div>
-      </div>
+  // Auto-slide for hero carousel
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroImages.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [heroImages.length]);
 
-      {/* Hero Section - IMAGE PLACEHOLDER 1: Hero background image */}
-      <section className="hero-section">
-        <div className="hero-content">
-          <div className="hero-badge">
-            <span>OUR JOURNEY</span>
-          </div>
-          <h1 className="hero-title">
-            <span className="title-main">Our History</span>
-            <span className="title-subtitle">From Vision to Impact</span>
-          </h1>
-          <div className="hero-description">
-            <p>Over 4 years of dedicated service, transformative growth, and unwavering commitment to social change. From humble beginnings to revolutionary impact - this is our story.</p>
-          </div>
-          {/* IMAGE PLACEHOLDER 2: Team photo or collage */}
-          <div className="hero-image-placeholder">
-           <img
-             src={teamPhoto} 
-            alt="Team Photo or Foundation Collage"
-            className="real-image"
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % heroImages.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + heroImages.length) % heroImages.length);
+  };
+
+  return (
+    <div className="bg-white">
+      {/* Hero Section with Slideshow - Fully Responsive */}
+      <section className="relative h-[60vh] sm:h-[70vh] md:h-[80vh] lg:h-screen overflow-hidden bg-gradient-to-br from-[#023080] via-[#04307b] to-[#8e9fc5]">
+        {/* Hero Images */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentSlide}
+            initial={{ opacity: 0, scale: 1.1 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 1 }}
+            className="absolute inset-0"
+          >
+            <img
+              src={heroImages[currentSlide]}
+              alt={`Hero ${currentSlide + 1}`}
+              className="w-full h-full object-cover opacity-30"
             />
-          </div>
-          <div className="hero-stats">
-            <div className="stat-item">
-              <div className="stat-number">400+</div>
-              <div className="stat-label">Volunteers</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-number">12+</div>
-              <div className="stat-label">Locations</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-number">2M+</div>
-              <div className="stat-label">Target Impact</div>
+            <div className="absolute inset-0 bg-gradient-to-r from-[#023080]/80 via-[#04307b]/60 to-transparent"></div>
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Hero Content - Responsive */}
+        <div className="relative z-10 h-full flex items-center">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 w-full">
+            <div className="max-w-4xl">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                className="mb-4 sm:mb-6 md:mb-8"
+              >
+                <div className="text-right mb-2 sm:mb-4">
+                  <span className="text-[#d2d5e0] text-sm sm:text-base md:text-lg font-light tracking-wide">SWIS Foundation</span>
+                  <div className="text-[#8e9fc5] text-xs sm:text-sm mt-1">Social Welfare & Impact Solutions</div>
+                </div>
+              </motion.div>
+
+              <motion.h1
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.5 }}
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-7xl font-light text-white mb-4 sm:mb-6 leading-tight"
+              >
+                An extraordinary vision
+                <div className="bg-[#023080] inline-block px-2 sm:px-4 md:px-6 py-1 sm:py-2 mt-2 sm:mt-4">
+                  <span className="text-[#d2d5e0] text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl">for an extraordinary nation</span>
+                </div>
+              </motion.h1>
             </div>
           </div>
         </div>
+
+        {/* Navigation Arrows - Responsive */}
+        <button
+          onClick={prevSlide}
+          className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 rounded-full p-2 sm:p-3 transition-all duration-300"
+        >
+          <ChevronLeft className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
+        </button>
+        <button
+          onClick={nextSlide}
+          className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 rounded-full p-2 sm:p-3 transition-all duration-300"
+        >
+          <ChevronRight className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
+        </button>
+
+        {/* Slide Indicators - Responsive */}
+        <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 z-20 flex space-x-2 sm:space-x-3">
+          {heroImages.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentSlide(index)}
+              className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${
+                index === currentSlide ? 'bg-white' : 'bg-white/50'
+              }`}
+            />
+          ))}
+        </div>
       </section>
 
-      {/* Timeline Sections */}
-      <div className="timeline-wrapper">
-        <div className="timeline-line"></div>
-        
-        {timelineData.map((item, index) => (
-          <section
-            key={index}
-            ref={el => sectionsRef.current[index] = el}
-            className={`timeline-section ${visibleSections.has(index) ? 'visible' : ''}`}
+      {/* Our History Introduction - Responsive */}
+      <section className="bg-[#023080] py-12 sm:py-16 lg:py-24 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="mb-8 sm:mb-12"
           >
-            <div className="timeline-content">
-              <div className={`timeline-layout ${index % 2 === 1 ? 'reverse' : ''}`}>
-                
-                {/* Timeline Node */}
-                <div className="timeline-node" style={{ backgroundColor: item.color }}>
-                  <div className="node-inner">
-                    <span className="node-icon">{item.icon}</span>
-                  </div>
-                  <div className="node-year">{item.year}</div>
-                </div>
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-[#8e9fc5] rounded-full mx-auto mb-6 sm:mb-8 flex items-center justify-center">
+              <Droplet className="w-8 h-8 sm:w-10 sm:h-10 text-[#023080]" />
+            </div>
+          </motion.div>
 
-                {/* Content Box */}
-                <div className="content-box">
-                  {/* IMAGE PLACEHOLDER 3: Year-specific images for each timeline section */}
-                  <div className="timeline-image-placeholder">
-                    <div className="image-placeholder">{item.year} Milestone Image</div>
-                  </div>
-                  
-                  <div className="content-header">
-                    <div className="content-badge" style={{ backgroundColor: item.color }}>
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light text-white mb-6 sm:mb-8"
+          >
+            Our History
+          </motion.h2>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            viewport={{ once: true }}
+            className="mb-12 sm:mb-16"
+          >
+            <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-light text-[#8e9fc5] mb-6 sm:mb-8">From Vision to Impact</h3>
+            <div className="w-2 h-16 sm:h-24 bg-[#d2d5e0] mx-auto opacity-60"></div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            viewport={{ once: true }}
+            className="max-w-4xl mx-auto"
+          >
+            <p className="text-base sm:text-lg md:text-xl text-[#d2d5e0] leading-relaxed font-light">
+              Over 4 years of dedicated service, transformative growth, and unwavering commitment to social change. 
+              From humble beginnings to revolutionary impact - this is our story.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Chairman Quote Section - Continuation of Our History */}
+      <section className="bg-[#023080] py-12 sm:py-16 lg:py-24 relative overflow-hidden">
+        {/* Connecting line from above */}
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-2 h-12 sm:h-16 bg-[#d2d5e0] opacity-60"></div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+          <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
+            {/* Quote Content - Left Side */}
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="flex-1 text-center lg:text-left"
+            >
+              <blockquote className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-light text-white leading-relaxed mb-8 sm:mb-12">
+                "Our purpose has to be clear. Our compassion stronger.<br />
+                Our commitment deeper. And our impact wider.<br />
+                This is my dream for SWIS and for India."
+              </blockquote>
+              
+              <div className="text-lg sm:text-xl md:text-2xl text-[#8e9fc5] font-light mb-2">
+                Soubhik Kundu
+              </div>
+              <div className="text-base sm:text-lg text-[#d2d5e0]">
+                Chairman & Managing Trustee
+              </div>
+              <div className="text-base sm:text-lg text-[#d2d5e0] font-medium">
+                SWIS Foundation
+              </div>
+              
+              {/* Decorative Line */}
+              <div className="w-24 sm:w-32 h-1 bg-gradient-to-r from-[#8e9fc5] to-[#d2d5e0] rounded-full mt-6 sm:mt-8 mx-auto lg:mx-0"></div>
+            </motion.div>
+
+            {/* Portrait Image - Right Side */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="flex-1 max-w-md lg:max-w-lg"
+            >
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#8e9fc5]/20 to-[#d2d5e0]/20 rounded-2xl transform rotate-3"></div>
+                <img
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                  alt="Soubhik Kundu - Chairman & Managing Trustee"
+                  className="relative z-10 w-full h-auto rounded-2xl shadow-2xl object-cover"
+                />
+                <div className="absolute -bottom-4 -right-4 w-24 h-24 sm:w-32 sm:h-32 bg-[#8e9fc5] rounded-full opacity-20"></div>
+                <div className="absolute -top-4 -left-4 w-16 h-16 sm:w-20 sm:h-20 bg-[#d2d5e0] rounded-full opacity-30"></div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+        
+        {/* Connecting line to below */}
+        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-2 h-12 sm:h-16 bg-[#d2d5e0] opacity-60"></div>
+      </section>
+
+      {/* Timeline Section - Fully Responsive */}
+      <section className="relative bg-[#F5F1E8] py-12 sm:py-16 lg:py-20">
+        {/* Timeline Line - Responsive positioning */}
+        <div className="absolute left-6 sm:left-8 md:left-12 lg:left-20 top-0 bottom-0 w-0.5 sm:w-1 bg-gradient-to-b from-[#8e9fc5] to-[#023080]"></div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+          {timelineData.map((item, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: index * 0.1 }}
+              viewport={{ once: true }}
+              className="relative mb-16 sm:mb-20 lg:mb-24"
+            >
+              {/* Timeline Dot - Responsive */}
+              <div className="absolute left-4 sm:left-6 md:left-10 lg:left-16 top-6 sm:top-8 w-4 h-4 sm:w-6 sm:h-6 bg-[#023080] rounded-full border-2 sm:border-4 border-white shadow-lg z-10"></div>
+
+              {/* Year Badge - Responsive positioning */}
+              <div className="absolute left-12 sm:left-16 md:left-20 lg:left-28 top-4 sm:top-6 bg-[#023080] text-white px-2 sm:px-4 py-1 sm:py-2 rounded-lg text-sm sm:text-lg font-medium shadow-lg">
+                {item.year}
+              </div>
+
+              {/* Content Container - Responsive margins */}
+              <div className="ml-16 sm:ml-20 md:ml-24 lg:ml-32 xl:ml-40 mr-2 sm:mr-4 lg:mr-6">
+                <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 lg:p-8 border border-gray-100">
+                  {/* Content */}
+                  <div className="w-full">
+                    <h3 className="text-xl sm:text-2xl lg:text-3xl font-light text-[#023080] mb-2">
+                      {item.title}
+                    </h3>
+                    <h4 className="text-lg sm:text-xl text-[#8e9fc5] font-light mb-4 sm:mb-6">
                       {item.subtitle}
-                    </div>
-                    <h2 className="content-title">{item.title}</h2>
-                  </div>
-                  
-                  <div className="content-body">
-                    <p className="content-description">{item.description}</p>
-                    
-                    <div className="achievements-section">
-                      <h3 className="achievements-title">Key Achievements</h3>
-                      <div className="achievements-grid">
-                        {item.achievements.map((achievement, achIndex) => (
-                          <div key={achIndex} className="achievement-item">
-                            <div className="achievement-bullet" style={{ backgroundColor: item.color }}></div>
-                            <span className="achievement-text">{achievement}</span>
+                    </h4>
+                    <p className="text-sm sm:text-base lg:text-lg text-gray-700 leading-relaxed mb-6 sm:mb-8 text-justify">
+                      {item.description}
+                    </p>
+
+                    <div>
+                      <h5 className="text-lg sm:text-xl font-medium text-[#023080] mb-4 sm:mb-6">Key Achievements</h5>
+                      <div className="space-y-3 sm:space-y-4">
+                        {item.achievements.map((achievement, achievementIndex) => (
+                          <div key={achievementIndex} className="flex items-start space-x-3 sm:space-x-4">
+                            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[#8e9fc5] rounded-full mt-2 sm:mt-3 flex-shrink-0"></div>
+                            <p className="text-sm sm:text-base text-gray-600 leading-relaxed text-justify flex-1">{achievement}</p>
                           </div>
                         ))}
                       </div>
                     </div>
+
+                    <div className="w-16 sm:w-24 h-0.5 sm:h-1 bg-gradient-to-r from-[#8e9fc5] to-[#04307b] rounded-full mt-6 sm:mt-8"></div>
                   </div>
                 </div>
               </div>
-            </div>
-          </section>
-        ))}
-      </div>
-
-      {/* Future Vision Section */}
-      <section 
-        ref={el => sectionsRef.current[timelineData.length] = el}
-        className={`future-section ${visibleSections.has(timelineData.length) ? 'visible' : ''}`}
-      >
-        <div className="future-content">
-          <div className="future-badge">
-            <span>LOOKING AHEAD</span>
-          </div>
-          <h2 className="future-title">The Journey Continues</h2>
-          <div className="future-description">
-            <p>From humble beginnings to transformative impact, our journey represents more than growth—it embodies evolution. SWIS Foundation stands as a testament to what's possible when vision meets action, and passion drives purpose.</p>
-          </div>
-          
-          {/* IMAGE PLACEHOLDER 4: Future vision graphic or infographic */}
-          <div className="future-image-placeholder">
-            <div className="image-placeholder">Future Vision Infographic</div>
-          </div>
-          
-          <div className="future-vision-grid">
-            <div className="vision-item">
-              <div className="vision-icon">🎯</div>
-              <h3>Strategic Focus</h3>
-              <p>Data-driven programs with measurable impact and sustainable outcomes</p>
-            </div>
-            <div className="vision-item">
-              <div className="vision-icon">🌍</div>
-              <h3>Global Vision</h3>
-              <p>Expanding our reach while maintaining local relevance and community connection</p>
-            </div>
-            <div className="vision-item">
-              <div className="vision-icon">💡</div>
-              <h3>Innovation</h3>
-              <p>Leveraging technology and innovative approaches for maximum social impact</p>
-            </div>
-          </div>
+            </motion.div>
+          ))}
         </div>
       </section>
 
-      <style jsx>{`
-        .history-container {
-          font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-          background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
-          color: #f8fafc;
-          overflow-x: hidden;
-          position: relative;
-          min-height: 100vh;
-        }
-
-        /* Progress Bar */
-        .progress-wrapper {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 4px;
-          background: rgba(15, 23, 42, 0.8);
-          backdrop-filter: blur(10px);
-          z-index: 1000;
-        }
-
-        .progress-bar {
-          height: 100%;
-          background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ef4444);
-          transition: width 0.1s ease;
-          box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
-        }
-
-        /* Hero Section */
-        .hero-section {
-          min-height: 100vh;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 2rem;
-          position: relative;
-          background: radial-gradient(circle at 30% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-                      radial-gradient(circle at 70% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
-        }
-
-        .hero-content {
-          max-width: 1200px;
-          text-align: center;
-        }
-
-        .hero-badge {
-          display: inline-block;
-          background: rgba(59, 130, 246, 0.1);
-          border: 1px solid rgba(59, 130, 246, 0.2);
-          border-radius: 50px;
-          padding: 0.75rem 2rem;
-          margin-bottom: 2rem;
-          backdrop-filter: blur(10px);
-        }
-
-        .hero-badge span {
-          font-size: 0.875rem;
-          font-weight: 600;
-          color: #3b82f6;
-          letter-spacing: 1px;
-          text-transform: uppercase;
-        }
-
-        .hero-title {
-          margin-bottom: 2rem;
-        }
-
-        .title-main {
-          display: block;
-          font-family: 'Playfair Display', Georgia, serif;
-          font-size: 4.5rem;
-          font-weight: 300;
-          margin-bottom: 1rem;
-          background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          letter-spacing: -2px;
-        }
-
-        .title-subtitle {
-          display: block;
-          font-family: 'Inter', sans-serif;
-          font-size: 1.5rem;
-          font-weight: 400;
-          color: #94a3b8;
-          letter-spacing: 1px;
-        }
-
-        .hero-description {
-          max-width: 800px;
-          margin: 0 auto 2rem;
-        }
-
-        .hero-description p {
-          font-size: 1.25rem;
-          line-height: 1.8;
-          color: #cbd5e1;
-        }
-
-        /* Image Placeholders */
-        .hero-image-placeholder,
-        .timeline-image-placeholder,
-        .future-image-placeholder {
-          margin: 2rem 0;
-        }
-
-        .image-placeholder {
-          background: rgba(248, 250, 252, 0.05);
-          border: 2px dashed rgba(248, 250, 252, 0.2);
-          border-radius: 12px;
-          padding: 2rem;
-          text-align: center;
-          color: #64748b;
-          font-style: italic;
-          transition: all 0.3s ease;
-        }
-
-        .image-placeholder:hover {
-          background: rgba(59, 130, 246, 0.1);
-          border-color: rgba(59, 130, 246, 0.3);
-          color: #3b82f6;
-        }
-
-        .timeline-image-placeholder .image-placeholder {
-          height: 200px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .future-image-placeholder .image-placeholder {
-          height: 300px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .hero-stats {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 2rem;
-          max-width: 600px;
-          margin: 0 auto;
-        }
-
-        .stat-item {
-          text-align: center;
-        }
-
-        .stat-number {
-          font-family: 'Playfair Display', Georgia, serif;
-          font-size: 2.5rem;
-          font-weight: 300;
-          color: #3b82f6;
-          margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-          font-size: 0.875rem;
-          font-weight: 500;
-          color: #64748b;
-          text-transform: uppercase;
-          letter-spacing: 1px;
-        }
-
-        /* Timeline */
-        .timeline-wrapper {
-          position: relative;
-          padding: 4rem 0;
-        }
-
-        .timeline-line {
-          position: absolute;
-          left: 50%;
-          top: 0;
-          bottom: 0;
-          width: 2px;
-          background: linear-gradient(to bottom, transparent, #334155, transparent);
-          transform: translateX(-50%);
-        }
-
-        .timeline-section {
-          padding: 3rem 2rem;
-          position: relative;
-          opacity: 0;
-          transform: translateY(50px);
-          transition: all 0.8s ease;
-        }
-
-        .timeline-section.visible {
-          opacity: 1;
-          transform: translateY(0);
-        }
-
-        .timeline-content {
-          max-width: 1400px;
-          margin: 0 auto;
-          position: relative;
-        }
-
-        .timeline-layout {
-          display: grid;
-          grid-template-columns: 1fr auto 1fr;
-          gap: 2rem;
-          align-items: center;
-        }
-
-        .timeline-layout.reverse .content-box {
-          grid-column: 1;
-          grid-row: 1;
-        }
-
-        .timeline-layout.reverse .timeline-node {
-          grid-column: 2;
-          grid-row: 1;
-        }
-
-        .timeline-node {
-          position: relative;
-          width: 80px;
-          height: 80px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          grid-column: 2;
-          justify-self: center;
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .node-inner {
-          width: 60px;
-          height: 60px;
-          background: rgba(15, 23, 42, 0.9);
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          backdrop-filter: blur(10px);
-        }
-
-        .node-icon {
-          font-size: 1.5rem;
-        }
-
-        .node-year {
-          position: absolute;
-          top: -40px;
-          left: 50%;
-          transform: translateX(-50%);
-          font-family: 'Playfair Display', Georgia, serif;
-          font-size: 1.25rem;
-          font-weight: 600;
-          color: #f8fafc;
-          background: rgba(15, 23, 42, 0.8);
-          padding: 0.5rem 1rem;
-          border-radius: 20px;
-          backdrop-filter: blur(10px);
-          border: 1px solid rgba(248, 250, 252, 0.1);
-        }
-
-        /* Content Box */
-        .content-box {
-          background: rgba(15, 23, 42, 0.6);
-          border-radius: 20px;
-          padding: 2rem;
-          backdrop-filter: blur(20px);
-          border: 1px solid rgba(248, 250, 252, 0.1);
-          box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.4);
-          transition: all 0.3s ease;
-        }
-
-        .content-box:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-
-        .content-header {
-          margin-bottom: 1.5rem;
-        }
-
-        .content-badge {
-          display: inline-block;
-          color: white;
-          padding: 0.5rem 1.5rem;
-          border-radius: 50px;
-          font-size: 0.75rem;
-          font-weight: 600;
-          text-transform: uppercase;
-          letter-spacing: 1px;
-          margin-bottom: 1rem;
-        }
-
-        .content-title {
-          font-family: 'Playfair Display', Georgia, serif;
-          font-size: 2rem;
-          font-weight: 300;
-          color: #f8fafc;
-          margin-bottom: 0;
-        }
-
-        .content-description {
-          font-size: 1.1rem;
-          line-height: 1.7;
-          color: #cbd5e1;
-          margin-bottom: 1.5rem;
-        }
-
-        .achievements-section {
-          border-top: 1px solid rgba(248, 250, 252, 0.1);
-          padding-top: 1.5rem;
-        }
-
-        .achievements-title {
-          font-size: 1rem;
-          font-weight: 600;
-          color: #e2e8f0;
-          margin-bottom: 1rem;
-          text-transform: uppercase;
-          letter-spacing: 1px;
-        }
-
-        .achievements-grid {
-          display: grid;
-          gap: 0.75rem;
-        }
-
-        .achievement-item {
-          display: flex;
-          align-items: flex-start;
-          gap: 1rem;
-          padding: 0.75rem;
-          background: rgba(248, 250, 252, 0.02);
-          border-radius: 8px;
-          transition: all 0.3s ease;
-        }
-
-        .achievement-item:hover {
-          background: rgba(248, 250, 252, 0.05);
-        }
-
-        .achievement-bullet {
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          margin-top: 0.5rem;
-          flex-shrink: 0;
-        }
-
-        .achievement-text {
-          font-size: 0.95rem;
-          line-height: 1.5;
-          color: #94a3b8;
-        }
-
-        .real-image {
-        width: 100%;
-        max-width: 100%;      /* Ensures it doesn't overflow */
-        padding: 2rem;
-        border-radius: 12px;
-        display: block;
-        margin: 0 auto;
-        transition: all 0.3s ease;
-        background: rgba(248, 250, 252, 0.05);
-        object-fit: contain; /* Keeps image proportions */
-        }
-
-        /* Future Section */
-        .future-section {
-          min-height: 100vh;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 4rem 2rem;
-          position: relative;
-          opacity: 0;
-          transform: translateY(50px);
-          transition: all 0.8s ease;
-          background: radial-gradient(circle at 70% 30%, rgba(239, 68, 68, 0.1) 0%, transparent 50%),
-                      radial-gradient(circle at 30% 70%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
-        }
-
-        .future-section.visible {
-          opacity: 1;
-          transform: translateY(0);
-        }
-
-        .future-content {
-          max-width: 1000px;
-          text-align: center;
-        }
-
-        .future-badge {
-          display: inline-block;
-          background: rgba(16, 185, 129, 0.1);
-          border: 1px solid rgba(16, 185, 129, 0.2);
-          border-radius: 50px;
-          padding: 0.75rem 2rem;
-          margin-bottom: 2rem;
-          backdrop-filter: blur(10px);
-        }
-
-        .future-badge span {
-          font-size: 0.875rem;
-          font-weight: 600;
-          color: #10b981;
-          letter-spacing: 1px;
-          text-transform: uppercase;
-        }
-
-        .future-title {
-          font-family: 'Playfair Display', Georgia, serif;
-          font-size: 3rem;
-          font-weight: 300;
-          margin-bottom: 2rem;
-          background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-        }
-
-        .future-description {
-          font-size: 1.2rem;
-          line-height: 1.7;
-          color: #cbd5e1;
-          margin-bottom: 2rem;
-        }
-
-        .future-vision-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-          gap: 2rem;
-          margin-top: 2rem;
-        }
-
-        .vision-item {
-          background: rgba(15, 23, 42, 0.6);
-          border-radius: 16px;
-          padding: 2rem;
-          backdrop-filter: blur(20px);
-          border: 1px solid rgba(248, 250, 252, 0.1);
-          transition: all 0.3s ease;
-          text-align: center;
-        }
-
-        .vision-item:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.4);
-        }
-
-        .vision-icon {
-          font-size: 2.5rem;
-          margin-bottom: 1rem;
-        }
-
-        .vision-item h3 {
-          font-size: 1.2rem;
-          font-weight: 600;
-          color: #f8fafc;
-          margin-bottom: 0.75rem;
-        }
-
-        .vision-item p {
-          color: #94a3b8;
-          line-height: 1.5;
-          font-size: 0.95rem;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-          .timeline-layout {
-            grid-template-columns: 1fr;
-            gap: 2rem;
-            justify-items: center;
-          }
-
-          .timeline-layout.reverse .content-box {
-            grid-column: 1;
-            grid-row: 2;
-          }
-
-          .timeline-layout.reverse .timeline-node {
-            grid-column: 1;
-            grid-row: 1;
-          }
-
-          .timeline-line {
-            display: none;
-          }
-
-          .content-box {
-            max-width: 600px;
-          }
-        }
-
-        @media (max-width: 768px) {
-          .title-main {
-            font-size: 3rem;
-          }
-
-          .hero-stats {
-            grid-template-columns: repeat(2, 1fr);
-          }
-
-          .content-title {
-            font-size: 1.5rem;
-          }
-
-          .future-title {
-            font-size: 2.5rem;
-          }
-
-          .future-vision-grid {
-            grid-template-columns: 1fr;
-          }
-        }
-
-        @media (max-width: 480px) {
-          .title-main {
-            font-size: 2.5rem;
-          }
-
-          .hero-stats {
-            grid-template-columns: 1fr;
-          }
-
-          .timeline-node {
-            width: 60px;
-            height: 60px;
-          }
-
-          .node-inner {
-            width: 45px;
-            height: 45px;
-          }
-        }
-      `}</style>
+      {/* Footer CTA - Responsive */}
+      <section className="bg-gradient-to-r from-[#023080] to-[#04307b] py-12 sm:py-16 lg:py-24 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-12"
+        >
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light text-white mb-6 sm:mb-8">
+            The Journey Continues
+          </h2>
+          <p className="text-base sm:text-lg md:text-xl text-[#d2d5e0] mb-6 sm:mb-8 leading-relaxed">
+            Join us as we work towards impacting 2 million+ lives through our innovative, 
+            data-driven approach to social welfare and sustainable development.
+          </p>
+          <a href="/JoinUs" className="bg-[#8e9fc5] hover:bg-[#d2d5e0] text-[#023080] px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 text-base sm:text-lg">
+            Be Part of Our Story
+          </a>
+        </motion.div>
+      </section>
     </div>
   );
 };
 
-export default History;
+export default New;

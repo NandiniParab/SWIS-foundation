@@ -40,17 +40,7 @@ const Careers = () => {
 
   return (
     <div className="bg-[#FCFDFF]">
-      {/* Navigation Breadcrumb */}
-      <nav className="bg-[#FCFDFF] py-3 sm:py-4 px-4 sm:px-6 lg:px-12 border-b border-gray-100">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-center space-x-2 sm:space-x-3 text-xs sm:text-sm text-gray-600">
-            <Link to="/" className="hover:text-[#023080] cursor-pointer transition-colors">Home</Link>
-            <span>›</span>
-            <span className="text-[#023080] font-medium">Careers</span>
-          </div>
-        </div>
-      </nav>
-
+  
       {/* Hero Section - Similar to Reliance layout */}
       <section className="relative min-h-screen bg-gradient-to-br from-[#023080] via-[#04307b] to-[#8e9fc5] overflow-hidden">
         <div className="absolute inset-0 bg-black/20"></div>

@@ -1,5 +1,6 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import ScrollToTop from "./components/ScrollToTop";
 
 // Pages
 import Homepage from "./pages/Start"; // Updated from "./pages/Start"
@@ -9,8 +10,7 @@ import CCAE from "./pages/ccae";
 import CSAA from "./pages/csaa";
 import CSII from "./pages/csii";
 import Member from "./pages/Member";
-import Allinone from "./pages/Allinone";
-import New from "./pages/New";
+import WorkingAtSwis from "./pages/WorkingAtSwis";
 import COC from "./pages/coc";
 import Nutrition from "./pages/Nutrition";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
@@ -29,6 +29,7 @@ import FileUploadTest from "./components/FileUploadTest"
 function App() {
   return (
     <BrowserRouter>
+     <ScrollToTop />
       <RoutesWithNavbar />
     </BrowserRouter>
   );
@@ -50,8 +51,7 @@ const RoutesWithNavbar = () => {
         <Route path="/csaa" element={<CSAA />} />
         <Route path="/csii" element={<CSII />} />
         <Route path="/member" element={<Member />} />
-        <Route path="/allinone" element={<Allinone />} />
-        <Route path="/new" element={<New />} />
+        <Route path="/WorkingAtSwis" element={<WorkingAtSwis />} />
         <Route path="/coc" element={<COC />} />
         <Route path="/Nutrition" element={<Nutrition />} />
         <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />

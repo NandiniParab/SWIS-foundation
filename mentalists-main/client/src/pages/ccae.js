@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { ArrowRight, ChevronDown, Globe, Target, Award, Users, TrendingUp, Lightbulb, Zap, Play, Shield } from 'lucide-react';
 
@@ -93,7 +94,7 @@ const HeroSection = () => {
       <div className="relative z-10 h-full flex items-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 w-full">
           <div className="text-white max-w-4xl">
-            <div className="mb-6 animate-fadeInUp">
+            <div className="mb-0 animate-fadeInUp">
               <span className="text-[#d2d5e0] text-lg font-light tracking-wide">SWIS FOUNDATION</span>
             </div>
 
@@ -164,12 +165,12 @@ const MissionSection = ({ isVisible }) => {
   ];
 
   return (
-    <section id="mission" className="py-16 sm:py-20 bg-gradient-to-br from-[#FCFDFF] via-[#d2d5e0]/30 to-[#8e9fc5]/20 relative overflow-hidden">
+    <section id="mission" className="py-4 sm:py-6 bg-gradient-to-br from-[#FCFDFF] via-[#d2d5e0]/30 to-[#8e9fc5]/20 relative overflow-hidden">
       <div className="absolute top-0 left-0 w-48 sm:w-72 h-48 sm:h-72 bg-[#8e9fc5]/10 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
       <div className="absolute bottom-0 right-0 w-64 sm:w-96 h-64 sm:h-96 bg-[#023080]/5 rounded-full translate-x-1/2 translate-y-1/2"></div>
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
-        <div className={`text-center mb-12 sm:mb-16 ${isVisible ? 'animate-fadeInUp' : 'opacity-0'}`}>
+        <div className={`text-center mb-4 sm:mb-6 ${isVisible ? 'animate-fadeInUp' : 'opacity-0'}`}>
           <div className="inline-block mb-6">
             <span className="bg-[#8e9fc5]/20 text-[#023080] px-4 py-2 rounded-full text-sm font-medium">
               Our Purpose
@@ -180,7 +181,7 @@ const MissionSection = ({ isVisible }) => {
           </h2>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16">
+        <div className="grid lg:grid-cols-3 gap-2 sm:gap-4 mb-4 sm:mb-6">
           {missionCards.map((item, index) => (
             <div
               key={index}
@@ -266,7 +267,7 @@ const ObjectivesSection = ({ isVisible }) => {
   return (
     <section id="objectives" className="py-16 sm:py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-        <div className={`text-center mb-12 sm:mb-16 ${isVisible ? 'animate-fadeInUp' : 'opacity-0'}`}>
+        <div className={`text-center mb-4 sm:mb-6 ${isVisible ? 'animate-fadeInUp' : 'opacity-0'}`}>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light text-[#023080] mb-6">
             Objectives of this Fellowship
           </h2>
@@ -311,44 +312,56 @@ const MetricsSection = ({ isVisible, countAnimated }) => {
   ];
 
   return (
-    <section id="metrics" className="py-20 bg-gradient-to-br from-[#FCFDFF] via-[#d2d5e0] to-[#8e9fc5] relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
-        <div className={`text-center mb-16 ${isVisible ? 'animate-fadeInUp' : 'opacity-0'}`}>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light mb-6 text-[#023080] italic">Our work in numbers</h2>
-          <p className="text-lg sm:text-xl text-[#04307b] max-w-3xl mx-auto">Building civic engagement through measurable impact across communities</p>
+    <section
+      id="metrics"
+      className="py-8 sm:py-12 bg-gradient-to-br from-[#FCFDFF] via-[#d2d5e0] to-[#8e9fc5]"
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+        <div
+          className={`text-center mb-8 sm:mb-12 ${
+            isVisible ? "animate-fadeInUp" : "opacity-0"
+          }`}
+        >
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light mb-4 text-[#023080]">
+            Few glimpses of what we do
+          </h2>
+          <p className="text-lg sm:text-xl text-[#04307b] max-w-3xl mx-auto">
+            Building civic engagement through measurable impact across communities
+          </p>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 lg:gap-6 auto-rows-fr">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6 lg:gap-8 auto-rows-[10rem]">
           {impactMetrics.map((metric, index) => (
-            <div
-              key={index}
-              className={`
-                ${isVisible ? `animate-fadeInUp` : 'opacity-0'}
-                ${metric.size === 'large' ? 'col-span-2 row-span-2' : ''}
-                ${metric.size === 'medium' ? 'col-span-1 row-span-2 sm:col-span-2 sm:row-span-1' : ''}
-                ${metric.size === 'small' ? 'col-span-1 row-span-1' : ''}
-                relative rounded-2xl overflow-hidden group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-2xl
-                ${index < 3 ? 'h-32 sm:h-40' : ''}
-                ${index >= 3 && index < 5 ? 'h-40 sm:h-48' : ''}
-                ${index >= 5 ? 'h-32 sm:h-40' : ''}
-              `}
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
+          <div
+  key={index}
+  className={`
+    ${isVisible ? "animate-slideUp" : "opacity-0 translate-y-8"}
+    ${metric.size === "large" ? "col-span-2 row-span-2 min-h-40 sm:min-h-60" : ""}
+    ${metric.size === "medium" ? "col-span-1 row-span-2 sm:col-span-2 sm:row-span-1 min-h-40" : ""}
+    ${metric.size === "small" ? "col-span-1 row-span-1 min-h-32" : ""}
+    relative rounded-xl overflow-hidden group cursor-pointer transform transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:z-10
+  `}
+  style={{ animationDelay: `${index * 0.15}s` }}
+>
               <img
                 src={metric.image}
                 alt={metric.label}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
-              <div className="absolute inset-0 bg-gradient-to-br from-[#023080]/80 via-[#04307b]/70 to-[#8e9fc5]/60 group-hover:from-[#023080]/90 group-hover:via-[#04307b]/80 group-hover:to-[#8e9fc5]/70 transition-all duration-300"></div>
-              
+              <div className="absolute inset-0 bg-gradient-to-br from-[#023080]/80 via-[#04307b]/70 to-[#8e9fc5]/60 group-hover:from-[#023080]/90 group-hover:via-[#04307b]/80 group-hover:to-[#8e9fc5]/70 transition-all duration-500"></div>
               <div className="absolute inset-0 flex flex-col justify-center items-center text-white p-3 sm:p-4 text-center">
-                <div className="text-white/80 mb-2 hidden sm:block">
+                <div className="text-white/80 mb-2 transform transition-transform duration-300 group-hover:scale-110 hidden sm:block">
                   {metric.icon}
                 </div>
-                <div className={`font-bold mb-1 sm:mb-2 ${metric.size === 'large' ? 'text-4xl sm:text-5xl lg:text-6xl' : metric.size === 'medium' ? 'text-2xl sm:text-3xl lg:text-4xl' : 'text-xl sm:text-2xl lg:text-3xl'}`}>
-                  <AnimatedCounter end={metric.number} suffix={metric.suffix} countAnimated={countAnimated} />
-                </div>
-                <div className={`text-white/90 font-medium leading-tight ${metric.size === 'large' ? 'text-sm sm:text-base lg:text-lg' : metric.size === 'medium' ? 'text-xs sm:text-sm lg:text-base' : 'text-xs sm:text-sm'}`}>
+                <div
+                  className={`text-white/90 font-medium leading-tight transform transition-all duration-300 group-hover:text-white ${
+                    metric.size === "large"
+                      ? "text-xs sm:text-sm lg:text-base"
+                      : metric.size === "medium"
+                      ? "text-xs sm:text-sm"
+                      : "text-xs"
+                  }`}
+                >
                   {metric.label}
                 </div>
               </div>
@@ -398,9 +411,9 @@ const HighlightsSection = ({ isVisible }) => {
   ];
 
   return (
-    <section id="highlights" className="py-16 sm:py-20 bg-white">
+    <section id="highlights"  className="py-4 sm:py-6 bg-gradient-to-b from-white to-gray-100" >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-        <div className={`text-center mb-12 sm:mb-16 ${isVisible ? 'animate-fadeInUp' : 'opacity-0'}`}>
+        <div className={`text-center mb-4 sm:mb-6 ${isVisible ? 'animate-fadeInUp' : 'opacity-0'}`}>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light text-[#023080] mb-6">
             Key Highlights of the Fellowship
           </h2>
@@ -528,6 +541,10 @@ const CCAE = () => {
           from { transform: translateY(30px); opacity: 0; }
           to { transform: translateY(0); opacity: 1; }
         }
+        @keyframes slideUp {
+          from { transform: translateY(40px); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
+        }
         @keyframes scaleIn {
           from { transform: scale(0.8); opacity: 0; }
           to { transform: scale(1); opacity: 1; }
@@ -542,6 +559,7 @@ const CCAE = () => {
         }
         .slide-transition { transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
         .animate-fadeInUp { animation: fadeInUp 0.8s ease-out forwards; }
+        .animate-slideUp { animation: slideUp 0.8s ease-out forwards; }
         .animate-scaleIn { animation: scaleIn 0.6s ease-out forwards; }
         .animate-float { animation: float 3s ease-in-out infinite; }
         .animate-pulse-slow { animation: pulse 2s ease-in-out infinite; }

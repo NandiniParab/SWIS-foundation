@@ -1,43 +1,49 @@
+
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import founderimage from "../img/soubhik1.jpeg";
-import gallery1 from "../img/foundergal1.jpeg";
-import gallery2 from "../img/foundergal2.jpeg";
-import gallery3 from "../img/foundergal3.jpeg";
-import gallery4 from "../img/foundergal4.jpeg";
-import gallery5 from "../img/foundergal5.jpeg";
-import gallery6 from "../img/foundergal6.jpeg";
-import gallery7 from "../img/foundergal7.jpeg";
-import start1 from "../img/founder1.jpeg";
-import start2 from "../img/founder2.jpeg";
-import start3 from "../img/founder3.jpeg";
-import start4 from "../img/founder4.jpeg";
-import award1 from "../img/awd1.jpeg";
-import award2 from "../img/awd2.jpeg";
-import award3 from "../img/awd3.jpeg";
-import award4 from "../img/awd4.jpeg";
-import award5 from "../img/awd5.jpeg";
-import award6 from "../img/awd6.jpeg";
 
+// Placeholder images for the rotating banner
 const rotatingImages = [
-  start1,
-  start2,
-  start3,
-  start4,
+  "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
 ];
+
+// Gallery images
+const allGalleryImages = [
+  "https://images.unsplash.com/photo-1500673922987-e212871fec22?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1466442929976-97f336a657be?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1492321936769-b49830bc1d1e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+];
+
+// Award images
+const awardImages = [
+  "https://images.unsplash.com/photo-1466442929976-97f336a657be?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+  "https://images.unsplash.com/photo-1492321936769-b49830bc1d1e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+  "https://images.unsplash.com/photo-1500673922987-e212871fec22?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+  "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+  "https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+  "https://images.unsplash.com/photo-1466442929976-97f336a657be?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
+];
+
+// Founder image
+const founderImage = "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80";
 
 const FounderChairman = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [galleryImages, setGalleryImages] = useState([gallery1, gallery2, gallery3]);
+  const [galleryImages, setGalleryImages] = useState([allGalleryImages[0], allGalleryImages[1], allGalleryImages[2]]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % rotatingImages.length);
-    }, 2000);
+    }, 3000);
     return () => clearInterval(interval);
   }, []);
-
-  const allGalleryImages = [gallery1, gallery2, gallery3, gallery4, gallery5, gallery6, gallery7];
 
   const handlePrev = () => {
     setGalleryImages((prev) => {
@@ -63,71 +69,59 @@ const FounderChairman = () => {
     });
   };
 
-  const scrollProgress = () => {
-    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    return scrollHeight ? (scrollTop / scrollHeight) * 100 : 0;
-  };
-
   return (
-    <div style={{ backgroundColor: '#FCFDFF', fontFamily: 'serif', position: 'relative' }}>
-      {/* Scroll Progress Line */}
-      <div style={{
-        width: '100%',
-        height: '5px',
-        background: 'rgba(0, 0, 139, 0.2)',
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        zIndex: 1000
-      }}>
-        <div style={{
-          height: '100%',
-          background: '#023080',
-          width: `${scrollProgress()}%`,
-          transition: 'width 0.1s linear'
-        }} />
-      </div>
-
+    <div className="min-h-screen" style={{ backgroundColor: '#FCFDFF', fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' }}>
       {/* Rotating Banner Section */}
       <motion.section
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.2 }}
+        className="relative min-h-[85vh] lg:min-h-screen flex items-center justify-center overflow-hidden"
         style={{
-          background: `url(${rotatingImages[currentImageIndex]}) center/cover no-repeat`,
-          height: '90vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexDirection: 'column',
-          textAlign: 'center',
-          transition: 'background-image 0.5s ease-in-out',
-          position: 'relative',
-          color: '#fff'
+          background: `linear-gradient(135deg, rgba(2, 48, 128, 0.8), rgba(4, 48, 123, 0.6)), url(${rotatingImages[currentImageIndex]}) center/cover no-repeat`,
+          transition: 'background-image 1s ease-in-out',
         }}
       >
-        <motion.div
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.5, type: "spring", stiffness: 50 }}
-          style={{
-            backdropFilter: 'blur(5px)',
-            backgroundColor: 'rgba(255, 255, 255, 0.2)',
-            padding: '1rem',
-            borderRadius: '10px',
-            boxShadow: '0 2px 15px rgba(0, 0, 0, 0.1)'
-          }}
-        >
-          <h1 style={{ fontSize: '2rem', fontWeight: '600' }}>A timeless visionary</h1>
-          <motion.p
-            initial={{ y: 20, opacity: 0 }}
+        {/* Animated background overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#023080]/30 via-transparent to-[#04307b]/20"></div>
+        
+        <div className="relative z-10 text-center text-white px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+          <motion.div
+            initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.7, type: "spring", stiffness: 50 }}
-            style={{ fontSize: '1rem', width: '60%' }}
+            transition={{ delay: 0.5, duration: 1, type: "spring", stiffness: 60 }}
+            className="backdrop-blur-md bg-white/10 rounded-3xl p-8 sm:p-12 border border-white/20 shadow-2xl"
           >
-            whose legacy emboldens the imagination of a billion people
-          </motion.p>
+            <motion.h1
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.7, duration: 0.8 }}
+              className="text-4xl sm:text-5xl lg:text-7xl font-light mb-6 sm:mb-8 leading-tight tracking-wide"
+            >
+              A timeless visionary
+            </motion.h1>
+            <motion.p
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.9, duration: 0.8 }}
+              className="text-lg sm:text-xl lg:text-2xl font-light leading-relaxed max-w-4xl mx-auto opacity-90"
+            >
+              whose legacy emboldens the imagination of a billion people
+            </motion.p>
+          </motion.div>
+        </div>
+
+        {/* Scroll indicator */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.5, duration: 0.8, repeat: Infinity, repeatType: "reverse" }}
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/70"
+        >
+          <div className="flex flex-col items-center">
+            <span className="text-sm mb-2 tracking-wider">SCROLL</span>
+            <div className="w-0.5 h-8 bg-white/50"></div>
+          </div>
         </motion.div>
       </motion.section>
 
@@ -135,378 +129,370 @@ const FounderChairman = () => {
       <motion.section
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
-        transition={{ duration: 1, type: "spring", stiffness: 50 }}
-        style={{ display: 'flex', backgroundColor: '#023080', padding: '2rem', color: '#FCFDFF', flexWrap: 'wrap' }}
+        transition={{ duration: 1 }}
+        className="py-16 sm:py-20 lg:py-24"
+        style={{ backgroundColor: '#023080' }}
       >
-        <motion.div
-          initial={{ x: -100, opacity: 0 }}
-          whileInView={{ x: 0, opacity: 1 }}
-          transition={{ duration: 1, type: "spring", stiffness: 50 }}
-          style={{
-            flex: 1,
-            minWidth: '250px',
-            background: 'rgba(255, 255, 255, 0.1)',
-            backdropFilter: 'blur(5px)',
-            padding: '1rem',
-            borderRadius: '10px',
-            margin: '0.5rem'
-          }}
-        >
-          <h2 style={{ fontWeight: '300', fontSize: '1.2rem' }}>
-            Our dreams have to be bigger. Our ambitions higher. Our commitment deeper.
-            And our efforts greater. This is my dream for SWIS and for India.
-          </h2>
-          <h1 style={{ marginTop: '0.5rem', fontSize: '1.5rem' }}>Soubhik Kundu</h1>
-        </motion.div>
-        <motion.div
-          initial={{ x: 100, opacity: 0 }}
-          whileInView={{ x: 0, opacity: 1 }}
-          transition={{ duration: 1, type: "spring", stiffness: 50 }}
-          style={{ flex: 1, textAlign: 'right', minWidth: '250px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-        >
-          <motion.img
-            initial={{ scale: 0.9 }}
-            whileInView={{ scale: 1 }}
-            transition={{ duration: 0.5, type: "spring", stiffness: 50 }}
-            whileHover={{ scale: 1.2, y: -5 }}
-            src={founderimage}
-            alt="Soubhik Kundu"
-            style={{ width: '60%', borderRadius: '10px', boxShadow: '0 0 15px rgba(0, 0, 139, 0.5)' }}
-          />
-        </motion.div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+            <motion.div
+              initial={{ x: -60, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="order-2 lg:order-1"
+            >
+              <div className="backdrop-blur-sm bg-white/5 rounded-2xl p-6 sm:p-8 border border-white/10">
+                <blockquote className="text-xl sm:text-2xl lg:text-3xl font-light leading-relaxed text-white mb-6 sm:mb-8">
+                  "Our dreams have to be bigger. Our ambitions higher. Our commitment deeper.
+                  And our efforts greater. This is my dream for SWIS and for India."
+                </blockquote>
+                <cite className="text-lg sm:text-xl font-medium text-[#8e9fc5]">— Soubhik Kundu</cite>
+              </div>
+            </motion.div>
+            
+            <motion.div
+              initial={{ x: 60, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="order-1 lg:order-2 flex justify-center"
+            >
+              <motion.div
+                whileHover={{ scale: 1.05, y: -10 }}
+                transition={{ duration: 0.4 }}
+                className="relative"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-[#8e9fc5] to-[#04307b] rounded-2xl blur-lg opacity-30 transform scale-105"></div>
+                <img
+                  src={founderImage}
+                  alt="Soubhik Kundu"
+                  className="relative w-64 sm:w-80 lg:w-96 h-80 sm:h-96 lg:h-[28rem] object-cover rounded-2xl shadow-2xl border-2 border-white/20"
+                />
+              </motion.div>
+            </motion.div>
+          </div>
+        </div>
       </motion.section>
 
       {/* Bio Section */}
       <motion.section
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, type: "spring", stiffness: 50 }}
-        style={{ backgroundColor: '#d2d5e0', padding: '2rem' }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        className="py-16 sm:py-20 lg:py-24"
+        style={{ backgroundColor: '#d2d5e0' }}
       >
-        <motion.div
-          initial={{ x: -100, opacity: 0 }}
-          whileInView={{ x: 0, opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, type: "spring", stiffness: 50 }}
-          style={{ backgroundColor: '#FCFDFF', borderRadius: '8px', padding: '1.5rem', maxWidth: '85%', margin: '0 auto', textAlign: 'center' }}
-        >
-          <h2 style={{ fontSize: '1.8rem', color: '#04307b', marginBottom: '0.5rem' }}>Founder–Chairman</h2>
-          <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
-            <div style={{ flex: 1, padding: '0.5rem', textAlign: 'left', minWidth: '250px' }}>
-              <p style={{ color: '#000', lineHeight: '1.5', fontSize: '0.9rem' }}>
-                <strong>Soubhik Kundu</strong><br />
-                Chairman & Managing Trustee – SWIS Foundation<br />
-                Board Member – Institute for Social Welfare and Impact Solutions (SWIS Institute)<br /><br />
-                Soubhik Kundu is a passionate changemaker, institution builder, and social impact strategist who
-                serves as the Chairman & Managing Trustee of the SWIS Foundation – Social Welfare and Impact
-                Solutions – a mission-driven organisation committed to advancing equity, grassroots
-                transformation, and inclusive development across India. He also serves as a Board Member at the
-                SWIS Institute, which anchors research, capacity building, and strategic program delivery under the
-                foundation’s umbrella.<br /><br />
-                Driven by the vision of empowering communities through expert-led and equity-centered
-                leadership, Soubhik has built a diverse ecosystem of projects, fellowships, and outreach programs
-                that span education, livelihoods, civic participation, and impact policy engagement. His efforts have
-                catalysed the formation of numerous institutional partnerships and have mobilized hundreds of
-                young changemakers across the country.<br /><br />
-                He is also a Life Member of the Indian Red Cross Society (IRCS), reflecting his commitment to
-                humanitarian work and public service.<br /><br />
-                Soubhik completed his schooling at St. Patrick's School, Telangana, and graduated from St.
-                Xavier’s College (Autonomous), Kolkata in Economics with Sociology, Political Science, and
-                International Relations post which he moved to pursue his Master’s in Political Science from the
-                University of Delhi.
-              </p>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ y: 40, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8 }}
+            className="backdrop-blur-sm bg-white/80 rounded-3xl p-8 sm:p-12 lg:p-16 shadow-xl border border-white/50"
+          >
+            <div className="text-center mb-12 lg:mb-16">
+              <motion.h2
+                initial={{ y: 20, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.6 }}
+                className="text-3xl sm:text-4xl lg:text-5xl font-light mb-4 sm:mb-6"
+                style={{ color: '#04307b' }}
+              >
+                Founder–Chairman
+              </motion.h2>
+              <motion.div
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                className="w-24 h-1 mx-auto rounded-full"
+                style={{ backgroundColor: '#023080' }}
+              ></motion.div>
             </div>
-            <div style={{ flex: 1, padding: '0.5rem', textAlign: 'left', minWidth: '250px' }}>
-              <p style={{ color: '#000', lineHeight: '1.5', fontSize: '0.9rem' }}>
-                His professional experiences span the social sector, entrepreneurship, and consulting. He has
-                previously worked with organisations including Singhal Enterprises, Scholaride Consulting,
-                Pixstory, and Unschool. Alongside this, he has actively volunteered with NCC, NSS, Youth for
-                Seva, and TBWA, demonstrating his deep-rooted ethos of service and civic duty.<br /><br />
-                Soubhik’s approach blends grassroots insight with institutional thinking, combining innovation,
-                empathy, and strategic leadership. His commitment to nation-building through youth engagement
-                and social innovation continues to inspire a generation of emerging leaders and social
-                entrepreneurs.<br /><br />
-                As the founder of the SWIS Foundation, Soubhik envisions building a next-generation impact
-                infrastructure for India – one that is powered by research, compassion, policy literacy, and
-                community leadership, with the long-term goal of fostering a more just, equitable, and inclusive
-                society.
-              </p>
+            
+            <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 text-gray-700 leading-relaxed mb-12 lg:mb-16">
+              <motion.div
+                initial={{ x: -30, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="space-y-6"
+              >
+                <p className="text-base sm:text-lg">
+                  <strong className="font-semibold" style={{ color: '#04307b' }}>Soubhik Kundu</strong><br/>
+                  <span className="text-[#8e9fc5] font-medium">Chairman & Managing Trustee – SWIS Foundation</span><br/>
+                  <span className="text-[#8e9fc5] font-medium">Board Member – Institute for Social Welfare and Impact Solutions (SWIS Institute)</span>
+                </p>
+                
+                {/* ... keep existing bio content paragraphs */}
+                <p className="text-sm sm:text-base leading-relaxed">
+                  Soubhik Kundu is a passionate changemaker, institution builder, and social impact strategist who
+                  serves as the Chairman & Managing Trustee of the SWIS Foundation – Social Welfare and Impact
+                  Solutions – a mission-driven organisation committed to advancing equity, grassroots
+                  transformation, and inclusive development across India. He also serves as a Board Member at the
+                  SWIS Institute, which anchors research, capacity building, and strategic program delivery under the
+                  foundation's umbrella.
+                </p>
+                <p className="text-sm sm:text-base leading-relaxed">
+                  Driven by the vision of empowering communities through expert-led and equity-centered
+                  leadership, Soubhik has built a diverse ecosystem of projects, fellowships, and outreach programs
+                  that span education, livelihoods, civic participation, and impact policy engagement. His efforts have
+                  catalysed the formation of numerous institutional partnerships and have mobilized hundreds of
+                  young changemakers across the country.
+                </p>
+                <p className="text-sm sm:text-base leading-relaxed">
+                  He is also a Life Member of the Indian Red Cross Society (IRCS), reflecting his commitment to
+                  humanitarian work and public service.
+                </p>
+                <p className="text-sm sm:text-base leading-relaxed">
+                  Soubhik completed his schooling at St. Patrick's School, Telangana, and graduated from St.
+                  Xavier's College (Autonomous), Kolkata in Economics with Sociology, Political Science, and
+                  International Relations post which he moved to pursue his Master's in Political Science from the
+                  University of Delhi.
+                </p>
+              </motion.div>
+              
+              <motion.div
+                initial={{ x: 30, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="space-y-6"
+              >
+                <p className="text-sm sm:text-base leading-relaxed">
+                  His professional experiences span the social sector, entrepreneurship, and consulting. He has
+                  previously worked with organisations including Singhal Enterprises, Scholaride Consulting,
+                  Pixstory, and Unschool. Alongside this, he has actively volunteered with NCC, NSS, Youth for
+                  Seva, and TBWA, demonstrating his deep-rooted ethos of service and civic duty.
+                </p>
+                <p className="text-sm sm:text-base leading-relaxed">
+                  Soubhik's approach blends grassroots insight with institutional thinking, combining innovation,
+                  empathy, and strategic leadership. His commitment to nation-building through youth engagement
+                  and social innovation continues to inspire a generation of emerging leaders and social
+                  entrepreneurs.
+                </p>
+                <p className="text-sm sm:text-base leading-relaxed">
+                  As the founder of the SWIS Foundation, Soubhik envisions building a next-generation impact
+                  infrastructure for India – one that is powered by research, compassion, policy literacy, and
+                  community leadership, with the long-term goal of fostering a more just, equitable, and inclusive
+                  society.
+                </p>
+              </motion.div>
             </div>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem', position: 'relative' }}>
-            <motion.button
-              onClick={handlePrev}
-              initial={{ opacity: 0.7 }}
-              transition={{ type: "spring", stiffness: 300 }}
-              style={{
-                position: 'absolute',
-                left: '-50px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                background: '#023080',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '50%',
-                width: '40px',
-                height: '40px',
-                cursor: 'pointer',
-                fontSize: '1.8rem',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)'
-              }}
-            >
-              ←
-            </motion.button>
-            <motion.div
-              style={{ display: 'flex', gap: '1rem', width: '900px', overflow: 'hidden' }}
-            >
-              {galleryImages.map((img, i) => (
-                <motion.img
-                  key={i}
-                  src={img}
-                  alt={`Gallery ${i + 1}`}
-                  initial={{ opacity: 0, x: i === 0 ? -50 : i === 1 ? 0 : 50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, ease: "easeInOut" }}
-                  style={{ width: '300px', height: '200px', borderRadius: '6px', objectFit: 'cover', flexShrink: 0 }}
-                />
-              ))}
-            </motion.div>
-            <motion.button
-              onClick={handleNext}
-              initial={{ opacity: 0.7 }}
-              transition={{ type: "spring", stiffness: 300 }}
-              style={{
-                position: 'absolute',
-                right: '-50px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                background: '#023080',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '50%',
-                width: '40px',
-                height: '40px',
-                cursor: 'pointer',
-                fontSize: '1.8rem',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)'
-              }}
-            >
-              →
-            </motion.button>
-          </div>
-        </motion.div>
+
+            {/* Gallery Navigation */}
+            <div className="relative">
+              <div className="flex justify-center items-center">
+                <motion.button
+                  onClick={handlePrev}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="absolute left-0 sm:left-4 z-10 w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center text-white font-bold text-lg sm:text-xl shadow-lg transition-all duration-300 hover:shadow-xl"
+                  style={{ backgroundColor: '#023080' }}
+                >
+                  ←
+                </motion.button>
+                
+                <div className="flex gap-4 sm:gap-6 overflow-hidden max-w-xs sm:max-w-2xl lg:max-w-4xl mx-12 sm:mx-20">
+                  {galleryImages.map((img, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.5, delay: i * 0.1 }}
+                      className="relative group"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-[#8e9fc5] to-[#04307b] rounded-xl blur opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
+                      <img
+                        src={img}
+                        alt={`Gallery ${i + 1}`}
+                        className="relative w-48 sm:w-64 lg:w-80 h-32 sm:h-44 lg:h-56 object-cover rounded-xl shadow-md group-hover:shadow-xl transition-all duration-300 transform group-hover:-translate-y-1"
+                      />
+                    </motion.div>
+                  ))}
+                </div>
+                
+                <motion.button
+                  onClick={handleNext}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="absolute right-0 sm:right-4 z-10 w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center text-white font-bold text-lg sm:text-xl shadow-lg transition-all duration-300 hover:shadow-xl"
+                  style={{ backgroundColor: '#023080' }}
+                >
+                  →
+                </motion.button>
+              </div>
+            </div>
+          </motion.div>
+        </div>
       </motion.section>
 
       {/* Memorable Speeches */}
       <motion.section
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, type: "spring", stiffness: 50 }}
-        style={{ backgroundColor: '#FCFDFF', padding: '2rem', textAlign: 'center' }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        className="py-16 sm:py-20 lg:py-24"
+        style={{ backgroundColor: '#FCFDFF' }}
       >
-        <motion.h2
-          initial={{ x: 100, opacity: 0 }}
-          whileInView={{ x: 0, opacity: 1 }}
-          transition={{ duration: 1, type: "spring", stiffness: 50 }}
-          style={{ color: '#04307b', fontSize: '1.8rem', marginBottom: '0.5rem' }}
-        >
-          Memorable Speeches
-        </motion.h2>
-        <motion.p
-          initial={{ x: 100, opacity: 0 }}
-          whileInView={{ x: 0, opacity: 1 }}
-          transition={{ duration: 1, type: "spring", stiffness: 50 }}
-          style={{ textAlign: 'center', marginBottom: '1rem', fontSize: '0.9rem' }}
-        >
-          A collection of memorable speeches by the Founder–Chairman that shed light on his persona and inspired scores of people to believe in their dreams
-        </motion.p>
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.5, type: "spring", stiffness: 50 }}
-          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}
-        >
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-            <motion.div
-              initial={{ x: -200, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.5, type: "spring", stiffness: 50 }}
-              style={{ width: '180px', backgroundColor: '#fff', padding: '0.5rem', borderRadius: '8px', margin: '0.5rem', textAlign: 'center' }}
-            >
-              <p style={{ fontSize: '0.9rem' }}>Lifetime Achievement Award The Economic Times Awards</p>
-            </motion.div>
-            <motion.div
-              initial={{ x: -200, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.5, type: "spring", stiffness: 50 }}
-              style={{ width: '180px', backgroundColor: '#fff', padding: '0.5rem', borderRadius: '8px', margin: '0.5rem', textAlign: 'center' }}
-            >
-              <p style={{ fontSize: '0.9rem' }}>Wharton Dean's Medal<br />Wharton School, UPenn</p>
-            </motion.div>
-          </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
-            initial={{ y: 100, opacity: 0 }}
+            initial={{ y: 30, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
-            transition={{ duration: 1, type: "spring", stiffness: 50 }}
-            style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}
+            transition={{ duration: 0.8 }}
+            className="mb-12 lg:mb-16"
           >
-            <motion.img
-              initial={{ scale: 0.9, y: 100 }}
-              whileInView={{ scale: 1, y: 0 }}
-              transition={{ duration: 1, type: "spring", stiffness: 50 }}
-              whileHover={{ scale: 1.2, y: -5 }}
-              src={founderimage}
-              alt="Chairman"
-              style={{ width: '250px', borderRadius: '15px', boxShadow: '0 0 15px rgba(0, 0, 139, 0.5)' }}
-            />
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light mb-4 sm:mb-6" style={{ color: '#04307b' }}>
+              Memorable Speeches
+            </h2>
+            <div className="w-24 h-1 mx-auto rounded-full mb-6 sm:mb-8" style={{ backgroundColor: '#023080' }}></div>
+            <p className="text-lg sm:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+              A collection of memorable speeches by the Founder–Chairman that shed light on his persona and inspired scores of people to believe in their dreams
+            </p>
           </motion.div>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+
+          <div className="flex flex-col items-center gap-8 lg:gap-12">
+            {/* Top awards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 max-w-3xl w-full">
+              <motion.div
+                initial={{ x: -40, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.6 }}
+                className="backdrop-blur-sm bg-gradient-to-r from-[#d2d5e0] to-white/90 p-6 sm:p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-[#8e9fc5]/20"
+              >
+                <p className="text-base sm:text-lg font-semibold mb-2" style={{ color: '#04307b' }}>Lifetime Achievement Award</p>
+                <p className="text-sm sm:text-base" style={{ color: '#8e9fc5' }}>The Economic Times Awards</p>
+              </motion.div>
+              <motion.div
+                initial={{ x: 40, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.6 }}
+                className="backdrop-blur-sm bg-gradient-to-r from-[#d2d5e0] to-white/90 p-6 sm:p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-[#8e9fc5]/20"
+              >
+                <p className="text-base sm:text-lg font-semibold mb-2" style={{ color: '#04307b' }}>Wharton Dean's Medal</p>
+                <p className="text-sm sm:text-base" style={{ color: '#8e9fc5' }}>Wharton School, UPenn</p>
+              </motion.div>
+            </div>
+            
+            {/* Center image */}
             <motion.div
-              initial={{ x: -200, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.5, type: "spring", stiffness: 50 }}
-              style={{ width: '180px', backgroundColor: '#fff', padding: '0.5rem', borderRadius: '8px', margin: '0.5rem', textAlign: 'center' }}
+              initial={{ scale: 0.8, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.8 }}
+              className="relative"
             >
-              <p style={{ fontSize: '0.9rem' }}>Man of the Century Award<br />Chemtech Foundation</p>
+              <div className="absolute inset-0 bg-gradient-to-r from-[#8e9fc5] to-[#04307b] rounded-3xl blur-lg opacity-20 transform scale-110"></div>
+              <motion.img
+                whileHover={{ scale: 1.05, y: -5 }}
+                transition={{ duration: 0.4 }}
+                src={founderImage}
+                alt="Chairman"
+                className="relative w-48 sm:w-64 lg:w-80 h-60 sm:h-80 lg:h-96 object-cover rounded-3xl shadow-2xl border-4 border-white"
+              />
             </motion.div>
-            <motion.div
-              initial={{ x: -200, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.5, type: "spring", stiffness: 50 }}
-              style={{ width: '180px', backgroundColor: '#fff', padding: '0.5rem', borderRadius: '8px', margin: '0.5rem', textAlign: 'center' }}
-            >
-              <p style={{ fontSize: '0.9rem' }}>Civic Address & Reception<br />Bombay Municipal Corp</p>
-            </motion.div>
+            
+            {/* Bottom awards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 max-w-3xl w-full">
+              <motion.div
+                initial={{ x: -40, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="backdrop-blur-sm bg-gradient-to-r from-[#d2d5e0] to-white/90 p-6 sm:p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-[#8e9fc5]/20"
+              >
+                <p className="text-base sm:text-lg font-semibold mb-2" style={{ color: '#04307b' }}>Man of the Century Award</p>
+                <p className="text-sm sm:text-base" style={{ color: '#8e9fc5' }}>Chemtech Foundation</p>
+              </motion.div>
+              <motion.div
+                initial={{ x: 40, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="backdrop-blur-sm bg-gradient-to-r from-[#d2d5e0] to-white/90 p-6 sm:p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-[#8e9fc5]/20"
+              >
+                <p className="text-base sm:text-lg font-semibold mb-2" style={{ color: '#04307b' }}>Civic Address & Reception</p>
+                <p className="text-sm sm:text-base" style={{ color: '#8e9fc5' }}>Bombay Municipal Corp</p>
+              </motion.div>
+            </div>
           </div>
-        </motion.div>
+        </div>
       </motion.section>
 
       {/* Shareholders' Speeches */}
       <motion.section
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, type: "spring", stiffness: 50 }}
-        style={{ backgroundColor: '#023080', color: '#FCFDFF', padding: '2rem', textAlign: 'center' }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        className="py-16 sm:py-20 lg:py-24"
+        style={{ backgroundColor: '#023080' }}
       >
-        <motion.h2
-          initial={{ y: 50, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1, type: "spring", stiffness: 50 }}
-          style={{ fontSize: '1.8rem', marginBottom: '0.5rem' }}
-        >
-          Speeches at Reliance Shareholders' Meetings
-        </motion.h2>
-        <div style={{ backgroundColor: '#fff', color: '#000', padding: '1rem', borderRadius: '8px', maxWidth: '750px', margin: '0 auto', display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
-          {[
-            { date: "APR 08, 2002", desc: "Equity Shareholders Meeting" },
-            { date: "JUN 15, 2001", desc: "27th Annual General Meeting" },
-            { date: "JUN 13, 2000", desc: "26th Annual General Meeting" },
-            { date: "JUN 24, 1999", desc: "25th Annual General Meeting" },
-            { date: "JUN 26, 1998", desc: "24th Annual General Meeting" },
-            { date: "OCT 16, 1997", desc: "Extraordinary General Meeting" }
-          ].map((speech, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ y: 20, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              transition={{ delay: idx * 0.1, duration: 0.5, type: "spring", stiffness: 50 }}
-              style={{ width: '180px', textAlign: 'center', margin: '0.5rem', backgroundColor: '#e0e0e0', padding: '0.5rem', borderRadius: '8px' }}
-            >
-              <p style={{ fontSize: '0.9rem' }}>{speech.date}</p>
-              <p style={{ fontSize: '0.9rem' }}>{speech.desc}</p>
-            </motion.div>
-          ))}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.h2
+            initial={{ y: 30, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8 }}
+            className="text-3xl sm:text-4xl lg:text-5xl font-light mb-12 lg:mb-16 text-white"
+          >
+            Speeches at Reliance Shareholders' Meetings
+          </motion.h2>
+          
+          <div className="backdrop-blur-sm bg-white/95 rounded-3xl p-8 sm:p-12 lg:p-16 max-w-6xl mx-auto shadow-2xl border border-white/20">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+              {[
+                { date: "APR 08, 2002", desc: "Equity Shareholders Meeting" },
+                { date: "JUN 15, 2001", desc: "27th Annual General Meeting" },
+                { date: "JUN 13, 2000", desc: "26th Annual General Meeting" },
+                { date: "JUN 24, 1999", desc: "25th Annual General Meeting" },
+                { date: "JUN 26, 1998", desc: "24th Annual General Meeting" },
+                { date: "OCT 16, 1997", desc: "Extraordinary General Meeting" }
+              ].map((speech, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ y: 20, opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
+                  transition={{ delay: idx * 0.1, duration: 0.6 }}
+                  whileHover={{ y: -5, scale: 1.02 }}
+                  className="backdrop-blur-sm bg-gradient-to-br from-[#d2d5e0] to-white/90 p-6 sm:p-8 rounded-2xl text-center shadow-md hover:shadow-lg transition-all duration-300 border border-[#8e9fc5]/30"
+                >
+                  <p className="font-bold text-base sm:text-lg mb-3" style={{ color: '#04307b' }}>{speech.date}</p>
+                  <p className="text-sm sm:text-base" style={{ color: '#8e9fc5' }}>{speech.desc}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
         </div>
       </motion.section>
 
       {/* Awards */}
       <motion.section
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, type: "spring", stiffness: 50 }}
-        style={{ backgroundColor: '#d2d5e0', padding: '2rem', textAlign: 'center' }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        className="py-16 sm:py-20 lg:py-24"
+        style={{ backgroundColor: '#d2d5e0' }}
       >
-        <h2 style={{ color: '#04307b', fontSize: '1.8rem' }}>Awards & Recognitions</h2>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '1rem', justifyContent: 'center' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem' }}>
-            {["awd1", "awd2", "awd3"].map((name, i) => (
-              <motion.div
-                key={name}
-                whileHover={{ scale: 1.1 }}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ type: "spring", stiffness: 100, damping: 15 }}
-                style={{ position: 'relative', width: '200px', height: '160px', overflow: 'hidden', borderRadius: '8px' }}
-              >
-                <img
-                  src={name === "awd1" ? award1 : name === "awd2" ? award2 : award3}
-                  alt={`Award ${name}`}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                />
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileHover={{ opacity: 0.9 }}
-                  transition={{ type: "spring", stiffness: 100 }}
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    backgroundColor: 'rgba(0, 0, 139, 0.5)',
-                    color: '#fff',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    transition: 'opacity 0.3s ease'
-                  }}
-                >
-                  <p style={{ fontSize: '0.9rem', fontWeight: 'bold', textAlign: 'center' }}>{`Award ${i + 1}`}</p>
-                </motion.div>
-              </motion.div>
-            ))}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12 lg:mb-16">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light mb-4 sm:mb-6" style={{ color: '#04307b' }}>
+              Awards & Recognitions
+            </h2>
+            <div className="w-24 h-1 mx-auto rounded-full" style={{ backgroundColor: '#023080' }}></div>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem' }}>
-            {["awd4", "awd5", "awd6"].map((name, i) => (
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            {awardImages.map((img, i) => (
               <motion.div
-                key={name}
-                whileHover={{ scale: 1.1 }}
+                key={i}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ type: "spring", stiffness: 100, damping: 15 }}
-                style={{ position: 'relative', width: '200px', height: '160px', overflow: 'hidden', borderRadius: '8px' }}
+                transition={{ duration: 0.6, delay: i * 0.1 }}
+                whileHover={{ y: -10, scale: 1.03 }}
+                className="relative group overflow-hidden rounded-2xl shadow-lg bg-white hover:shadow-2xl transition-all duration-500"
               >
+                <div className="absolute inset-0 bg-gradient-to-r from-[#8e9fc5] to-[#04307b] opacity-0 group-hover:opacity-20 transition-opacity duration-300 z-10"></div>
                 <img
-                  src={name === "awd4" ? award4 : name === "awd5" ? award5 : award6}
-                  alt={`Award ${name}`}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  src={img}
+                  alt={`Award ${i + 1}`}
+                  className="w-full h-48 sm:h-56 lg:h-64 object-cover transition-transform duration-500 group-hover:scale-110"
                 />
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileHover={{ opacity: 0.9 }}
-                  transition={{ type: "spring", stiffness: 100 }}
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    backgroundColor: 'rgba(0, 0, 139, 0.5)',
-                    color: '#fff',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    transition: 'opacity 0.3s ease'
-                  }}
-                >
-                  <p style={{ fontSize: '0.9rem', fontWeight: 'bold', textAlign: 'center' }}>{`Award ${i + 4}`}</p>
-                </motion.div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#023080]/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end justify-center pb-6 z-20">
+                  <p className="text-white font-semibold text-base sm:text-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                    Award {i + 1}
+                  </p>
+                </div>
               </motion.div>
             ))}
           </div>
