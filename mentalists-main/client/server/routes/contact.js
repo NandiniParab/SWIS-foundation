@@ -4,7 +4,6 @@ const nodemailer = require("nodemailer")
 const mongoose = require("mongoose")
 const router = express.Router()
 
-// Add this at the top with other imports
 const volunteerRoutes = require("./volunteer")
 
 // Create transporter (No API key needed!)
