@@ -2,7 +2,6 @@ const Contact = require("../models/Contact");
 const express = require("express")
 const nodemailer = require("nodemailer")
 const mongoose = require("mongoose")
-const Contact = require("../models/Contact");
 const router = express.Router()
 
 const volunteerRoutes = require("./volunteer")
