@@ -51,7 +51,7 @@ const PrivacyPolicy = () => {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-900 to-blue-800 text-white font-sans">
+    <div className="min-h-screen text-white font-sans" style={{ backgroundColor: '#04307b' }}>
       {/* Top Spacer Section - Keeps space for navbar/header */}
       <div className="h-20 md:h-24 lg:h-32"></div>
 
