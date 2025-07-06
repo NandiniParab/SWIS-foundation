@@ -6,7 +6,7 @@ const { GridFSBucket } = require("mongodb")
 const { Readable } = require("stream")
 const router = express.Router()
 
-const Volunteer = require("../models/Volunteer")
+const Volunteer = require("../models/volunteer")
 
 // 🔧 FIXED: Configure multer for memory storage with detailed logging
 const storage = multer.memoryStorage()
