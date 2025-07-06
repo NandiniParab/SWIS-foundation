@@ -186,7 +186,7 @@ const ContactPage: React.FC = () => {
           <div className="bg-white p-8 rounded-lg shadow-sm">
             <div className="mb-6">
               <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                HELPDESK
+                Get in Touch
               </h2>
               <p className="text-gray-600">
                 For any grievance, suggestions and queries kindly write to us.

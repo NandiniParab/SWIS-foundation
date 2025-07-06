@@ -1,6 +1,7 @@
 const express = require("express")
 const nodemailer = require("nodemailer")
 const mongoose = require("mongoose")
+const Contact = require("../models/Contact");
 const router = express.Router()
 
 // Add this at the top with other imports

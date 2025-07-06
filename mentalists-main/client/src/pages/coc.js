@@ -259,7 +259,7 @@ const CodeOfConduct = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-900 to-blue-800">
+    <div className="min-h-screen" style={{ backgroundColor: '#04307b' }}>
       {/* Top Spacer Section - Keeps space for navbar/header */}
       <div className="h-20 md:h-24 lg:h-32"></div>
 
@@ -280,7 +280,7 @@ const CodeOfConduct = () => {
       */}
 
       {/* Header Section */}
-      <section className="bg-gradient-to-r from-blue-900 to-blue-800 text-white py-20">
+      <section className="text-white py-20" style={{ backgroundColor: '#04307b' }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}

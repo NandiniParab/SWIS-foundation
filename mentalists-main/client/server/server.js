@@ -16,7 +16,7 @@ const connectDB = async () => {
     console.log("🔗 Connecting to MongoDB Atlas...")
 
     await mongoose.connect(
-      "mongodb+srv://",
+      "mongodb+srv://jiyagudhaka23:3CONNRAloSDTSmMe@swis.fisa8ak.mongodb.net/swis-ngo?retryWrites=true&w=majority&appName=swis",
       {
         // Removed deprecated options: useNewUrlParser and useUnifiedTopology
         // These are no longer needed in modern MongoDB driver versions
