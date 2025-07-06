@@ -1,26 +1,11 @@
+const Contact = require("../models/Contact");
 const express = require("express")
 const nodemailer = require("nodemailer")
 const mongoose = require("mongoose")
-const Contact = require("../models/Contact");
 const router = express.Router()
 
 // Add this at the top with other imports
 const volunteerRoutes = require("./volunteer")
-
-// Simple Contact Schema (No separate model file needed)
-const contactSchema = new mongoose.Schema(
-  {
-    name: { type: String, required: true },
-    phone: { type: String, required: true },
-    email: { type: String, required: true },
-    message: { type: String, required: true },
-    status: { type: String, default: "new" },
-    submittedAt: { type: Date, default: Date.now },
-  },
-  { timestamps: true },
-)
-
-const Contact = mongoose.model("Contact", contactSchema)
 
 // Create transporter (No API key needed!)
 const createTransporter = () => {
