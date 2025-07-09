@@ -49,17 +49,7 @@ mongoose.connection.on("disconnected", () => {
 })
 
 // Middleware
-const allowedOrigins = [
-  "http://localhost:3000",
-  "https://your-frontend-service.up.railway.app"
-];
-
-app.use(
-  cors({
-    origin: allowedOrigins,
-    credentials: true,
-  })
-);
+app.use(cors());
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
