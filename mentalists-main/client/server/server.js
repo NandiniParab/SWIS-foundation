@@ -1,3 +1,4 @@
+const path = require("path");
 const express = require("express")
 const cors = require("cors")
 const dotenv = require("dotenv")
@@ -50,9 +51,9 @@ mongoose.connection.on("disconnected", () => {
 // Middleware
 app.use(
   cors({
-    origin: "http://localhost:3000",
-    credentials: true,
-  }),
+  origin: "http://localhost:3000",
+   credentials: true,
+ }),
 )
 
 app.use(express.json())
@@ -70,6 +71,15 @@ app.get("/api/health", (req, res) => {
     timestamp: new Date().toISOString(),
   })
 })
+
+// Serve React static files
+app.use(express.static(path.join(__dirname, "..", "build")));
+
+// Fallback: serve index.html on any route not handled by APIs
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "build", "index.html"));
+});
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {
