@@ -49,12 +49,17 @@ mongoose.connection.on("disconnected", () => {
 })
 
 // Middleware
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://your-frontend-service.up.railway.app"
+];
+
 app.use(
   cors({
-  origin: "http://localhost:3000",
-   credentials: true,
- }),
-)
+    origin: allowedOrigins,
+    credentials: true,
+  })
+);
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -73,13 +78,12 @@ app.get("/api/health", (req, res) => {
 })
 
 // Serve React static files
-app.use(express.static(path.join(__dirname, "..", "build")));
+app.use(express.static(path.join(__dirname, "client", "build")));
 
 // Fallback: serve index.html on any route not handled by APIs
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "build", "index.html"));
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 });
-
 
 // Error handling middleware
 app.use((err, req, res, next) => {
