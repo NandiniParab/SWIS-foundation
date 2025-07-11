@@ -57,23 +57,17 @@ app.use(express.urlencoded({ extended: true }))
 // Routes
 app.use("/api", contactRoutes)
 
-// Health check route
-app.get("/api/health", (req, res) => {
-  console.log("✅ Health check route hit!")
-  res.status(200).json({
-    message: "Server is running!",
-    database: mongoose.connection.readyState === 1 ? "Connected" : "Disconnected",
-    timestamp: new Date().toISOString(),
-  })
+// Start server
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on http://localhost:${PORT}`)
+  console.log(`🔗 Health check: http://localhost:${PORT}/api/health`)
+  console.log(`📧 Contact endpoint: http://localhost:${PORT}/api/contact`)
+  console.log(`🙋‍♂️ Volunteer endpoint: http://localhost:${PORT}/api/volunteer-simple`)
+  console.log(`🌐 Database: MongoDB Atlas (No API key needed!)`)
 })
 
 // Serve React static files
 app.use(express.static(path.join(__dirname, "client", "build")));
-
-// Fallback: serve index.html on any route not handled by APIs
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
-});
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -84,11 +78,17 @@ app.use((err, req, res, next) => {
   })
 })
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`)
-  console.log(`🔗 Health check: http://localhost:${PORT}/api/health`)
-  console.log(`📧 Contact endpoint: http://localhost:${PORT}/api/contact`)
-  console.log(`🙋‍♂️ Volunteer endpoint: http://localhost:${PORT}/api/volunteer-simple`)
-  console.log(`🌐 Database: MongoDB Atlas (No API key needed!)`)
+// Health check route
+app.get("/api/health", (req, res) => {
+  console.log("✅ Health check route hit!")
+  res.status(200).json({
+    message: "Server is running!",
+    database: mongoose.connection.readyState === 1 ? "Connected" : "Disconnected",
+    timestamp: new Date().toISOString(),
+  })
 })
+
+// Fallback: serve index.html on any route not handled by APIs
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
