@@ -1,3 +1,6 @@
 node_modules/
+mentalists-main/server/node_modules/
+mentalists-main/server/client/node_modules/
 .env
-.DS_Store
+build/
+dist/
